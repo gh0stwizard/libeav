@@ -50,7 +50,7 @@ eav-static: $(OBJECTS)
 
 clean:
 	# cleanup
-	$(RM) $(TARGET) $(OBJECTS)
+	$(RM) $(TARGETS) $(OBJECTS)
 
 strip: $(TARGETS)
 	# strip
