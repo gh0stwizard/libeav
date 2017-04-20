@@ -8,14 +8,14 @@ support all existing RFCs:
 
 * [RFC 822][2]
 * [RFC 5321][3]
-* [RFC 5322][4] (updates <atext> specification)
-* [RFC 6321][5] (UTF-8 support; updates <atext> specification)
+* [RFC 5322][4] (updates `<atext>` specification)
+* [RFC 6321][5] (UTF-8 support; updates `<atext>` specification)
 
 
 A quick note about [RFC 6321][5]: it is possible that the correct implementation
 SHOULD take into account [RFC 20][6] to exclude some characters:
-`#`, `\``, `{`, `}`, `|`, `~` and `^`. I did it, but you change such a
-behavior (see the [is_6321_local.c][7] file.
+`#`, `\``, `{`, `}`, `|`, `~` and `^`. I did it, but you may change this
+in the way you would like (see the [is_6321_local.c][7] file).
 
 
 ## What it does not
@@ -85,8 +85,8 @@ PASS: simple@test.com
 
 ## Credits
 
-[UTF-8 decoder][11] by JSON.org
-[postfix][13] written by Wietse Venema
+* [UTF-8 decoder][11] by JSON.org
+* [postfix][13] written by Wietse Venema
 
 
 ## Feature plans
