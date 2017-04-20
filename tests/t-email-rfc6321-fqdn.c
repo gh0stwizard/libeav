@@ -7,6 +7,10 @@
 #include "../src/auto_tld.h"
 #include "common.h"
 
+typedef int (*utf8_email) ( idn_resconf_t ctx,
+                            idn_action_t a,
+                            const char *s,
+                            const char *e);
 
 static void
 init_idn (idn_resconf_t *ctx)
@@ -131,6 +135,8 @@ main (int argc, char *argv[])
     }
 #endif
 
+    if (line != NULL)
+        free (line);
     fclose (fh);
     idn_resconf_destroy (ctx);
 

@@ -2,6 +2,9 @@ LIB_DIRS ?= $(shell realpath ../../../../local/lib)
 IDNKIT_CFLAGS ?= -I$(LIB_DIRS)/../include
 IDNKIT_LIBS ?= -L$(LIB_DIRS) -lidnkit
 
+# for test the library only
+LIB_PATH = $(LIB_DIRS):$(shell realpath ..)
+
 CFLAGS ?= -Wall -Wextra -std=c99 -pedantic
 CFLAGS += -I../include
 CFLAGS += $(IDNKIT_CFLAGS)
@@ -54,5 +57,7 @@ check: $(TARGETS)
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc6321.bin 28 27 ../data/email-ascii.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc6321.bin 8 3 ../data/email-utf8.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc6321.bin 7 1 ../data/email-reg.ru.txt
+	LD_LIBRARY_PATH=$(LIB_PATH) ./t-eav.bin 8 3 ../data/email-utf8.txt
+	LD_LIBRARY_PATH=$(LIB_PATH) ./t-eav.bin 7 1 ../data/email-reg.ru.txt
 
 .PHONY: all debug clean check
