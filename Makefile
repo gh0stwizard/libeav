@@ -14,7 +14,7 @@ LIBS ?=
 LIBS += $(IDNKIT_LIBS)
 
 SO_TARGET = libeav.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)
-TARGETS = $(SO_TARGET) libeav.a
+TARGETS = $(SO_TARGET) libeav.a eav
 SOURCES = $(wildcard src/*.c)
 OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
 
@@ -31,6 +31,8 @@ debug: all
 
 $(TARGETS): $(OBJECTS)
 
+eav:
+	cd bin; $(MAKE)
 
 libeav.so: $(SO_TARGET)
 
@@ -45,24 +47,31 @@ libeav.a: $(OBJECTS)
 %.o: %.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 
-clean: clean-tests
+clean: clean-tests clean-bin
 	# cleanup
 	$(RM) $(TARGETS) $(SO_TARGET) $(OBJECTS)
 
 clean-tests:
 	cd tests; $(MAKE) clean
+	
+clean-bin:
+	cd bin; $(MAKE) clean
 
-strip: $(TARGETS)
+strip: $(TARGETS) strip-bin
 	# strip
 	strip --strip-unneeded -R .comment -R .note -R .note.ABI-tag $(TARGETS)
+
+strip-bin:
+	cd bin; $(MAKE) strip
 
 check: $(OBJECTS)
 	cd tests; $(MAKE) check
 
 install: $(TARGETS)
-	mkdir -p $(DESTDIR)
-	cp libeav.a $(SO_TARGET) $(DESTDIR)
-	cd $(DESTDIR) && \
+	mkdir -p $(DESTDIR)/bin $(DESTDIR)/lib
+	cp bin/eav $(DESTDIR)/bin
+	cp libeav.a $(SO_TARGET) $(DESTDIR)/lib
+	cd $(DESTDIR)/lib && \
 	ln -sf $(SO_TARGET) libeav.so.$(MAJOR_VERSION) && \
 	ln -sf $(SO_TARGET) libeav.so
 
