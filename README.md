@@ -32,6 +32,14 @@ See details below:
 	addr-spec = local-part "@" domain
 
 
+## Features
+
+* UTF-8 / IDNA2008 support
+* TLD checking (configurable)
+* FQDN checking
+* Local-Part & Domain Lengths checking
+
+
 ## Dependencies
 
 * [idnkit][8]
