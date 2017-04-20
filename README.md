@@ -14,7 +14,7 @@ support all existing RFCs:
 
 A quick note about [RFC 6321][5]: it is possible that the correct implementation
 SHOULD take into account [RFC 20][6] to exclude some characters:
-`#`, `\``, `{`, `}`, `|`, `\~` and `\^`. I did it, but you may change this
+"#", "`", "{", "}", "|", "~" and "^". I did it, but you may change this
 in the way you would like (see the [is_6321_local.c][7] file).
 
 
