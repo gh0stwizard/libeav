@@ -1,0 +1,58 @@
+localpart-only
+i.have.only.ipv4@[8.8.8.8]
+this-is.ipv6@[IPv6:2001:0db8:0000:0000:0000:ff00:0042:8329]
+and.this.is.ipv6-ipv4@[IPv6:::ffff:192.0.2.128]
+invalid.ipv4@[0.1.2.3]
+invalid.ipv6@[IPv6:ge80:1::]
+valid.ipv6@[IPv6:2001:db8:0:1:1:1:1:1]
+legacy.valid.ipv6@[IPv6:2001:db8::1:1:1:1:1]
+xxx.ipv6@[2001:db8:1:1:1:1:1:1]
+simple@test.com
+invalid localpart@nic.ru
+# pass: 64 chars
+abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789@example.ru
+# fail: > 64 chars
+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZover-64-chars@gh0stwizard.tk
+prettyandsimple@ok.com
+very.common@ok.com
+disposable.style.email.with+symbol@ok.com
+other.email-with-dash@ok.com
+"much.more unusual"@ok.com
+"very.unusual.@.unusual.com"@ok.com
+"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@ok.com
+example-indeed@ok.com
+!#$%&'*+-/=?^_`{}|~@ok.com
+"()<>[]:,;@\\\"!#$%&'-/=?^_`{}| ~.a"@ok.com
+"multi"."quote"."is-allowed"@ok.com
+this_is.also."valid"@ok.com
+" "@hmmm.com
+"next char is tab:	"@hmmm.com
+" abc"@ok.com
+"abc "@ok.com
+"  abc  "@ok.com
+"abc. "@ok.com
+//@ok.com
+"\abc"@fail.net
+-abc@fail.net
+;abc@fail.net
+A@b@c@toobad.com
+a"b(c)d,e:f;g<h>i[j\k]l@nonono.com
+just"not"right@no.com
+this is"not\allowed@nope.org
+this\ still\"not\\allowed@nenenene.com
+john..doe@imposible.ru
+.@ha.com
+.abc@haha.com
+abc.@hmm.com
+abc.@@strange.com
+abc. space before@nah.com
+	tab before@nahnah.com
+"\"@well.com
+"\ @no.com
+# next is empty line
+
+ space before@nonono.com
+\@no.com
+\\@no.com
+"next char is cr:"@ugly.com
+"next char is del:"@badboy.com

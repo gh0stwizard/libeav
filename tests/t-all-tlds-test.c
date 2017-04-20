@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+#include <string.h>
+#include <errno.h>
+#include <eav.h>
+#include "../src/auto_tld.h"
+#include "common.h"
+
+
+/* how many expect TLDs with test type */
+#define TEST_CHECK          (11)
+/* how many expect not assigned TLDs */
+#define NOT_ASSIGNED_CHECK  (14)
+
+
+static void
+init_idn (idn_resconf_t *ctx)
+{
+    idn_result_t r;
+
+
+    r = idn_resconf_initialize ();
+
+    if (r != idn_success) {
+        msg_warn ("idn_resconf_initialize: %s\n", idn_result_tostring (r));
+        exit (EXIT_FAILURE);
+    }
+
+    r = idn_resconf_create (ctx);
+
+    if (r != idn_success) {
+        msg_warn ("idn_resconf_create: %s\n", idn_result_tostring (r));
+        exit (EXIT_FAILURE);
+    }
+}
+
+
+extern int
+main (int argc, char *argv[])
+{
+    char *line = NULL;
+    size_t len;
+    ssize_t read;
+    idn_resconf_t ctx;
+    idn_action_t actions = IDN_ENCODE_REGIST;
+    int tld_count[TLD_TYPE_MAX];
+    int t;
+    FILE *fh;
+
+
+    if (argc >= 3 || argc < 2) {
+        msg_warn ("usage: %s FILE\n", argv[0]);
+        return 2;
+    }
+
+    setlocale(LC_ALL, "");
+    init_idn (&ctx);
+
+    fh = fopen (argv[--argc], "r");
+
+    if (fh == NULL) {
+        msg_warn ("open: %s: %s", argv[argc], strerror(errno));
+        return 3;
+    }
+
+    while ((read = getline (&line, &len, fh)) != EOF) {
+        line[read-1] = '\0';
+
+        if (line[0] == '#') /* skip comments */
+            continue;
+
+        t = is_utf8_inet_domain (ctx, actions, line, line + strlen (line));
+
+        if (t != TLD_TYPE_INVALID &&
+            t != TLD_TYPE_NOT_ASSIGNED &&
+            t != TLD_TYPE_TEST)
+            printf ("PASS: %s\n", line);
+        else
+            printf ("FAIL: %s\n", line);
+
+        tld_count[t]++;
+    }
+
+    if (tld_count[TLD_TYPE_TEST] != TEST_CHECK) {
+        msg_warn ("expected %d test TLDs, but got %d\n",
+                TEST_CHECK,
+                tld_count[TLD_TYPE_TEST]);
+        return 4;
+    }
+
+    if (tld_count[TLD_TYPE_NOT_ASSIGNED] != NOT_ASSIGNED_CHECK) {
+        msg_warn ("expected %d not assigned TLDs, but got %d\n",
+                NOT_ASSIGNED_CHECK,
+                tld_count[TLD_TYPE_NOT_ASSIGNED]);
+        return 5;
+    }
+
+    fclose (fh);
+    idn_resconf_destroy (ctx);
+
+    msg_ok ("%s: PASS\n", argv[0]);
+
+    return 0;
+}

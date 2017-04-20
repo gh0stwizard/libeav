@@ -1,0 +1,14 @@
+проверочный@адрес.рф
+时尚@微博
+微博@微博.微博
+test-tld@δοκιμή.δοκιμή
+not-assigned@טעסט.טעסט
+hmm@ею.ею
+آزمایشی.آزمایشی@strange
+# just domain
+பரிட்சை.பரிட்சை
+# empty line
+
+# no local part
+@ελ.ελ
+test@example.com

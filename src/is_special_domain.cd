@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <string.h>
+#include "is_local.h"
+
+
+#define ARRAY_SIZE(a) (sizeof(a)/sizeof(a[0]))
+
+typedef struct reserved_s {
+    const char *domain;
+    size_t length;
+} reserved_t;
+
+static const reserved_t const reserved[] = {
+    { "test",           4 },
+    { "example",        7 },
+    { "invalid",        7 },
+    { "localhost",      9 },
+};
+
+static const reserved_t const reserved2[] = {
+    { "example.com",   11 },
+    { "example.net",   11 },
+    { "example.org",   11 },
+};
+
+/*
+ * is_special_domain: checks whether a domain is reserved or special.
+ *
+ * RFC2606 & RFC6761:
+ *
+ * Special TLDs:
+ *
+ * test.
+ * example.
+ * invalid.
+ * localhost.
+ *
+ * Reserved Example Second Level Domain Names:
+ *
+ * example.com.
+ * example.net.
+ * example.org.
+ *
+ */
+extern int
+is_special_domain (const char *start, const char *end)
+{
+#define DOMAIN_SIZE (255)
+#define LABEL_SIZE (64)
+    char *ch = NULL;
+    char label[LABEL_SIZE];
+    size_t len = 0;
+
+
+    if (start == end)
+        return (NO);
+
+    if (end - start >= DOMAIN_SIZE) {
+        fprintf (stderr, "domain string too long: %s\n", start);
+        return (NO);
+    }
+
+    do {
+        ch = strrchr (start, '.');
+    } while (ch != NULL && ch == end);
+
+    /* find last label */
+    if (ch == NULL) {
+        len = end - start;
+        memcpy (label, start, len);
+    }
+    else if (ch == end - 1) {
+        ch = strrchr (ch + 1, '.');
+
+        if (ch == NULL) {
+            len = end - start - 1;
+            memcpy (label, start, len);
+        }
+        else {
+            len = end - ch - 1;
+            memcpy (label, ch + 1, len);
+        }
+    }
+    else {
+        ch++;
+        len = end - ch;
+        memcpy (label, ch, len);
+    }
+    label[len] = 0;
+
+    printf ("label: %s\n", label);
+#if 0
+    if (ch == NULL) {
+        for (size_t i = 0; i < ARRAY_SIZE(reserved); i++) {
+            if (strncmp (reserved[i].domain, label, reserved[i].length))
+                return (YES);
+        }
+    }
+    else if (ch == end - 1)
+        len = end - start - 1;
+    else
+        len = end - start;
+#endif
+
+    return (NO);
+}
