@@ -5,3 +5,5 @@ lib*.dll
 misc
 tests/*.bin
 *.o
+bin/eav
+bin/eav-static
