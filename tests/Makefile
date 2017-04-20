@@ -52,8 +52,8 @@ check: $(TARGETS)
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc5321.bin 29 26 ../data/email-ascii.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc5322.bin 26 29 ../data/email-ascii.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc6321-fqdn.bin 28 27 ../data/email-ascii.txt
-	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc6321-fqdn.bin 3 8 ../data/email-utf8.txt
-	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc6321-fqdn.bin 6 2 ../data/email-reg.ru.txt
+	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc6321-fqdn.bin 4 7 ../data/email-utf8.txt
+	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc6321-fqdn.bin 7 1 ../data/email-reg.ru.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc6321.bin 28 27 ../data/email-ascii.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc6321.bin 8 3 ../data/email-utf8.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-email-rfc6321.bin 7 1 ../data/email-reg.ru.txt

@@ -59,7 +59,12 @@ is_utf8_inet_domain(idn_resconf_t ctx,
 #ifdef _DEBUG
         fprintf (stderr, "!!! %s: special\n", domain);
 #endif
+#ifndef DENY_SPECIAL
+        /* this is DNS problem, not ours */
+        return EEAV_NO_ERROR;
+#else
         return inverse(EEAV_SPECIAL);
+#endif
     }
 
     /* fqdn & tld tests */
