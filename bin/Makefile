@@ -1,6 +1,6 @@
-LIB_DIRS ?= $(shell realpath ../../../../local/lib)
-IDNKIT_CFLAGS ?= -I$(LIB_DIRS)/../include
-IDNKIT_LIBS ?= -L$(LIB_DIRS) -lidnkit
+IDNKIT_DIR ?= /usr/local
+IDNKIT_CFLAGS ?= -I$(IDNKIT_DIR)/include
+IDNKIT_LIBS ?= -L$(IDNKIT_DIR)/lib -lidnkit
 
 EAV_CFLAGS ?= -I../include
 EAV_LIBS ?= -L.. -leav

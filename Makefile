@@ -1,8 +1,8 @@
 DESTDIR ?= /usr/local
 
-LIB_DIRS ?= $(shell realpath "../../../local/lib")
-IDNKIT_CFLAGS ?= -I$(LIB_DIRS)/../include
-IDNKIT_LIBS ?= -L$(LIB_DIRS) -lidnkit
+IDNKIT_DIR ?= /usr/local
+IDNKIT_CFLAGS ?= -I$(IDNKIT_DIR)/include
+IDNKIT_LIBS ?= -L$(IDNKIT_DIR)/lib -lidnkit
 
 CFLAGS ?= -Wall -Wextra -std=c99 -pedantic
 CFLAGS += -fPIC
@@ -14,7 +14,8 @@ LIBS ?=
 LIBS += $(IDNKIT_LIBS)
 
 SO_TARGET = libeav.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)
-TARGETS = $(SO_TARGET) libeav.a eav
+TARGET_LIBS = $(SO_TARGET) libeav.a
+TARGETS = $(TARGET_LIBS) eav
 SOURCES = $(wildcard src/*.c)
 OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
 
@@ -30,6 +31,8 @@ debug: all
 	cd tests; $(MAKE) clean debug
 
 $(TARGETS): $(OBJECTS)
+
+libs: $(TARGET_LIBS)
 
 eav:
 	cd bin; $(MAKE)
@@ -65,7 +68,7 @@ strip-bin:
 	cd bin; $(MAKE) strip
 
 check: $(OBJECTS)
-	cd tests; $(MAKE) check
+	cd tests; $(MAKE) check IDNKIT_DIR=$(IDNKIT_DIR)
 
 install: $(TARGETS)
 	mkdir -p $(DESTDIR)/bin $(DESTDIR)/lib
@@ -75,4 +78,4 @@ install: $(TARGETS)
 	ln -sf $(SO_TARGET) libeav.so.$(MAJOR_VERSION) && \
 	ln -sf $(SO_TARGET) libeav.so
 
-.PHONY: all debug check clean install
+.PHONY: all debug check clean install libs
