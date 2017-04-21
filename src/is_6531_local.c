@@ -82,9 +82,11 @@ is_6531_local (const char *start, const char *end)
             case '(': case ')': case '<': case '>': case '@':
             case ',': case ';': case ':': case '\\':
             case '[': case ']': case ' ':
+#ifndef RFC6531_PERMIT_EXTRA_CHARS
             /* RFC20 */
             case '#': case '^': case '`': case '~':
             case '{': case '}': case '|':
+#endif
                 return inverse(EEAV_LPART_SPECIAL);
             }
         }
