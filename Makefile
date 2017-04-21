@@ -4,11 +4,11 @@ IDNKIT_DIR ?= /usr/local
 IDNKIT_CFLAGS ?= -I$(IDNKIT_DIR)/include
 IDNKIT_LIBS ?= -L$(IDNKIT_DIR)/lib -lidnkit
 
-CFLAGS ?= -Wall -Wextra -std=c99 -pedantic
-CFLAGS += -fPIC
-CFLAGS += -Iinclude
-CFLAGS += $(IDNKIT_CFLAGS)
-CFLAGS += -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
+MY_CFLAGS = -Wall -Wextra -std=c99 -pedantic -fPIC
+MY_CFLAGS += -Iinclude
+MY_CFLAGS += $(IDNKIT_CFLAGS)
+MY_CFLAGS += -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
+MY_CFLAGS += $(CFLAGS)
 LDFLAGS ?= -shared
 LIBS ?= 
 LIBS += $(IDNKIT_LIBS)
@@ -26,7 +26,7 @@ PATCH_VERSION = 0
 
 all: $(TARGETS)
 
-debug: CFLAGS += -g -D_DEBUG
+debug: MY_CFLAGS += -g -D_DEBUG
 debug: all
 	cd tests; $(MAKE) clean debug
 
@@ -48,7 +48,7 @@ libeav.a: $(OBJECTS)
 	ar rcs $@ $(OBJECTS)
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(MY_CFLAGS) -o $@ $<
 
 clean: clean-tests clean-bin
 	# cleanup

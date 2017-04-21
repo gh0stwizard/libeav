@@ -5,9 +5,10 @@ IDNKIT_LIBS ?= -L$(IDNKIT_DIR)/lib -lidnkit
 EAV_CFLAGS ?= -I../include
 EAV_LIBS ?= -L.. -leav
 
-CFLAGS ?= -Wall -Wextra -std=c99 -pedantic
-CFLAGS += $(EAV_CFLAGS) $(IDNKIT_CFLAGS)
-CFLAGS += -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
+MY_CFLAGS = -Wall -Wextra -std=c99 -pedantic
+MY_CFLAGS += $(EAV_CFLAGS) $(IDNKIT_CFLAGS)
+MY_CFLAGS += -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
+MY_CFLAGS += $(CFLAGS)
 LDFLAGS ?= 
 LIBS ?= 
 LIBS += $(EAV_LIBS) $(IDNKIT_LIBS)
@@ -30,7 +31,7 @@ all: $(TARGETS)
 
 $(TARGETS): $(OBJECTS)
 
-debug: CFLAGS += -g -D_DEBUG
+debug: MY_CFLAGS += -g -D_DEBUG
 debug: all
 
 static: eav-static
@@ -46,7 +47,7 @@ eav-static: $(OBJECTS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS) $(LIBS)
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(MY_CFLAGS) -o $@ $<
 
 clean:
 	# cleanup

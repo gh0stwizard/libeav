@@ -7,10 +7,11 @@ LIB_DIRS = $(IDNKIT_DIR)/lib
 # for test the library only
 LIB_PATH = $(LIB_DIRS):$(shell realpath ..)
 
-CFLAGS ?= -Wall -Wextra -std=c99 -pedantic
-CFLAGS += -I../include
-CFLAGS += $(IDNKIT_CFLAGS)
-CFLAGS += -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
+MY_CFLAGS = -Wall -Wextra -std=c99 -pedantic
+MY_CFLAGS += -I../include
+MY_CFLAGS += $(IDNKIT_CFLAGS)
+MY_CFLAGS += -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
+MY_CFLAGS += $(CFLAGS)
 LDFLAGS ?= 
 LIBS ?= 
 LIBS += $(IDNKIT_LIBS)
@@ -25,7 +26,7 @@ DEP_OBJ = $(patsubst %.c, %.o, $(DEP_SRC))
 
 all: $(TARGETS)
 
-debug: CFLAGS += -g -D_DEBUG
+debug: MY_CFLAGS += -g -D_DEBUG
 debug: all
 
 %.bin: %.o
@@ -34,7 +35,7 @@ debug: all
 	
 %.o: %.c $(HEADERS)
 	# compile
-	$(CC) -c $(CFLAGS) -o $@ $<
+	$(CC) -c $(MY_CFLAGS) -o $@ $<
 
 clean:
 	# cleanup
