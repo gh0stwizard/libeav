@@ -9,13 +9,13 @@ support all existing RFCs:
 * [RFC 822][2]
 * [RFC 5321][3]
 * [RFC 5322][4] (updates `<atext>` specification)
-* [RFC 6321][5] (UTF-8 support; updates `<atext>` specification)
+* [RFC 6531][5] (UTF-8 support; updates `<atext>` specification)
 
 
-A quick note about [RFC 6321][5]: it is possible that the correct implementation
+A quick note about [RFC 6531][5]: it is possible that the correct implementation
 SHOULD take into account [RFC 20][6] to exclude some characters:
 "#", "`", "{", "}", "|", "~" and "^". I did it, but you may change this
-in the way you would like (see the [is_6321_local.c][7] file).
+in the way you would like (see the [is_6531_local.c][7] file).
 
 
 ## What it does not
@@ -49,16 +49,28 @@ See details below:
 
 ## Build
 
-First of all, you have to change path to [idnkit][8] in the `Makefile`, in
-case if did not this already.
+First of all, you have to specify the directory where [idnkit][8]
+was installed. To do this you have two options:
+
+* Export the `IDNKIT_DIR` environment variable as showed below
+* Manually change paths in Makefiles
+
+The library assumes that `idnkit` was installed in `/usr/local`
+by default.
+
+Secondly, if you planning to install the library to some
+non-standard directory you may change the destination 
+directory by setting `DESTDIR` variable manually.
+The default value of `DESTDIR` is `/usr/local`.
 
 ```
+shell> export INDKIT_DIR=/home/user/local
 shell> make
 shell> make check
 shell> make install DESTDIR=/path/to/install
 ```
 
-The default destination of `DESTDIR` is `/usr/local`.
+
 
 
 ## Tools
@@ -112,9 +124,9 @@ This software is licensed under "The 2-Clause BSD License".
 [2]: https://tools.ietf.org/html/rfc822
 [3]: https://tools.ietf.org/html/rfc5321
 [4]: https://tools.ietf.org/html/rfc5322
-[5]: https://tools.ietf.org/html/rfc6321
+[5]: https://tools.ietf.org/html/rfc6531
 [6]: https://tools.ietf.org/html/rfc20
-[7]: /src/is_6321_local.c
+[7]: /src/is_6531_local.c
 [8]: https://jprs.co.jp/idn/index-e.html
 [9]: https://www.gnu.org/software/libidn/
 [10]: https://www.gnu.org/software/make/
