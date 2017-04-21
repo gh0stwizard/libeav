@@ -47,6 +47,11 @@ See details below:
 * C99 compiler to compile
 
 
+## Thread-safety
+
+At the moment this library is NOT thread safe.
+
+
 ## Build
 
 First of all, you have to specify the directory where [idnkit][8]
