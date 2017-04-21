@@ -49,7 +49,7 @@ main (int argc, char *argv[])
             continue;
 
         len = strlen (line);
-        r = is_email_rfc822 (line, len);
+        r = is_822_email (line, len);
 
         if (r >= 0) {
             printf ("PASS: %s\n", sanitize(line, len));

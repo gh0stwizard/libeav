@@ -69,9 +69,9 @@ eav_setup (eav_t *eav)
     eav->utf8 = false;
 
     switch (eav->rfc) {
-    case EAV_RFC_822:   eav->ascii_cb = is_email_rfc822;    break;
-    case EAV_RFC_5321:  eav->ascii_cb = is_email_rfc5321;   break;
-    case EAV_RFC_5322:  eav->ascii_cb = is_email_rfc5322;   break;
+    case EAV_RFC_822:   eav->ascii_cb = is_822_email;    break;
+    case EAV_RFC_5321:  eav->ascii_cb = is_5321_email;   break;
+    case EAV_RFC_5322:  eav->ascii_cb = is_5322_email;   break;
     default:
         return EEAV_INVALID_RFC;
     }

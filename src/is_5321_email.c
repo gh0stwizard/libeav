@@ -6,7 +6,7 @@
 
 
 extern int
-is_email_rfc5321 (const char *email, size_t length)
+is_5321_email (const char *email, size_t length)
 {
     char *ch = NULL;
     char *brs = NULL;

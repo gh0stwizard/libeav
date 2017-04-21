@@ -143,13 +143,13 @@ is_6531_email_fqdn ( idn_resconf_t ctx,
                         size_t length);
 
 extern int
-is_email_rfc822 (const char *email, size_t length);
+is_822_email (const char *email, size_t length);
 
 extern int
-is_email_rfc5321 (const char *email, size_t length);
+is_5321_email (const char *email, size_t length);
 
 extern int
-is_email_rfc5322 (const char *email, size_t length);
+is_5322_email (const char *email, size_t length);
 
 extern int
 is_ipaddr (const char *start, const char *end);
