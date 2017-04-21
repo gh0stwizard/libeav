@@ -4,7 +4,7 @@
 #include "utf8_decode.h"
 
 
-/* is_6321_local: based on rfc5321 with additional notes:
+/* is_6531_local: based on rfc5321 with additional notes:
 
     3.3. Extended Mailbox Address Syntax
 
@@ -32,7 +32,7 @@
  * qtextSMTP =/ UTF8-non-ascii
  */
 extern int
-is_6321_local (const char *start, const char *end)
+is_6531_local (const char *start, const char *end)
 {
     int qpair = 0;
     int quote = 0;
@@ -49,7 +49,7 @@ is_6321_local (const char *start, const char *end)
         if (ch > 0x007f)
             continue;
 
-#ifdef RFC6321_FOLLOW_RFC5322
+#ifdef RFC6531_FOLLOW_RFC5322
         /* rfc5322 allows next CTRLs in qtext:
          *    %d1-8 / %d11 / %d12 / %d14-31 / %d127
          * in quoted-pairs:
@@ -94,7 +94,7 @@ is_6321_local (const char *start, const char *end)
             switch (ch) {
             case '"':   quote = 0; break;
             case '\\':  qpair = 1; break;
-#ifdef RFC6321_FOLLOW_RFC5322
+#ifdef RFC6531_FOLLOW_RFC5322
             /* the next chars are not allowed in qtext: */
             /* 1) they must be in quoted-pair(s). */
             /* 2) either they are permitted right after first DQUOTE
@@ -125,7 +125,7 @@ is_6321_local (const char *start, const char *end)
 #endif
             } /* switch (ch) */
         } /* if (!quote) / else */
-#ifdef RFC6321_FOLLOW_RFC5322
+#ifdef RFC6531_FOLLOW_RFC5322
 next:
 #endif
         prev = utf8_decode_at_byte();

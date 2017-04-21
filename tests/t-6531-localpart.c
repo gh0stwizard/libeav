@@ -47,7 +47,7 @@ main (int argc, char *argv[])
             continue;
 
         len = strlen (line);
-        r = is_6321_local (line, line + len);
+        r = is_6531_local (line, line + len);
 
         if (r == EEAV_NO_ERROR) {
             printf ("PASS: %s\n", sanitize_utf8(line, len));

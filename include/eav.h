@@ -10,7 +10,7 @@ enum {
     EAV_RFC_822,
     EAV_RFC_5321,
     EAV_RFC_5322,
-    EAV_RFC_6321,
+    EAV_RFC_6531,
 };
 
 /* XXX conflicts with auto-gerated?? */
@@ -92,7 +92,7 @@ extern const char *
 eav_errstr (eav_t *eav);
 
 extern int
-is_6321_local (const char *start, const char *end);
+is_6531_local (const char *start, const char *end);
 
 extern int
 is_5322_local (const char *start, const char *end);
@@ -131,13 +131,13 @@ extern int
 is_special_domain (const char *start, const char *end);
 
 extern int
-is_email_rfc6321 (  idn_resconf_t ctx,
+is_6531_email (  idn_resconf_t ctx,
                     idn_action_t actions,
                     const char *email,
                     size_t length);
 
 extern int
-is_email_rfc6321_fqdn ( idn_resconf_t ctx,
+is_6531_email_fqdn ( idn_resconf_t ctx,
                         idn_action_t actions,
                         const char *email,
                         size_t length);

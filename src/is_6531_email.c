@@ -6,7 +6,7 @@
 
 
 extern int
-is_email_rfc6321_fqdn ( idn_resconf_t ctx,
+is_6531_email_fqdn ( idn_resconf_t ctx,
                         idn_action_t actions,
                         const char *email,
                         size_t length)
@@ -34,7 +34,7 @@ is_email_rfc6321_fqdn ( idn_resconf_t ctx,
     if (ch - email > VALID_LPART_LEN)
         return inverse(EEAV_LPART_TOO_LONG);
 
-    r = is_6321_local (email, ch);
+    r = is_6531_local (email, ch);
 
     if (r != EEAV_NO_ERROR)
         return r;
@@ -51,7 +51,7 @@ is_email_rfc6321_fqdn ( idn_resconf_t ctx,
 
 /* allow aliases / non-fqdn */
 extern int
-is_email_rfc6321 (  idn_resconf_t ctx,
+is_6531_email (  idn_resconf_t ctx,
                     idn_action_t actions,
                     const char *email,
                     size_t length)
@@ -79,7 +79,7 @@ is_email_rfc6321 (  idn_resconf_t ctx,
     if (ch - email > VALID_LPART_LEN)
         return inverse(EEAV_LPART_TOO_LONG);
 
-    r = is_6321_local (email, ch);
+    r = is_6531_local (email, ch);
 
     if (r != EEAV_NO_ERROR)
         return r;
