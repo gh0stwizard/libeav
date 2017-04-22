@@ -44,7 +44,7 @@ main (int argc, char *argv[])
     ssize_t read;
     idn_resconf_t ctx;
     idn_action_t actions = IDN_ENCODE_REGIST;
-    int tld_count[TLD_TYPE_MAX];
+    static int tld_count[TLD_TYPE_MAX]; /* zero everything */
     int t;
     FILE *fh;
 
@@ -79,20 +79,25 @@ main (int argc, char *argv[])
         else
             printf ("FAIL: %s\n", line);
 
-        tld_count[t]++;
+        if (t >= 0)
+            tld_count[t]++;
     }
 
     if (tld_count[TLD_TYPE_TEST] != TEST_CHECK) {
-        msg_warn ("expected %d test TLDs, but got %d\n",
+        msg_warn ("%s: expected %d test TLDs, but got %d [%d]\n",
+		argv[0],
                 TEST_CHECK,
-                tld_count[TLD_TYPE_TEST]);
+                tld_count[TLD_TYPE_TEST],
+		TLD_TYPE_TEST);
         return 4;
     }
 
     if (tld_count[TLD_TYPE_NOT_ASSIGNED] != NOT_ASSIGNED_CHECK) {
-        msg_warn ("expected %d not assigned TLDs, but got %d\n",
+        msg_warn ("%s: expected %d not assigned TLDs, but got %d [%d]\n",
+		argv[0],
                 NOT_ASSIGNED_CHECK,
-                tld_count[TLD_TYPE_NOT_ASSIGNED]);
+                tld_count[TLD_TYPE_NOT_ASSIGNED],
+		TLD_TYPE_NOT_ASSIGNED);
         return 5;
     }
 
