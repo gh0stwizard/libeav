@@ -7,6 +7,7 @@ IDNKIT_LIBS ?= -L$(IDNKIT_DIR)/lib -lidnkit
 MY_CFLAGS = -Wall -Wextra -std=c99 -pedantic -fPIC
 MY_CFLAGS += -Iinclude
 MY_CFLAGS += $(IDNKIT_CFLAGS)
+MY_CFLAGS += -D_DEFAULT_SOURCE
 MY_CFLAGS += -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
 MY_CFLAGS += $(CFLAGS)
 LDFLAGS ?= -shared
