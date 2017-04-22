@@ -42,6 +42,7 @@ libeav.so: $(SO_TARGET)
 $(SO_TARGET): $(OBJECTS)
 	# shared linkage
 	$(CC) $(LDFLAGS) -Wl,-soname,$(SO_TARGET) -o $(SO_TARGET) $(OBJECTS) $(LIBS)
+	ln -sf $(SO_TARGET) libeav.so
 
 libeav.a: $(OBJECTS)
 	# static linkage
