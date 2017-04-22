@@ -42,7 +42,7 @@ main (int argc, char *argv[])
     ssize_t read;
     idn_resconf_t ctx;
     idn_action_t actions = IDN_ENCODE_REGIST;
-    int tld_count[TLD_TYPE_MAX];
+    static int tld_count[TLD_TYPE_MAX];
     static int error_count[EEAV_MAX]; /* zero everything */
     int t;
     FILE *fh;
@@ -88,7 +88,8 @@ main (int argc, char *argv[])
     }
 
     if (error_count[EEAV_IDNKIT_ERROR] != IDNKIT_CHECK) {
-        msg_warn ("expected %d idnkit check fails, but got %d\n",
+        msg_warn ("%s: expected %d idnkit check fails, but got %d\n",
+                argv[0],
                 IDNKIT_CHECK,
                 error_count[EEAV_IDNKIT_ERROR]);
         return 4;
@@ -100,6 +101,8 @@ main (int argc, char *argv[])
     }
 #endif
 
+    if (line != NULL)
+        free (line);
     fclose (fh);
     idn_resconf_destroy (ctx);
 

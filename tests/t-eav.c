@@ -79,6 +79,8 @@ main (int argc, char *argv[])
         return 5;
     }
 
+    if (line != NULL)
+        free (line);
     eav_free (&eav);
     msg_ok ("%s: PASS\n", argv[0]);
     return 0;

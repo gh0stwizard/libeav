@@ -85,7 +85,7 @@ main (int argc, char *argv[])
 
     if (tld_count[TLD_TYPE_TEST] != TEST_CHECK) {
         msg_warn ("%s: expected %d test TLDs, but got %d [%d]\n",
-		argv[0],
+                argv[0],
                 TEST_CHECK,
                 tld_count[TLD_TYPE_TEST],
 		TLD_TYPE_TEST);
@@ -94,13 +94,15 @@ main (int argc, char *argv[])
 
     if (tld_count[TLD_TYPE_NOT_ASSIGNED] != NOT_ASSIGNED_CHECK) {
         msg_warn ("%s: expected %d not assigned TLDs, but got %d [%d]\n",
-		argv[0],
+                argv[0],
                 NOT_ASSIGNED_CHECK,
                 tld_count[TLD_TYPE_NOT_ASSIGNED],
 		TLD_TYPE_NOT_ASSIGNED);
         return 5;
     }
 
+    if (line != NULL)
+        free (line);
     fclose (fh);
     idn_resconf_destroy (ctx);
 

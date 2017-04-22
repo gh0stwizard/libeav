@@ -72,6 +72,8 @@ main (int argc, char *argv[])
         return 4;
     }
 
+    if (line != NULL)
+        free (line);
     fclose (fh);
     msg_ok ("%s: PASS\n", argv[0]);
     return 0;

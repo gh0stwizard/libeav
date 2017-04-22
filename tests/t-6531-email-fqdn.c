@@ -42,7 +42,7 @@ main (int argc, char *argv[])
     ssize_t read = 0;
     idn_resconf_t ctx;
     idn_action_t actions = IDN_ENCODE_REGIST;
-    int tld_count[TLD_TYPE_MAX];
+    static int tld_count[TLD_TYPE_MAX];
     int r;
     FILE *fh;
     char *file = NULL;
@@ -118,22 +118,6 @@ main (int argc, char *argv[])
                 failed);
         return 5;
     }
-
-#if 0
-    if (tld_count[TLD_TYPE_TEST] != TEST_CHECK) {
-        msg_warn ("expected %d test TLDs, but got %d\n",
-                TEST_CHECK,
-                tld_count[TLD_TYPE_TEST]);
-        return 4;
-    }
-
-    if (tld_count[TLD_TYPE_NOT_ASSIGNED] != NOT_ASSIGNED_CHECK) {
-        msg_warn ("expected %d not assigned TLDs, but got %d\n",
-                NOT_ASSIGNED_CHECK,
-                tld_count[TLD_TYPE_NOT_ASSIGNED]);
-        return 5;
-    }
-#endif
 
     if (line != NULL)
         free (line);
