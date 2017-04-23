@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use open qw(:std :utf8);
+use POSIX ();
 use Text::CSV;
 
 
@@ -25,7 +26,7 @@ sub gen_tld_h($) {
         or die "open: $file: $!";
 
     my $header = <<'EOL';
-/* this file was auto-generated */
+/* this file was auto-generated at %s */
 
 
 #ifndef TLD_H
@@ -39,22 +40,17 @@ typedef struct tld_s {
 } tld_t;
 
 EOL
-    print $fh $header;
+    printf $fh $header, POSIX::strftime("%F %T", localtime);
 
     print $fh "enum {\n";
+    print $fh "    TLD_TYPE_UNUSED, /* tests only */\n";
     print $fh "    TLD_TYPE_INVALID,\n";
     print $fh "    TLD_TYPE_NOT_ASSIGNED,\n";
-
-#    my $total = scalar keys %tld_types;
-#    my $i = 0;
     for my $type (sort values %tld_types) {
-#        if (++$i == $total) {
-#            print $fh "    ", $type, "\n";
-#        } else {
-            print $fh "    ", $type, ",\n";
-#        }
+        print $fh "    ", $type, ",\n";
     }
-    print $fh "    TLD_TYPE_MAX\n";
+    print $fh "    TLD_TYPE_SPECIAL,\n";
+    print $fh "    TLD_TYPE_MAX /* tests only */\n";
     print $fh "};\n\n";
 
     print $fh "extern const tld_t const tld_list[];\n\n";
@@ -86,7 +82,8 @@ sub gen_tld_c(@) {
     $csv->getline($io);
 
     # generate tld names list
-    print $cfh "/* this file was auto-generated */\n\n";
+    printf $cfh "/* this file was auto-generated at %s */\n\n",
+                POSIX::strftime("%F %T", localtime);
     print $cfh "#include <stdio.h> /* NULL */\n";
     print $cfh "#include \"$h_file\"\n\n";
 
