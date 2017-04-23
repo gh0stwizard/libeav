@@ -71,7 +71,7 @@ main (int argc, char *argv[])
         if (line[0] == '#') /* skip comments */
             continue;
 
-        t = is_utf8_inet_domain (ctx, actions, &r, line, line + strlen (line));
+        t = is_utf8_domain (ctx, actions, &r, line, line + strlen (line), true);
 
         if (t != TLD_TYPE_INVALID &&
             t != TLD_TYPE_NOT_ASSIGNED &&

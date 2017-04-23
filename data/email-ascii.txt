@@ -1,10 +1,21 @@
 localpart-only
-i.have.only.ipv4@[8.8.8.8]
-this-is.ipv6@[IPv6:2001:0db8:0000:0000:0000:ff00:0042:8329]
-and.this.is.ipv6-ipv4@[IPv6:::ffff:192.0.2.128]
+invalid@ [10.0.0.1]
+invalid@ test.com
+invalid@ test
+invalid@
+invalid@@
+"invalid@"
+"invalid@"@
+"invalid@"[
+invalid@[
+invalid@[]
+invalid@a[10.0.0.1]
 invalid.ipv4@[0.1.2.3]
 invalid.ipv6@[IPv6:ge80:1::]
-valid.ipv6@[IPv6:2001:db8:0:1:1:1:1:1]
+pass.ipv4@[8.8.8.8]
+pass.ipv6@[IPv6:2001:0db8:0000:0000:0000:ff00:0042:8329]
+pass.ipv6-ipv4@[IPv6:::ffff:192.0.2.128]
+pass.ipv6@[IPv6:2001:db8:0:1:1:1:1:1]
 legacy.valid.ipv6@[IPv6:2001:db8::1:1:1:1:1]
 xxx.ipv6@[2001:db8:1:1:1:1:1:1]
 simple@test.com

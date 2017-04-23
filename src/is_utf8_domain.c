@@ -44,7 +44,7 @@ is_utf8_domain (idn_resconf_t ctx,
     if (rc != EEAV_NO_ERROR)
         return rc;
 
-    if (! tld_check)
+    if (tld_check == false)
         return EEAV_NO_ERROR;
 
     /* special & reserved domains */

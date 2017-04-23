@@ -1,17 +1,31 @@
 проверочный@адрес.рф
-时尚@微博
 微博@微博.微博
 test-tld@δοκιμή.δοκιμή
 not-assigned@טעסט.טעסט
 hmm@ею.ею
 test-tld@آزمایشی.آزمایشی
-# just domain
-பரிட்சை.பரிட்சை
-# empty line
+#
+# invalid email addresses
+#
+时尚@微博
 
-# no local part
+பரிட்சை.பரிட்சை
 @ελ.ελ
-special@example.com
+no@	[1.2.3.4]
+no@[]
+no@[
+no@[1.2.3.4 ]
+no@[ 1.2.3.4]
+#
 # prohibited idna2008 symbols
+#
 invalid@I♥NY.de
 invalid@☕.de
+#
+# extra chars
+#
+{rfc20}@example.com
+#rfc20#@example.net
+|rfc20|@example.org
+^rfc20^@localhost
+`rfc20`@localhost

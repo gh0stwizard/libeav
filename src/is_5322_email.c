@@ -6,12 +6,12 @@
 
 
 extern int
-is_5322_email (const char *email, size_t length)
+is_5322_email (const char *email, size_t length, bool tld_check)
 {
     char *ch = NULL;
     char *brs = NULL;
     char *bre = NULL;
-    int r = 0;
+    int rc;
     const char *end = email + length;
 
 
@@ -31,15 +31,21 @@ is_5322_email (const char *email, size_t length)
     if (ch - email > VALID_LPART_LEN)
         return inverse(EEAV_LPART_TOO_LONG);
 
-    r = is_5322_local (email, ch);
+    rc = is_5322_local (email, ch);
 
-    if (r != EEAV_NO_ERROR)
-        return r;
+    if (rc != EEAV_NO_ERROR)
+        return rc;
 
-    brs = strchr(ch + 1, '[');
+    brs = ch + 1;
 
-    if (brs == NULL)
-       return (is_ascii_domain (ch + 1, end));
+    if (*brs != '[') {
+        rc = is_ascii_domain (ch + 1, end);
+
+        if (rc != EEAV_NO_ERROR)
+            return rc;
+
+        check_tld();
+    }
 
     /* seems to be an ip address */
     check_ip(); /* see private_email.h */

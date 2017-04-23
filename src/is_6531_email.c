@@ -25,7 +25,7 @@ is_6531_email ( idn_resconf_t ctx,
 
     ch = strrchr (email, '@');
 
-    if (ch == NULL)
+    if (ch == NULL || ch == end)
         return inverse(EEAV_DOMAIN_EMPTY);
 
 #ifdef _DEBUG
@@ -41,9 +41,9 @@ is_6531_email ( idn_resconf_t ctx,
     if (rc != EEAV_NO_ERROR)
         return rc;
 
-    brs = strchr(ch + 1, '[');
+    brs = ch + 1;
 
-    if (brs == NULL)
+    if (*brs != '[')
        return (is_utf8_domain (ctx, actions, r, ch + 1, end, tld_check));
 
     /* seems to be an ip address */

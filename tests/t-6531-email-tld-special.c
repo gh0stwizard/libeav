@@ -78,7 +78,7 @@ main (int argc, char *argv[])
             continue;
 
         len = strlen (line);
-        t = is_6531_email_fqdn (ctx, actions, &r, line, len);
+        t = is_6531_email (ctx, actions, &r, line, len, true);
 
         if (t >= 0 &&
             t != TLD_TYPE_INVALID &&

@@ -76,7 +76,6 @@ eav_init (eav_t *eav)
 {
     eav->actions = IDN_ENCODE_REGIST;
     eav->utf8 = true;
-    eav->tld_check = true;
     eav->rfc = EAV_RFC_6531;
     eav->tld_check = true;
     eav->allow_tld =    EAV_TLD_COUNTRY_CODE |
@@ -96,14 +95,8 @@ extern int
 eav_setup (eav_t *eav)
 {
     if (eav->utf8 || eav->rfc == EAV_RFC_6531) {
-        if (eav->tld_check)
-            eav->utf8_cb = is_6531_email_fqdn;
-        else
-            eav->utf8_cb = is_6531_email;
-
-        /* always set */
         eav->utf8 = true;
-
+        eav->utf8_cb = is_6531_email;
         return init_idn (eav);
     }
 
@@ -144,9 +137,10 @@ eav_is_email (eav_t *eav, const char *email, size_t length)
 
 
     if (eav->utf8)
-        rc = eav->utf8_cb(eav->idn, eav->actions, &r, email, length);
+        rc = eav->utf8_cb
+            (eav->idn, eav->actions, &r, email, length, eav->tld_check);
     else
-        rc = eav->ascii_cb(email, length);
+        rc = eav->ascii_cb(email, length, eav->tld_check);
 
     if (rc == 0) {
         eav->idnmsg = NULL;

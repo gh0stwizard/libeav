@@ -27,12 +27,15 @@ enum {
     EAV_TLD_SPECIAL             = 1 << 9,
 };
 
+/* eav.c utf-8 callback */
 typedef int (*eav_utf8_f) ( idn_resconf_t,
                             idn_action_t,
                             idn_result_t *,
                             const char *,
-                            size_t);
-typedef int (*eav_ascii_f) (const char *, size_t);
+                            size_t,
+                            bool tld_check);
+/* eav.c ascii callback */
+typedef int (*eav_ascii_f) (const char *, size_t, bool);
 
 typedef struct eav_s {
     int             rfc;        /* choose rfc */
@@ -130,17 +133,11 @@ is_utf8_domain (idn_resconf_t ctx,
                 idn_action_t actions,
                 idn_result_t *r,
                 const char *start,
-                const char *end);
+                const char *end,
+                bool tld_check);
 
 extern int
 is_tld (const char *start, const char *end);
-
-extern int
-is_utf8_inet_domain(idn_resconf_t ctx,
-                    idn_action_t actions,
-                    idn_result_t *r,
-                    const char *start,
-                    const char *end);
 
 extern int
 is_special_domain (const char *start, const char *end);
@@ -150,23 +147,17 @@ is_6531_email ( idn_resconf_t ctx,
                 idn_action_t actions,
                 idn_result_t *r,
                 const char *email,
-                size_t length);
+                size_t length,
+                bool tld_check);
 
 extern int
-is_6531_email_fqdn (idn_resconf_t ctx,
-                    idn_action_t actions,
-                    idn_result_t *r,
-                    const char *email,
-                    size_t length);
+is_822_email (const char *email, size_t length, bool tld_check);
 
 extern int
-is_822_email (const char *email, size_t length);
+is_5321_email (const char *email, size_t length, bool tld_check);
 
 extern int
-is_5321_email (const char *email, size_t length);
-
-extern int
-is_5322_email (const char *email, size_t length);
+is_5322_email (const char *email, size_t length, bool tld_check);
 
 extern int
 is_ipaddr (const char *start, const char *end);
