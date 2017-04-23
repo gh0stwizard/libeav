@@ -41,7 +41,7 @@ is_6531_local (const char *start, const char *end)
 
 
     if (start == end)
-        return inverse(EEAV_EMPTY);
+        return inverse(EEAV_LPART_EMPTY);
 
     utf8_decode_init (start, end - start);
     while ((ch = utf8_decode_next ()) >= 0) {
@@ -56,10 +56,10 @@ is_6531_local (const char *start, const char *end)
          *    %d0 / %d1-8 / %d11 / %d12 / %d14-31 / %d127 / LF / CR
          */
         if (ISCNTRL(ch) && !quote && !qpair)
-            return inverse(EEAV_CTRL_CHAR);
+            return inverse(EEAV_LPART_CTRL_CHAR);
 #else
         if (ISCNTRL(ch))
-            return inverse(EEAV_CTRL_CHAR);
+            return inverse(EEAV_LPART_CTRL_CHAR);
 #endif
 
         if (!quote) {

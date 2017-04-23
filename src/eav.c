@@ -5,25 +5,67 @@
 #include "auto_tld.h"
 
 
+static const char * const errors[EEAV_MAX] = {
+    "no error"                              /* EEAV_NO_ERROR */,
+    "invalid RFC specified"                 /* EEAV_INVALID_RFC */,
+    "idn internal error"                    /* EEAV_IDN_ERROR */,
+    "empty email address"                   /* EEAV_EMAIL_EMPTY */,
+    "local-part is empty"                   /* EEAV_LPART_EMPTY */,
+    "local-part is too long"                /* EEAV_LPART_TOO_LONG */,
+    "local-part has non-ascii characters"   /* EEAV_LPART_NOT_ASCII */,
+    "local-part has special characters"     /* EEAV_LPART_SPECIAL */,
+    "local-part has control characters"     /* EEAV_LPART_CTRL_CHAR */,
+    "local-part has misplaced double quote" /* EEAV_LPART_MISPLACED_QUOTE */,
+    "local-part has open double quote"      /* EEAV_LPART_UNQUOTED */,
+    "local-part has too many dots"          /* EEAV_LPART_TOO_MANY_DOTS */,
+    "local-part has unquoted characters"    /* EEAV_LPART_UNQUOTED_FWS */,
+    "local-part has invalid UTF-8 data"     /* EEAV_LPART_INVALID_UTF8 */,
+    "domain is empty"                       /* EEAV_DOMAIN_EMPTY */,
+    "domain label is too long"              /* EEAV_DOMAIN_LABEL_TOO_LONG */,
+    "domain has misplaced hyphen"           /* EEAV_DOMAIN_MISPLACED_HYPHEN */,
+    "domain has misplaced delimiter"        /* EEAV_DOMAIN_MISPLACED_DELIMITER */,
+    "domain has invalid characters"         /* EEAV_DOMAIN_INVALID_CHAR */,
+    "domain is too long"                    /* EEAV_DOMAIN_TOO_LONG */,
+    "domain is all-numeric"                 /* EEAV_DOMAIN_NUMERIC */,
+    "domain is not FQDN"                    /* EEAV_DOMAIN_NOT_FQDN */,
+    "ip-addr is incorrect"                  /* EEAV_IPADDR_INVALID */,
+    "ip-addr has unpaired bracket"          /* EEAV_IPADDR_BRACKET_UNPAIR */,
+    "invalid TLD"                           /* EEAV_TLD_INVALID */,
+    "not assigned TLD"                      /* EEAV_TLD_NOT_ASSIGNED */,
+    "country-code TLD"                      /* EEAV_TLD_COUNTRY_CODE */,
+    "generic TLD"                           /* EEAV_TLD_GENERIC */,
+    "generic-restricted TLD"                /* EEAV_TLD_GENERIC_RESTRICTED */,
+    "infrastructure TLD"                    /* EEAV_TLD_INFRASTRUCTURE */,
+    "sponsored TLD"                         /* EEAV_TLD_SPONSORED */,
+    "test TLD"                              /* EEAV_TLD_TEST */,
+    "special TLD"                           /* EEAV_TLD_SPECIAL */
+};
+
+
 static int
 init_idn (eav_t *eav)
 {
     idn_result_t r;
 
 
+    if (eav->initialized)
+        return EEAV_NO_ERROR;
+
     r = idn_resconf_initialize ();
 
     if (r != idn_success) {
-        eav->errmsg = idn_result_tostring (r);
-        return inverse(EEAV_IDN_INIT_FAIL);
+        eav->idnmsg = idn_result_tostring (r);
+        return inverse(EEAV_IDN_ERROR);
     }
 
     r = idn_resconf_create (&(eav->idn));
 
     if (r != idn_success) {
-        eav->errmsg = idn_result_tostring (r);
-        return inverse(EEAV_IND_CONF_FAIL);
+        eav->idnmsg = idn_result_tostring (r);
+        return inverse(EEAV_IDN_ERROR);
     }
+
+    eav->initialized = true;
 
     return EEAV_NO_ERROR;
 }
@@ -44,6 +86,8 @@ eav_init (eav_t *eav)
                         EAV_TLD_SPONSORED;
     eav->utf8_cb = NULL;
     eav->ascii_cb = NULL;
+    eav->initialized = false;
+    eav->errcode = EEAV_NO_ERROR;
 }
 
 
@@ -83,147 +127,99 @@ eav_setup (eav_t *eav)
 extern void
 eav_free (eav_t *eav)
 {
-    if (eav != NULL) {
+    if (eav != NULL && eav->initialized)
         idn_resconf_destroy (eav->idn);
-/*        free (eav);*/
-    }
+
+    /* the *eav might be on stack, that's why we don't free it */
 }
 
 
 extern int
 eav_is_email (eav_t *eav, const char *email, size_t length)
 {
-    int r;
+    int rc;
+    bool tld_test = false;
+    idn_result_t r;
 
 
     if (eav->utf8)
-        r = eav->utf8_cb(eav->idn, eav->actions, email, length);
+        rc = eav->utf8_cb(eav->idn, eav->actions, &r, email, length);
     else
-        r = eav->ascii_cb(email, length);
+        rc = eav->ascii_cb(email, length);
 
-    if (r == 0) {
-        eav->errmsg = NULL;
+    if (rc == 0) {
+        eav->idnmsg = NULL;
+        eav->errcode = EEAV_NO_ERROR;
         return (YES);
     }
 
-    if (r < 0) {
-        switch (r) {
-        case inverse(EEAV_NO_ERROR):
-            eav->errmsg = "no error";
-            break;
-        case inverse(EEAV_EMPTY):
-            eav->errmsg = "empty email address";
-            break;
-        case inverse(EEAV_IDNKIT_ERROR):
-            /* TODO handle idnkit errors properly */
-            eav->errmsg = "idnkit error";
-            break;
-        case inverse(EEAV_NOT_ASCII):
-            eav->errmsg = "email contains non-ascii characters";
-            break;
-        case inverse(EEAV_SPECIAL):
-            eav->errmsg = "email contains special characters";
-            break;
-        case inverse(EEAV_CTRL_CHAR):
-            eav->errmsg = "email contains control characters";
-            break;
-        case inverse(EEAV_LPART_MISPLACED_QUOTE):
-            eav->errmsg = "misplaced quote found";
-            break;
-        case inverse(EEAV_LPART_SPECIAL):
-            eav->errmsg = "local-part contains special characters";
-            break;
-        case inverse(EEAV_LPART_UNQUOTED):
-            eav->errmsg = "local-part contains no pair quote";
-            break;
-        case inverse(EEAV_LPART_TOO_MANY_DOTS):
-            eav->errmsg = "local-part contains too many dots";
-            break;
-        case inverse(EEAV_LPART_UNQUOTED_FWS):
-            eav->errmsg = "local-part contains unquoted white-space characters";
-            break;
-        case inverse(EEAV_LPART_INVALID_UTF8):
-            eav->errmsg = "local-part contains invalid utf-8 data";
-            break;
-        case inverse(EEAV_DOMAIN_LABEL_TOO_LONG):
-            eav->errmsg = "domain label is too long";
-            break;
-        case inverse(EEAV_DOMAIN_MISPLACED_DELIMITER):
-            eav->errmsg = "ip-addr contans misplaced delimiter";
-            break;
-        case inverse(EEAV_DOMAIN_MISPLACED_HYPHEN):
-            eav->errmsg = "domain contains misplaced hyphen";
-            break;
-        case inverse(EEAV_DOMAIN_INVALID_CHAR):
-            eav->errmsg = "domain contains invalid characters";
-            break;
-        case inverse(EEAV_DOMAIN_TOO_LONG):
-            eav->errmsg = "domain length is too long";
-            break;
-        case inverse(EEAV_DOMAIN_NUMERIC):
-            eav->errmsg = "numeric-only domain";
-            break;
-        case inverse(EEAV_DOMAIN_NOT_FQDN):
-            eav->errmsg = "domain is not fqdn";
-            break;
-        case inverse(EEAV_EMAIL_HAS_NO_DOMAIN):
-            eav->errmsg = "email has no domain part";
-            break;
-        case inverse(EEAV_LPART_TOO_LONG):
-            eav->errmsg = "local-part is too long";
-            break;
-        case inverse(EEAV_EMAIL_INVALID_IPADDR):
-            eav->errmsg = "invalid ip address";
-            break;
-        case inverse(EEAV_EMAIL_NO_PAIRED_BRACKET):
-            eav->errmsg = "no pair bracket";
-            break;
-        default:
-#ifdef _DEBUG
-            fprintf (stderr, "!!! unknown error #%d\n", r);
-#endif
-            eav->errmsg = "unknown error!";
-            break;
-        };
+    if (rc < 0) {
+        eav->errcode = inverse(rc);
+
+        if (eav->errcode == EEAV_IDN_ERROR)
+            eav->idnmsg = idn_result_tostring (r);
 
         return (NO);
     }
 
     /* user tld preferences */
-    switch (r) {
+    switch (rc) {
     case TLD_TYPE_INVALID:
-        eav->errmsg = "invalid TLD";
-        return (NO);
+        eav->errcode = EEAV_TLD_INVALID;
+        tld_test = (eav->allow_tld & EAV_TLD_INVALID);
+        break;
     case TLD_TYPE_NOT_ASSIGNED:
-        eav->errmsg = "not assigned TLD";
-        return (eav->allow_tld & EAV_TLD_NOT_ASSIGNED);
+        eav->errcode = EEAV_TLD_NOT_ASSIGNED;
+        tld_test = (eav->allow_tld & EAV_TLD_NOT_ASSIGNED);
+        break;
     case TLD_TYPE_COUNTRY_CODE:
-        eav->errmsg = "country-code TLD";
-        return (eav->allow_tld & EAV_TLD_COUNTRY_CODE);
+        eav->errcode = EEAV_TLD_COUNTRY_CODE;
+        tld_test = (eav->allow_tld & EAV_TLD_COUNTRY_CODE);
+        break;
     case TLD_TYPE_GENERIC:
-        eav->errmsg = "generic TLD";
-        return (eav->allow_tld & EAV_TLD_GENERIC);
+        eav->errcode = EEAV_TLD_GENERIC;
+        tld_test = (eav->allow_tld & EAV_TLD_GENERIC);
+        break;
     case TLD_TYPE_GENERIC_RESTRICTED:
-        eav->errmsg = "generic-restricted TLD";
-        return (eav->allow_tld & EAV_TLD_GENERIC_RESTRICTED);
+        eav->errcode = EEAV_TLD_GENERIC_RESTRICTED;
+        tld_test = (eav->allow_tld & EAV_TLD_GENERIC_RESTRICTED);
+        break;
     case TLD_TYPE_INFRASTRUCTURE:
-        eav->errmsg = "infrastructure TLD";
-        return (eav->allow_tld & EAV_TLD_INFRASTRUCTURE);
+        eav->errcode = EEAV_TLD_INFRASTRUCTURE;
+        tld_test = (eav->allow_tld & EAV_TLD_INFRASTRUCTURE);
+        break;
     case TLD_TYPE_SPONSORED:
-        eav->errmsg = "sponsored TLD";
-        return (eav->allow_tld & EAV_TLD_SPONSORED);
+        eav->errcode = EEAV_TLD_SPONSORED;
+        tld_test = (eav->allow_tld & EAV_TLD_SPONSORED);
+        break;
     case TLD_TYPE_TEST:
-        eav->errmsg = "test TLD";
-        return (eav->allow_tld & EAV_TLD_TEST);
+        eav->errcode = EEAV_TLD_TEST;
+        tld_test = (eav->allow_tld & EAV_TLD_TEST);
+        break;
+    case TLD_TYPE_SPECIAL:
+        eav->errcode = EEAV_TLD_SPECIAL;
+        tld_test = (eav->allow_tld & EAV_TLD_SPECIAL);
+        break;
     default:
-        eav->errmsg = "unknown TLD";
-        return (NO);
+        /* should not happen */
+        abort ();
     };
+
+    if (tld_test) {
+        eav->idnmsg = NULL;
+        eav->errcode = EEAV_NO_ERROR;
+        return (YES);
+    }
+
+    return (NO);
 }
 
 
 extern const char *
 eav_errstr (eav_t *eav)
 {
-    return eav->errmsg;
+    if (eav->errcode == EEAV_IDN_ERROR)
+        return eav->idnmsg;
+    else
+        return errors[ eav->errcode ];
 }

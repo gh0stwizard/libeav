@@ -40,8 +40,8 @@ main (int argc, char *argv[])
     size_t len;
     ssize_t read;
     idn_resconf_t ctx;
-    (void) argv;
     idn_action_t actions = IDN_ENCODE_REGIST;
+    idn_result_t r;
     static int tld_count[TLD_TYPE_MAX];
     static int error_count[EEAV_MAX]; /* zero everything */
     int t;
@@ -69,7 +69,7 @@ main (int argc, char *argv[])
         if (line[0] == '#') /* skip comments */
             continue;
 
-        t = is_utf8_inet_domain (ctx, actions, line, line + strlen (line));
+        t = is_utf8_inet_domain (ctx, actions, &r, line, line + strlen (line));
 
         if (t >= 0) {
             if (t != TLD_TYPE_INVALID &&
@@ -87,10 +87,10 @@ main (int argc, char *argv[])
         }
     }
 
-    if (error_count[EEAV_IDNKIT_ERROR] != IDNKIT_CHECK) {
+    if (error_count[EEAV_IDN_ERROR] != IDNKIT_CHECK) {
         msg_warn ("expected %d idnkit check fails, but got %d\n",
                 IDNKIT_CHECK,
-                error_count[EEAV_IDNKIT_ERROR]);
+                error_count[EEAV_IDN_ERROR]);
         return 4;
     }
 

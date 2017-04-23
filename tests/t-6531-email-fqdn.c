@@ -42,8 +42,8 @@ main (int argc, char *argv[])
     ssize_t read = 0;
     idn_resconf_t ctx;
     idn_action_t actions = IDN_ENCODE_REGIST;
-    static int tld_count[TLD_TYPE_MAX];
-    int r;
+    idn_result_t r;
+    int t;
     FILE *fh;
     char *file = NULL;
     int expect_pass = -1;
@@ -78,27 +78,15 @@ main (int argc, char *argv[])
             continue;
 
         len = strlen (line);
-        r = is_6531_email_fqdn (ctx, actions, line, len);
+        t = is_6531_email_fqdn (ctx, actions, &r, line, len);
 
-        if (r > 0 &&
-            r != TLD_TYPE_INVALID &&
-            r != TLD_TYPE_NOT_ASSIGNED &&
-            r != TLD_TYPE_TEST)
-        {
+        if (t >= 0) {
             printf ("PASS: %s\n", sanitize_utf8(line, len));
-            tld_count[r]++;
-            passed++;
-        }
-        else if (r == 0) {
-            printf ("PASS: %s\n", sanitize_utf8(line, len));
-            tld_count[r]++;
             passed++;
         }
         else {
             printf ("FAIL: %s\n", sanitize_utf8(line, len));
             failed++;
-            if (r > 0)
-                tld_count[r]++;
         }
     }
 

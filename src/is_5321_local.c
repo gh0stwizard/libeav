@@ -41,14 +41,14 @@ is_5321_local (const char *start, const char *end)
 
 
     if (start == end)
-        return inverse(EEAV_EMPTY);
+        return inverse(EEAV_LPART_EMPTY);
 
     for (cp = start; cp < end && (ch = *(unsigned char *) cp) != 0; cp++) {
         if (ch > 127)
-            return inverse(EEAV_NOT_ASCII);
+            return inverse(EEAV_LPART_NOT_ASCII);
         /* rfc5321 does NOT allowing ANY control chars */
         if (ISCNTRL(ch))
-            return inverse(EEAV_CTRL_CHAR);
+            return inverse(EEAV_LPART_CTRL_CHAR);
         if (!quote) {
             switch (ch) {
             case '"': {

@@ -7,12 +7,10 @@
 #include "../src/auto_tld.h"
 #include "common.h"
 
-
-/* how many expect TLDs with test type */
-#define TEST_CHECK          (11)
-/* how many expect not assigned TLDs */
-#define NOT_ASSIGNED_CHECK  (14)
-
+typedef int (*utf8_email) ( idn_resconf_t ctx,
+                            idn_action_t a,
+                            const char *s,
+                            const char *e);
 
 static void
 init_idn (idn_resconf_t *ctx)
@@ -40,28 +38,36 @@ extern int
 main (int argc, char *argv[])
 {
     char *line = NULL;
-    size_t len;
-    ssize_t read;
+    size_t len = 0;
+    ssize_t read = 0;
     idn_resconf_t ctx;
     idn_action_t actions = IDN_ENCODE_REGIST;
     idn_result_t r;
-    static int tld_count[TLD_TYPE_MAX]; /* zero everything */
     int t;
     FILE *fh;
+    char *file = NULL;
+    int expect_pass = -1;
+    int expect_fail = -1;
+    int passed = 0;
+    int failed = 0;
 
 
-    if (argc >= 3 || argc < 2) {
-        msg_warn ("usage: %s FILE\n", argv[0]);
+    if (argc >= 5 || argc < 4) {
+        msg_warn ("usage: %s PASS_COUNT FAIL_COUNT FILE\n", argv[0]);
         return 2;
     }
 
     setlocale(LC_ALL, "");
     init_idn (&ctx);
 
-    fh = fopen (argv[--argc], "r");
+    file = argv[3];
+    expect_pass = atoi (argv[1]);
+    expect_fail = atoi (argv[2]);
+
+    fh = fopen (file, "r");
 
     if (fh == NULL) {
-        msg_warn ("open: %s: %s", argv[argc], strerror(errno));
+        msg_warn ("open: %s: %s", file, strerror(errno));
         return 3;
     }
 
@@ -71,34 +77,37 @@ main (int argc, char *argv[])
         if (line[0] == '#') /* skip comments */
             continue;
 
-        t = is_utf8_inet_domain (ctx, actions, &r, line, line + strlen (line));
+        len = strlen (line);
+        t = is_6531_email_fqdn (ctx, actions, &r, line, len);
 
-        if (t != TLD_TYPE_INVALID &&
+        if (t >= 0 &&
+            t != TLD_TYPE_INVALID &&
             t != TLD_TYPE_NOT_ASSIGNED &&
             t != TLD_TYPE_TEST)
-            printf ("PASS: %s\n", line);
-        else
-            printf ("FAIL: %s\n", line);
-
-        if (t >= 0)
-            tld_count[t]++;
+        {
+            printf ("PASS: %s\n", sanitize_utf8(line, len));
+            passed++;
+        }
+        else {
+            printf ("FAIL: %s\n", sanitize_utf8(line, len));
+            failed++;
+        }
     }
 
-    if (tld_count[TLD_TYPE_TEST] != TEST_CHECK) {
-        msg_warn ("%s: expected %d test TLDs, but got %d [%d]\n",
+
+    if (passed != expect_pass) {
+        msg_warn ("%s: expected %d passed checks, but got %d\n",
                 argv[0],
-                TEST_CHECK,
-                tld_count[TLD_TYPE_TEST],
-		TLD_TYPE_TEST);
+                expect_pass,
+                passed);
         return 4;
     }
 
-    if (tld_count[TLD_TYPE_NOT_ASSIGNED] != NOT_ASSIGNED_CHECK) {
-        msg_warn ("%s: expected %d not assigned TLDs, but got %d [%d]\n",
+    if (failed != expect_fail) {
+        msg_warn ("%s: expected %d failed checks, but got %d\n",
                 argv[0],
-                NOT_ASSIGNED_CHECK,
-                tld_count[TLD_TYPE_NOT_ASSIGNED],
-		TLD_TYPE_NOT_ASSIGNED);
+                expect_fail,
+                failed);
         return 5;
     }
 

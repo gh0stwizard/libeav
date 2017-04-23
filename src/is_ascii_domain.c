@@ -28,7 +28,7 @@ is_ascii_domain (const char *start, const char *end)
      */
     if (start == end) {
         /* empty hostname */
-        return inverse(EEAV_EMPTY);
+        return inverse(EEAV_DOMAIN_EMPTY);
     }
 
     /*

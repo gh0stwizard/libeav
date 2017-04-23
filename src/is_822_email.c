@@ -16,12 +16,12 @@ is_822_email (const char *email, size_t length)
 
 
     if (length == 0)
-        return inverse(EEAV_EMPTY);
+        return inverse(EEAV_EMAIL_EMPTY);
 
     ch = strrchr (email, '@');
 
     if (ch == NULL)
-        return inverse(EEAV_EMAIL_HAS_NO_DOMAIN);
+        return inverse(EEAV_DOMAIN_EMPTY);
 
 #ifdef _DEBUG
     printf (">>> local-part: %.*s (%zu)\n", ch - email, email, ch - email);

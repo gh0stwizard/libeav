@@ -4,11 +4,14 @@
 test-tld@δοκιμή.δοκιμή
 not-assigned@טעסט.טעסט
 hmm@ею.ею
-آزمایشی.آزمایشی@strange
+test-tld@آزمایشی.آزمایشی
 # just domain
 பரிட்சை.பரிட்சை
 # empty line
 
 # no local part
 @ελ.ελ
-test@example.com
+special@example.com
+# prohibited idna2008 symbols
+invalid@I♥NY.de
+invalid@☕.de

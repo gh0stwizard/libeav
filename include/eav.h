@@ -24,10 +24,14 @@ enum {
     EAV_TLD_INFRASTRUCTURE      = 1 << 6,
     EAV_TLD_SPONSORED           = 1 << 7,
     EAV_TLD_TEST                = 1 << 8,
+    EAV_TLD_SPECIAL             = 1 << 9,
 };
 
-typedef int (*eav_utf8_f)
-            (idn_resconf_t, idn_action_t, const char *, size_t);
+typedef int (*eav_utf8_f) ( idn_resconf_t,
+                            idn_action_t,
+                            idn_result_t *,
+                            const char *,
+                            size_t);
 typedef int (*eav_ascii_f) (const char *, size_t);
 
 typedef struct eav_s {
@@ -35,44 +39,53 @@ typedef struct eav_s {
     int             allow_tld;  /* flag: allow only these TLDs */
     bool            utf8;       /* allow utf8 */
     bool            tld_check;  /* do fqdn & tld checks */
-    const char      *errmsg;
     /* XXX private */
+    int             errcode;
+    const char      *idnmsg;
+    bool            initialized;
     idn_resconf_t   idn;
     idn_action_t    actions;
     eav_utf8_f      utf8_cb;
-    eav_ascii_f     ascii_cb;    
+    eav_ascii_f     ascii_cb;
 } eav_t;
 
 /* libeav error codes */
 typedef int TLD_ERROR;
 enum {
     EEAV_NO_ERROR,
-    EEAV_IDN_INIT_FAIL,
-    EEAV_IND_CONF_FAIL,
     EEAV_INVALID_RFC,
-    EEAV_EMPTY,
-    EEAV_IDNKIT_ERROR,
-    EEAV_NOT_ASCII,
-    EEAV_SPECIAL,
-    EEAV_CTRL_CHAR,
-    EEAV_LPART_MISPLACED_QUOTE,
+    EEAV_IDN_ERROR,
+    EEAV_EMAIL_EMPTY,
+    EEAV_LPART_EMPTY,
+    EEAV_LPART_TOO_LONG,
+    EEAV_LPART_NOT_ASCII,
     EEAV_LPART_SPECIAL,
+    EEAV_LPART_CTRL_CHAR,
+    EEAV_LPART_MISPLACED_QUOTE,
     EEAV_LPART_UNQUOTED,
     EEAV_LPART_TOO_MANY_DOTS,
     EEAV_LPART_UNQUOTED_FWS,
     EEAV_LPART_INVALID_UTF8,
+    EEAV_DOMAIN_EMPTY,
     EEAV_DOMAIN_LABEL_TOO_LONG,
-    EEAV_DOMAIN_MISPLACED_DELIMITER,
     EEAV_DOMAIN_MISPLACED_HYPHEN,
+    EEAV_DOMAIN_MISPLACED_DELIMITER,
     EEAV_DOMAIN_INVALID_CHAR,
     EEAV_DOMAIN_TOO_LONG,
     EEAV_DOMAIN_NUMERIC,
     EEAV_DOMAIN_NOT_FQDN,
-    EEAV_EMAIL_HAS_NO_DOMAIN,
-    EEAV_LPART_TOO_LONG,
-    EEAV_EMAIL_INVALID_IPADDR,
-    EEAV_EMAIL_NO_PAIRED_BRACKET,
-    EEAV_MAX /* debug & test only */
+    EEAV_IPADDR_INVALID,
+    EEAV_IPADDR_BRACKET_UNPAIR,
+    EEAV_TLD_INVALID,
+    EEAV_TLD_NOT_ASSIGNED,
+    EEAV_TLD_COUNTRY_CODE,
+    EEAV_TLD_GENERIC,
+    EEAV_TLD_GENERIC_RESTRICTED,
+    EEAV_TLD_INFRASTRUCTURE,
+    EEAV_TLD_SPONSORED,
+    EEAV_TLD_TEST,
+    EEAV_TLD_SPECIAL,
+    EEAV_MAX
 };
 
 
@@ -115,6 +128,7 @@ is_ascii_domain (const char *start, const char *end);
 extern int
 is_utf8_domain (idn_resconf_t ctx,
                 idn_action_t actions,
+                idn_result_t *r,
                 const char *start,
                 const char *end);
 
@@ -124,6 +138,7 @@ is_tld (const char *start, const char *end);
 extern int
 is_utf8_inet_domain(idn_resconf_t ctx,
                     idn_action_t actions,
+                    idn_result_t *r,
                     const char *start,
                     const char *end);
 
@@ -131,16 +146,18 @@ extern int
 is_special_domain (const char *start, const char *end);
 
 extern int
-is_6531_email (  idn_resconf_t ctx,
-                    idn_action_t actions,
-                    const char *email,
-                    size_t length);
+is_6531_email ( idn_resconf_t ctx,
+                idn_action_t actions,
+                idn_result_t *r,
+                const char *email,
+                size_t length);
 
 extern int
-is_6531_email_fqdn ( idn_resconf_t ctx,
-                        idn_action_t actions,
-                        const char *email,
-                        size_t length);
+is_6531_email_fqdn (idn_resconf_t ctx,
+                    idn_action_t actions,
+                    idn_result_t *r,
+                    const char *email,
+                    size_t length);
 
 extern int
 is_822_email (const char *email, size_t length);

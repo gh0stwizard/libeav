@@ -56,12 +56,18 @@ check: $(TARGETS)
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-5321-email.bin 29 26 ../data/email-ascii.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-5322-email.bin 26 29 ../data/email-ascii.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email-fqdn.bin 28 27 ../data/email-ascii.txt
-	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email-fqdn.bin 4 7 ../data/email-utf8.txt
+	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email-fqdn.bin 7 6 ../data/email-utf8.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email-fqdn.bin 7 1 ../data/email-reg.ru.txt
+	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email-tld.bin 28 27 ../data/email-ascii.txt
+	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email-tld.bin 4 9 ../data/email-utf8.txt
+	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email-tld.bin 7 1 ../data/email-reg.ru.txt
+	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email-tld-special.bin 28 27 ../data/email-ascii.txt
+	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email-tld-special.bin 3 10 ../data/email-utf8.txt
+	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email-tld-special.bin 6 2 ../data/email-reg.ru.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email.bin 28 27 ../data/email-ascii.txt
-	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email.bin 8 3 ../data/email-utf8.txt
+	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email.bin 8 5 ../data/email-utf8.txt
 	LD_LIBRARY_PATH=$(LIB_DIRS) ./t-6531-email.bin 7 1 ../data/email-reg.ru.txt
-	LD_LIBRARY_PATH=$(LIB_PATH) ./t-eav.bin 8 3 ../data/email-utf8.txt
+	LD_LIBRARY_PATH=$(LIB_PATH) ./t-eav.bin 8 5 ../data/email-utf8.txt
 	LD_LIBRARY_PATH=$(LIB_PATH) ./t-eav.bin 7 1 ../data/email-reg.ru.txt
 
 .PHONY: all debug clean check

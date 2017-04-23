@@ -7,6 +7,10 @@
 #include "../src/auto_tld.h"
 #include "common.h"
 
+typedef int (*utf8_email) ( idn_resconf_t ctx,
+                            idn_action_t a,
+                            const char *s,
+                            const char *e);
 
 static void
 init_idn (idn_resconf_t *ctx)
@@ -74,9 +78,14 @@ main (int argc, char *argv[])
             continue;
 
         len = strlen (line);
-        t = is_6531_email (ctx, actions, &r, line, len);
+        t = is_6531_email_fqdn (ctx, actions, &r, line, len);
 
-        if (t >= 0) {
+        if (t >= 0 &&
+            t != TLD_TYPE_INVALID &&
+            t != TLD_TYPE_NOT_ASSIGNED &&
+            t != TLD_TYPE_TEST &&
+            t != TLD_TYPE_SPECIAL)
+        {
             printf ("PASS: %s\n", sanitize_utf8(line, len));
             passed++;
         }
@@ -85,6 +94,7 @@ main (int argc, char *argv[])
             failed++;
         }
     }
+
 
     if (passed != expect_pass) {
         msg_warn ("%s: expected %d passed checks, but got %d\n",
