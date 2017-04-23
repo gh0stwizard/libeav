@@ -31,6 +31,11 @@ is_ascii_domain (const char *start, const char *end)
         return inverse(EEAV_DOMAIN_EMPTY);
     }
 
+    if (end - start > VALID_HOSTNAME_LEN) {
+        /* bad length */
+        return inverse(EEAV_DOMAIN_TOO_LONG);
+    }
+
     /*
      * Find bad characters or label lengths. Find adjacent delimiters.
      */
@@ -76,11 +81,6 @@ is_ascii_domain (const char *start, const char *end)
 #ifndef SLOPPY_VALID_HOSTNAME
         return inverse(EEAV_DOMAIN_NUMERIC);
 #endif
-    }
-
-    if (cp - start > VALID_HOSTNAME_LEN) {
-        /* bad length */
-        return inverse(EEAV_DOMAIN_TOO_LONG);
     }
 
     return EEAV_NO_ERROR;
