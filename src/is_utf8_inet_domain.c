@@ -8,11 +8,12 @@
 
 /* is_utf8_inet_domain: validates that domain is fqdn & have valid tld */
 extern int
-is_utf8_inet_domain(idn_resconf_t ctx,
-                    idn_action_t actions,
-                    idn_result_t *r,
-                    const char *start,
-                    const char *end)
+is_utf8_domain (idn_resconf_t ctx,
+                idn_action_t actions,
+                idn_result_t *r,
+                const char *start,
+                const char *end,
+                bool tld_check)
 {
     int rc;
     char domain[DOMAIN_SIZE];
@@ -42,6 +43,9 @@ is_utf8_inet_domain(idn_resconf_t ctx,
 
     if (rc != EEAV_NO_ERROR)
         return rc;
+
+    if (! tld_check)
+        return EEAV_NO_ERROR;
 
     /* special & reserved domains */
     if (is_special_domain (domain, domain + len))
