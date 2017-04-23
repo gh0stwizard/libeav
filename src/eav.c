@@ -75,7 +75,7 @@ extern void
 eav_init (eav_t *eav)
 {
     eav->actions = IDN_ENCODE_REGIST;
-    eav->utf8 = true;
+    eav->utf8 = false;
     eav->rfc = EAV_RFC_6531;
     eav->tld_check = true;
     eav->allow_tld =    EAV_TLD_COUNTRY_CODE |
