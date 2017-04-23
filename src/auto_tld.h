@@ -1,4 +1,4 @@
-/* this file was auto-generated */
+/* this file was auto-generated at 2017-04-23 05:17:00 */
 
 
 #ifndef TLD_H
@@ -12,6 +12,7 @@ typedef struct tld_s {
 } tld_t;
 
 enum {
+    TLD_TYPE_UNUSED, /* tests only */
     TLD_TYPE_INVALID,
     TLD_TYPE_NOT_ASSIGNED,
     TLD_TYPE_COUNTRY_CODE,
@@ -20,7 +21,8 @@ enum {
     TLD_TYPE_INFRASTRUCTURE,
     TLD_TYPE_SPONSORED,
     TLD_TYPE_TEST,
-    TLD_TYPE_MAX
+    TLD_TYPE_SPECIAL,
+    TLD_TYPE_MAX /* tests only */
 };
 
 extern const tld_t const tld_list[];
