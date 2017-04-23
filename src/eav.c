@@ -83,7 +83,8 @@ eav_init (eav_t *eav)
                         EAV_TLD_GENERIC |
                         EAV_TLD_GENERIC_RESTRICTED |
                         EAV_TLD_INFRASTRUCTURE |
-                        EAV_TLD_SPONSORED;
+                        EAV_TLD_SPONSORED |
+                        EAV_TLD_SPECIAL;
     eav->utf8_cb = NULL;
     eav->ascii_cb = NULL;
     eav->initialized = false;
