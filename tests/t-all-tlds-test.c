@@ -85,14 +85,6 @@ main (int argc, char *argv[])
             tld_count[t]++;
     }
 
-    if (tld_count[TLD_TYPE_INVALID] != 0) {
-        msg_warn ("%s: expected 0 invalid TLDs, but got %d [%d]\n",
-                argv[0],
-                tld_count[TLD_TYPE_INVALID],
-                TLD_TYPE_INVALID);
-        return 4;
-    }
-
     if (tld_count[TLD_TYPE_TEST] != TEST_CHECK) {
         msg_warn ("%s: expected %d test TLDs, but got %d [%d]\n",
                 argv[0],

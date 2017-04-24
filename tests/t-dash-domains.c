@@ -72,9 +72,7 @@ main (int argc, char *argv[])
         t = is_utf8_domain (ctx, actions, &r, line, line + strlen (line), true);
 
         if (t >= 0) {
-            if (t != TLD_TYPE_INVALID &&
-                t != TLD_TYPE_NOT_ASSIGNED &&
-                t != TLD_TYPE_TEST)
+            if (t != TLD_TYPE_NOT_ASSIGNED && t != TLD_TYPE_TEST)
                 printf ("PASS: %s\n", line);
             else
                 printf ("FAIL: %s\n", line);

@@ -80,7 +80,7 @@ main (int argc, char *argv[])
         len = strlen (line);
         t = is_6531_email (ctx, actions, &r, line, len, true);
 
-        if (t >= 0 && t != TLD_TYPE_INVALID) {
+        if (t >= 0) {
             printf ("PASS: %s\n", sanitize_utf8(line, len));
             passed++;
         }

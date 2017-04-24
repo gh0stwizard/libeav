@@ -81,7 +81,6 @@ main (int argc, char *argv[])
         t = is_6531_email (ctx, actions, &r, line, len, true);
 
         if (t >= 0 &&
-            t != TLD_TYPE_INVALID &&
             t != TLD_TYPE_NOT_ASSIGNED &&
             t != TLD_TYPE_TEST &&
             t != TLD_TYPE_SPECIAL)
