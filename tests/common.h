@@ -50,6 +50,8 @@ sanitize (const char *str, size_t length)
 const char *
 sanitize_utf8 (const char *text, size_t length)
 {
+    utf8_decode_t u;
+
 #define TEXT_SIZE 2048
 
     int c1, c2;         /* characters */
@@ -78,13 +80,13 @@ sanitize_utf8 (const char *text, size_t length)
 } while (0)
 
 
-    utf8_decode_init ((char *) text, length);
+    utf8_decode_init ((char *) text, length, &u);
     /* look forward for characters and their lengths.
      * Such way (may be ugly) helps us avoid creation of utf8_encode() func.
      */
     for (;;) {
-        c1 = utf8_decode_next ();
-        p1 = utf8_decode_at_byte ();
+        c1 = utf8_decode_next (&u);
+        p1 = utf8_decode_at_byte (&u);
 
         if (c1 < 0) {
             if (c2 > 0) { /* it is possible that we miss something */
@@ -100,8 +102,8 @@ sanitize_utf8 (const char *text, size_t length)
         }
 
         /* look forward */
-        c2 = utf8_decode_next ();
-        p2 = utf8_decode_at_byte ();
+        c2 = utf8_decode_next (&u);
+        p2 = utf8_decode_at_byte (&u);
 
         if (c2 > 0) {
             /* at p1, length: p2 - p1 */

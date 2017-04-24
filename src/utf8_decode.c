@@ -52,23 +52,19 @@ SOFTWARE.
 */
 
 
-static int  the_index = 0;
-static int  the_length = 0;
-static int  the_char = 0;
-static int  the_byte = 0;
-static const char* the_input;
-
-
 /*
     Get the next byte. It returns UTF8_END if there are no more bytes.
 */
-static int get() {
+static int get(utf8_decode_t *u) {
     int c;
-    if (the_index >= the_length) {
+
+    if (u->the_index >= u->the_length) {
         return UTF8_END;
     }
-    c = the_input[the_index] & 0xFF;
-    the_index += 1;
+
+    c = u->the_input[u->the_index] & 0xFF;
+    u->the_index += 1;
+
     return c;
 }
 
@@ -77,8 +73,9 @@ static int get() {
     Get the 6-bit payload of the next continuation byte.
     Return UTF8_ERROR if it is not a contination byte.
 */
-static int cont() {
-    int c = get();
+static int cont(utf8_decode_t *u) {
+    int c = get(u);
+
     return ((c & 0xC0) == 0x80)
         ? (c & 0x3F)
         : UTF8_ERROR;
@@ -88,20 +85,20 @@ static int cont() {
 /*
     Initialize the UTF-8 decoder. The decoder is not reentrant,
 */
-void utf8_decode_init(const char p[], int length) {
-    the_index = 0;
-    the_input = p;
-    the_length = length;
-    the_char = 0;
-    the_byte = 0;
+void utf8_decode_init(const char p[], int length, utf8_decode_t *u) {
+    u->the_index = 0;
+    u->the_input = p;
+    u->the_length = length;
+    u->the_char = 0;
+    u->the_byte = 0;
 }
 
 
 /*
     Get the current byte offset. This is generally used in error reporting.
 */
-int utf8_decode_at_byte() {
-    return the_byte;
+int utf8_decode_at_byte(utf8_decode_t *u) {
+    return u->the_byte;
 }
 
 
@@ -109,9 +106,9 @@ int utf8_decode_at_byte() {
     Get the current character offset. This is generally used in error reporting.
     The character offset matches the byte offset if the text is strictly ASCII.
 */
-int utf8_decode_at_character() {
-    return (the_char > 0)
-        ? the_char - 1
+int utf8_decode_at_character(utf8_decode_t *u) {
+    return (u->the_char > 0)
+        ? u->the_char - 1
         : 0;
 }
 
@@ -122,19 +119,21 @@ int utf8_decode_at_character() {
          or  UTF8_END   (the end)
          or  UTF8_ERROR (error)
 */
-int utf8_decode_next() {
+int utf8_decode_next(utf8_decode_t *u) {
     int c;  /* the first byte of the character */
     int c1; /* the first continuation character */
     int c2; /* the second continuation character */
     int c3; /* the third continuation character */
     int r;  /* the result */
 
-    if (the_index >= the_length) {
-        return the_index == the_length ? UTF8_END : UTF8_ERROR;
+    if (u->the_index >= u->the_length) {
+        return u->the_index == u->the_length ? UTF8_END : UTF8_ERROR;
     }
-    the_byte = the_index;
-    the_char += 1;
-    c = get();
+
+    u->the_byte = u->the_index;
+    u->the_char += 1;
+
+    c = get(u);
 /*
     Zero continuation (0 to 127)
 */
@@ -145,7 +144,7 @@ int utf8_decode_next() {
     One continuation (128 to 2047)
 */
     if ((c & 0xE0) == 0xC0) {
-        c1 = cont();
+        c1 = cont(u);
         if (c1 >= 0) {
             r = ((c & 0x1F) << 6) | c1;
             if (r >= 128) {
@@ -157,8 +156,8 @@ int utf8_decode_next() {
     Two continuations (2048 to 55295 and 57344 to 65535)
 */
     } else if ((c & 0xF0) == 0xE0) {
-        c1 = cont();
-        c2 = cont();
+        c1 = cont(u);
+        c2 = cont(u);
         if ((c1 | c2) >= 0) {
             r = ((c & 0x0F) << 12) | (c1 << 6) | c2;
             if (r >= 2048 && (r < 55296 || r > 57343)) {
@@ -170,9 +169,9 @@ int utf8_decode_next() {
     Three continuations (65536 to 1114111)
 */
     } else if ((c & 0xF8) == 0xF0) {
-        c1 = cont();
-        c2 = cont();
-        c3 = cont();
+        c1 = cont(u);
+        c2 = cont(u);
+        c3 = cont(u);
         if ((c1 | c2 | c3) >= 0) {
             r = ((c & 0x07) << 18) | (c1 << 12) | (c2 << 6) | c3;
             if (r >= 65536 && r <= 1114111) {

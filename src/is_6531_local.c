@@ -38,13 +38,14 @@ is_6531_local (const char *start, const char *end)
     int quote = 0;
     int ch;
     int prev = 0; /* previous index of non-ASCII character */
+    utf8_decode_t u;
 
 
     if (start == end)
         return inverse(EEAV_LPART_EMPTY);
 
-    utf8_decode_init (start, end - start);
-    while ((ch = utf8_decode_next ()) >= 0) {
+    utf8_decode_init (start, end - start, &u);
+    while ((ch = utf8_decode_next (&u)) >= 0) {
         /* skip non-ASCII characters */
         if (ch > 0x007f)
             continue;
@@ -130,7 +131,7 @@ is_6531_local (const char *start, const char *end)
 #ifdef RFC6531_FOLLOW_RFC5322
 next:
 #endif
-        prev = utf8_decode_at_byte();
+        prev = utf8_decode_at_byte (&u);
     }
 
     /* invalid UTF-8 string */
