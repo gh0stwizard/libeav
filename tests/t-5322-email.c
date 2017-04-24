@@ -14,7 +14,6 @@ main (int argc, char *argv[])
     char *line = NULL;
     size_t len = 0;
     ssize_t read = 0;
-    static int tld_count[TLD_TYPE_MAX];
     int r;
     FILE *fh;
     char *file = NULL;
@@ -53,7 +52,6 @@ main (int argc, char *argv[])
 
         if (r >= 0) {
             printf ("PASS: %s\n", sanitize(line, len));
-            tld_count[r]++;
             passed++;
         }
         else {

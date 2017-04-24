@@ -73,9 +73,10 @@ main (int argc, char *argv[])
 
         t = is_utf8_domain (ctx, actions, &r, line, line + strlen (line), true);
 
-        if (t != TLD_TYPE_INVALID &&
+        if (t >= 0 &&
             t != TLD_TYPE_NOT_ASSIGNED &&
-            t != TLD_TYPE_TEST)
+            t != TLD_TYPE_TEST &&
+            t != TLD_TYPE_SPECIAL)
             printf ("PASS: %s\n", line);
         else
             printf ("FAIL: %s\n", line);
@@ -84,13 +85,21 @@ main (int argc, char *argv[])
             tld_count[t]++;
     }
 
+    if (tld_count[TLD_TYPE_INVALID] != 0) {
+        msg_warn ("%s: expected 0 invalid TLDs, but got %d [%d]\n",
+                argv[0],
+                tld_count[TLD_TYPE_INVALID],
+                TLD_TYPE_INVALID);
+        return 4;
+    }
+
     if (tld_count[TLD_TYPE_TEST] != TEST_CHECK) {
         msg_warn ("%s: expected %d test TLDs, but got %d [%d]\n",
                 argv[0],
                 TEST_CHECK,
                 tld_count[TLD_TYPE_TEST],
 		TLD_TYPE_TEST);
-        return 4;
+        return 5;
     }
 
     if (tld_count[TLD_TYPE_NOT_ASSIGNED] != NOT_ASSIGNED_CHECK) {
@@ -99,7 +108,7 @@ main (int argc, char *argv[])
                 NOT_ASSIGNED_CHECK,
                 tld_count[TLD_TYPE_NOT_ASSIGNED],
 		TLD_TYPE_NOT_ASSIGNED);
-        return 5;
+        return 6;
     }
 
     if (line != NULL)

@@ -29,8 +29,6 @@ main (int argc, char *argv[])
 
     setlocale(LC_ALL, "");
     eav_init (&eav);
-
-    eav.tld_check = false;
     eav_setup (&eav);
 
     expect_pass = atoi (argv[1]);

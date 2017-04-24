@@ -74,7 +74,7 @@ main (int argc, char *argv[])
             continue;
 
         len = strlen (line);
-        t = is_6531_email (ctx, actions, &r, line, len, false);
+        t = is_6531_email (ctx, actions, &r, line, len, true);
 
         if (t >= 0) {
             printf ("PASS: %s\n", sanitize_utf8(line, len));
