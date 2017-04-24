@@ -44,7 +44,6 @@ EOL
 
     print $fh "enum {\n";
     print $fh "    TLD_TYPE_UNUSED, /* tests only */\n";
-    print $fh "    TLD_TYPE_INVALID,\n";
     print $fh "    TLD_TYPE_NOT_ASSIGNED,\n";
     for my $type (sort values %tld_types) {
         print $fh "    ", $type, ",\n";

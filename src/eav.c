@@ -159,10 +159,6 @@ eav_is_email (eav_t *eav, const char *email, size_t length)
 
     /* user tld preferences */
     switch (rc) {
-    case TLD_TYPE_INVALID:
-        eav->errcode = EEAV_TLD_INVALID;
-        tld_test = (eav->allow_tld & EAV_TLD_INVALID);
-        break;
     case TLD_TYPE_NOT_ASSIGNED:
         eav->errcode = EEAV_TLD_NOT_ASSIGNED;
         tld_test = (eav->allow_tld & EAV_TLD_NOT_ASSIGNED);
