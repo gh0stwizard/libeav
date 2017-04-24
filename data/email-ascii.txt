@@ -19,6 +19,12 @@ pass.ipv6@[IPv6:2001:db8:0:1:1:1:1:1]
 legacy.valid.ipv6@[IPv6:2001:db8::1:1:1:1:1]
 xxx.ipv6@[2001:db8:1:1:1:1:1:1]
 simple@test.com
+special@localhost
+special@example
+special@test
+special@invalid
+special@onion
+special@example.org
 invalid localpart@nic.ru
 # pass: 64 chars
 abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789@example.ru

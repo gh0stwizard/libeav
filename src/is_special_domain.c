@@ -14,6 +14,7 @@ static const reserved_t const reserved[] = {
     { "example",        7 },
     { "invalid",        7 },
     { "localhost",      9 },
+    { "onion",          5 }
 };
 
 static const reserved_t const example[] = {
@@ -39,6 +40,10 @@ static const reserved_t const example[] = {
  * example.com.
  * example.net.
  * example.org.
+
+ * RFC 7686:
+ *
+ * onion.
  *
  */
 extern int
@@ -53,9 +58,7 @@ is_special_domain (const char *start, const char *end)
 
 
     /* count labels */
-    for (cp = start /*+ offset*/;
-        (ch = strchr (cp, '.')) != NULL;
-        cp = ch + 1, count++);
+    for (cp = start; (ch = strchr (cp, '.')) != 0; cp = ch + 1, count++);
 
     /* shortcut for non-fqdn */
     if (count == 0) {
@@ -68,13 +71,13 @@ is_special_domain (const char *start, const char *end)
     }
 
     /* check fqdn */
-    cp = start /*+ offset*/;
+    cp = start;
 
     /* don't count root if it exists */
     if (end[-1] == '.')
         count--;
 
-    /* we're interested in last two labels only. skip rest. */
+    /* we're interested in last two labels only: skip the rest. */
     while (count >= 2) {
         ch = strchr (cp, '.');
         cp = ch + 1;
@@ -100,6 +103,9 @@ is_special_domain (const char *start, const char *end)
         if (len == 0) /* just 'example.' */
             return (YES);
 
+        if (len != 3) /* there are only com, net, org */
+            return (NO);
+
         memcpy (label, cp, len);
         label[len] = 0;
 
@@ -110,6 +116,9 @@ is_special_domain (const char *start, const char *end)
     }
     else {
         if (len == 0) /* unreserved */
+            return (NO);
+
+        if (len < 4 || len > 9 || len == 6 || len == 8)
             return (NO);
 
         memcpy (label, cp, len);
