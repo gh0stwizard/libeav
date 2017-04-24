@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 #include <eav.h>
 #include "private.h"
 
@@ -10,17 +11,17 @@ typedef struct reserved_s {
 } reserved_t;
 
 static const reserved_t const reserved[] = {
-    { "test",           4 },
-    { "example",        7 },
-    { "invalid",        7 },
-    { "localhost",      9 },
-    { "onion",          5 }
+    { "test",           5 },
+    { "example",        8 },
+    { "invalid",        8 },
+    { "localhost",     10 },
+    { "onion",          6 }
 };
 
 static const reserved_t const example[] = {
-    { "com", 3 },
-    { "net", 3 },
-    { "org", 3 },
+    { "com", 4 },
+    { "net", 4 },
+    { "org", 4 },
 };
 
 /*
@@ -62,8 +63,13 @@ is_special_domain (const char *start, const char *end)
 
     /* shortcut for non-fqdn */
     if (count == 0) {
+        len = end - start;
+
+        if (len < 4 || len > 9 || len == 6 || len == 8)
+            return (NO);
+
         for (size_t i = 0; i < ARRAY_SIZE(reserved); i++) {
-            if (strncmp (start, reserved[i].domain, reserved[i].length) == 0)
+            if (strncasecmp (start, reserved[i].domain, reserved[i].length) == 0)
                 return (YES);
         }
 
@@ -99,7 +105,7 @@ is_special_domain (const char *start, const char *end)
     else
         len = end - cp - 1;
 
-    if (strncmp ("example", label, 7) == 0) {
+    if (strncasecmp ("example", label, 8) == 0) {
         if (len == 0) /* just 'example.' */
             return (YES);
 
@@ -111,13 +117,10 @@ is_special_domain (const char *start, const char *end)
 
         /* probably reserved example.tld */
         for (size_t i = 0; i < ARRAY_SIZE(example); i++)
-            if (strncmp (example[i].domain, label, example[i].length) == 0)
+            if (strncasecmp (example[i].domain, label, example[i].length) == 0)
                 return (YES);
     }
     else {
-        if (len == 0) /* unreserved */
-            return (NO);
-
         if (len < 4 || len > 9 || len == 6 || len == 8)
             return (NO);
 
@@ -126,7 +129,7 @@ is_special_domain (const char *start, const char *end)
 
         /* probably reserved fqdn */
         for (size_t i = 0; i < ARRAY_SIZE(reserved); i++) {
-            if (strncmp (reserved[i].domain, label, reserved[i].length) == 0)
+            if (strncasecmp (reserved[i].domain, label, reserved[i].length) == 0)
                 return (YES);
         }
     }
