@@ -25,6 +25,16 @@ special@test
 special@invalid
 special@onion
 special@example.org
+special@ExAmPle
+special@This.Is.Test
+special@go.Onion
+special@eXample.COM
+not-tld@exampleA
+not-tld@testB
+not-tld@invalidC
+not-tld@onionD
+not-tld@aaa.onionE
+not-tld@Flocalhost
 invalid localpart@nic.ru
 # pass: 64 chars
 abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789@example.ru
