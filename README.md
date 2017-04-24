@@ -35,9 +35,8 @@ See details below:
 ## Features
 
 * UTF-8 / IDNA2008 support
-* TLD checking (configurable)
-* FQDN checking
-* Local-Part & Domain Lengths checking
+* FQDN & TLD check (configurable)
+* Local-Part & Domain length check
 
 
 ## Dependencies
@@ -49,7 +48,7 @@ See details below:
 
 ## Thread-safety
 
-At the moment this library is NOT thread safe.
+The library SHOULD be thread-safe. Not tested yet.
 
 
 ## Build
@@ -74,8 +73,6 @@ shell> make
 shell> make check
 shell> make install DESTDIR=/path/to/install
 ```
-
-
 
 
 ## Tools
