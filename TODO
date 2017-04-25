@@ -1,2 +1,3 @@
-* utf8_decode.*: make reentrant
-* better build system (cmake, autotools, anything)
+* improved build system (cmake, autotools, anything)
+* libidn support
+* Verisign IDNA support
