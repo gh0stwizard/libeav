@@ -19,22 +19,8 @@ is_6531_email ( idn_resconf_t ctx,
     int rc = 0;
     const char *end = email + length;
 
-
-    if (length == 0)
-        return inverse(EEAV_EMAIL_EMPTY);
-
-    ch = strrchr (email, '@');
-
-    if (ch == NULL || ch == end)
-        return inverse(EEAV_DOMAIN_EMPTY);
-
-#ifdef _DEBUG
-    printf (">>> local-part: %.*s (%zu)\n", ch - email, email, ch - email);
-    printf (">>> domain: %s\n", ch + 1);
-#endif
-
-    if (ch - email > VALID_LPART_LEN)
-        return inverse(EEAV_LPART_TOO_LONG);
+    /* see "private_email.h" */
+    basic_email_check (email);
 
     rc = is_6531_local (email, ch);
 

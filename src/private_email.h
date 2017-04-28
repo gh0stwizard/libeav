@@ -3,6 +3,21 @@
 
 #include "auto_tld.h"
 
+#define basic_email_check(e) do { \
+    if (length == 0) \
+        return inverse(EEAV_EMAIL_EMPTY); \
+\
+    ch = strrchr ((e), '@'); \
+\
+    if (ch == NULL) \
+        return inverse(EEAV_LPART_EMPTY); \
+    else if (ch == end) \
+        return inverse(EEAV_DOMAIN_EMPTY); \
+\
+    if (ch - (e) > VALID_LPART_LEN) \
+        return inverse(EEAV_LPART_TOO_LONG); \
+} while (0)
+
 #define check_tld() do { \
     if (tld_check == false) \
         return EEAV_NO_ERROR; \
@@ -35,9 +50,7 @@
     } \
     else { /* try ipv6 */ \
         ch = strchr (brs + 1, ':'); \
-        if (ch == NULL) \
-            return inverse(EEAV_IPADDR_INVALID); \
-        if (is_ipaddr (ch + 1, bre) == 0) \
+        if ((ch == NULL) || (is_ipaddr (ch + 1, bre) == 0)) \
             return inverse(EEAV_IPADDR_INVALID); \
     } \
     /* valid ip addr. */ \
