@@ -94,25 +94,20 @@ eav_init (eav_t *eav)
 extern int
 eav_setup (eav_t *eav)
 {
-    if (eav->utf8 || eav->rfc == EAV_RFC_6531) {
-        eav->utf8 = true;
-        eav->utf8_cb = is_6531_email;
-        return init_idn (eav);
-    }
-
-    /* ASCII requested */
-
-    /* TODO if (eav->tld_check) */
-
-    eav->utf8 = false;
-
     switch (eav->rfc) {
     case EAV_RFC_822:   eav->ascii_cb = is_822_email;    break;
     case EAV_RFC_5321:  eav->ascii_cb = is_5321_email;   break;
     case EAV_RFC_5322:  eav->ascii_cb = is_5322_email;   break;
+    case EAV_RFC_6531:
+        eav->utf8 = true;
+        eav->utf8_cb = is_6531_email;
+        return init_idn (eav);
     default:
         return EEAV_INVALID_RFC;
     }
+
+    /* always set this */
+    eav->utf8 = false;
 
     return EEAV_NO_ERROR;
 }
@@ -136,6 +131,10 @@ eav_is_email (eav_t *eav, const char *email, size_t length)
     idn_result_t r;
 
 
+    /* mark that there is not idn error*/
+    if (eav->idnmsg)
+        eav->idnmsg = NULL;
+
     if (eav->utf8)
         rc = eav->utf8_cb
             (eav->idn, eav->actions, &r, email, length, eav->tld_check);
@@ -143,7 +142,6 @@ eav_is_email (eav_t *eav, const char *email, size_t length)
         rc = eav->ascii_cb(email, length, eav->tld_check);
 
     if (rc == 0) {
-        eav->idnmsg = NULL;
         eav->errcode = EEAV_NO_ERROR;
         return (YES);
     }
@@ -197,7 +195,6 @@ eav_is_email (eav_t *eav, const char *email, size_t length)
     };
 
     if (tld_test) {
-        eav->idnmsg = NULL;
         eav->errcode = EEAV_NO_ERROR;
         return (YES);
     }
