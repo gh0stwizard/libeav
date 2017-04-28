@@ -1,4 +1,4 @@
-# libeav - Email Address Validator Library
+# libeav - Email Address Validation Library
 
 
 ## Description
@@ -56,15 +56,15 @@ The library SHOULD be thread-safe. Not tested yet.
 First of all, you have to specify the directory where [idnkit][8]
 was installed. To do this you have two options:
 
-* Export the `IDNKIT_DIR` environment variable as showed below
-* Manually change paths in Makefiles
+* Export the `IDNKIT_DIR` environment variable as showed below.
+* Manually change paths in Makefiles.
 
 The library assumes that `idnkit` was installed in `/usr/local`
 by default.
 
-Secondly, if you planning to install the library to some
-non-standard directory you may change the destination 
-directory by setting `DESTDIR` variable manually.
+Secondly, if you planning to install the library to non-standard
+directory you may change the destination directory by setting
+`DESTDIR` variable manually.
 The default value of `DESTDIR` is `/usr/local`.
 
 ```
@@ -77,8 +77,8 @@ shell> make install DESTDIR=/path/to/install
 
 ## Tools
 
-There is an utility called `eav`. It will be installed by default. It has
-a simple usage:
+There is an utility called `eav`. It will be installed by default to
+the `DESTDIR`/bin directory. It has a simple usage:
 
 ```
 shell> eav emails1.txt emails2.txt
@@ -111,15 +111,9 @@ PASS: simple@test.com
 * [postfix][13] written by Wietse Venema
 
 
-## Feature plans
-
-* Bug fixing
-* Add support to [libidn][9]
-
-
 ## License
 
-This software is licensed under "The 2-Clause BSD License".
+This software is released under BSD 2-clause "Simplified" License.
 
 
 [1]: https://en.wikipedia.org/wiki/Email_address
