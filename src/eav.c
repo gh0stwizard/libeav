@@ -106,6 +106,12 @@ eav_setup (eav_t *eav)
         return EEAV_INVALID_RFC;
     }
 
+    /* we don't need this anymore */
+    if (eav->initialized) {
+        eav->initialized = false;
+        idn_resconf_destroy (eav->idn);
+    }
+
     /* always set this */
     eav->utf8 = false;
 

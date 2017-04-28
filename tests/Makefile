@@ -78,5 +78,6 @@ check-lib:
 	# library tests
 	LD_LIBRARY_PATH=$(LIB_PATH) ./t-eav.bin 4 20 ../data/email-utf8.txt
 	LD_LIBRARY_PATH=$(LIB_PATH) ./t-eav.bin 7 1 ../data/email-reg.ru.txt
+	LD_LIBRARY_PATH=$(LIB_PATH) ./t-eav-all-modes.bin 193 217 ../data/email-ascii.txt
 
 .PHONY: all debug clean check

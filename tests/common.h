@@ -6,6 +6,7 @@
 #include <assert.h>
 #include "../src/utf8_decode.h"
 
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
 #define SEP "----------------------------------------\n"
 #define msg_warn(...) do { \
