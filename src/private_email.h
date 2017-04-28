@@ -9,9 +9,7 @@
 \
     ch = strrchr ((e), '@'); \
 \
-    if (ch == NULL) \
-        return inverse(EEAV_LPART_EMPTY); \
-    else if (ch == end) \
+    if (ch == NULL || ch == end) \
         return inverse(EEAV_DOMAIN_EMPTY); \
 \
     if (ch - (e) > VALID_LPART_LEN) \
