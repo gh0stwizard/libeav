@@ -104,7 +104,7 @@ is_special_domain (const char *start, const char *end)
             if (ch == NULL)
                 len = end - cp;
             else
-                len = end - cp - 1;
+                len = ch - cp;
 
             if (len != 3) /* there are only com, net, org */
                 return (NO);
@@ -116,13 +116,14 @@ is_special_domain (const char *start, const char *end)
         }
     }
     else { /* probably special or reserved */
+        /* check only the last label */
         cp = ch + 1;
         ch = strchr (cp, '.');
 
         if (ch == NULL)
             len = end - cp;
         else
-            len = end - cp - 1;
+            len = ch - cp;
 
         if (len < 4 || len > 9 || len == 6 || len == 8)
             return (NO);
