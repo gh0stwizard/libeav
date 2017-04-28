@@ -1,4 +1,8 @@
 DESTDIR ?= /usr/local
+BINDIR ?= $(DESTDIR)/bin
+LIBDIR ?= $(DESTDIR)/lib
+DATAROOTDIR ?= $(DESTDIR)/share
+MANDIR ?= $(DATAROOTDIR)/man
 
 IDNKIT_DIR ?= /usr/local
 IDNKIT_CFLAGS ?= -I$(IDNKIT_DIR)/include
@@ -14,29 +18,30 @@ LDFLAGS ?= -shared
 LIBS ?= 
 LIBS += $(IDNKIT_LIBS)
 
-SO_TARGET = libeav.so.$(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)
+SO_TARGET = libeav.so.$(VERSION)
 TARGET_LIBS = $(SO_TARGET) libeav.a
 TARGETS = $(TARGET_LIBS) eav
 SOURCES = $(wildcard src/*.c)
 OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
 
+# XXX
 MAJOR_VERSION = 0
 MINOR_VERSION = 1
 PATCH_VERSION = 0
+VERSION = $(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)
 
 
 all: $(TARGETS)
 
 debug: MY_CFLAGS += -g -D_DEBUG
 debug: all
-	cd tests; $(MAKE) clean debug
 
 $(TARGETS): $(OBJECTS)
 
 libs: $(TARGET_LIBS)
 
 eav:
-	cd bin; $(MAKE)
+	$(MAKE) -C bin
 
 libeav.so: $(SO_TARGET)
 
@@ -56,27 +61,38 @@ clean: clean-tests clean-bin
 	$(RM) $(TARGETS) $(SO_TARGET) $(OBJECTS)
 
 clean-tests:
-	cd tests; $(MAKE) clean
+	$(MAKE) -C tests clean
 	
 clean-bin:
-	cd bin; $(MAKE) clean
+	$(MAKE) -C bin clean
+
+clean-docs: clean-man-pages
+
+clean-man-pages:
+	$(MAKE) -C docs clean
 
 strip: $(TARGETS) strip-bin
 	# strip
 	strip --strip-unneeded -R .comment -R .note -R .note.ABI-tag $(TARGETS)
 
 strip-bin:
-	cd bin; $(MAKE) strip
+	$(MAKE) -C bin strip
 
-check: $(OBJECTS)
-	cd tests; $(MAKE) check IDNKIT_DIR=$(IDNKIT_DIR)
+check: $(TARGETS)
+	$(MAKE) -C tests check IDNKIT_DIR=$(IDNKIT_DIR)
 
-install: $(TARGETS)
-	mkdir -p $(DESTDIR)/bin $(DESTDIR)/lib
-	cp bin/eav $(DESTDIR)/bin
-	cp libeav.a $(SO_TARGET) $(DESTDIR)/lib
-	cd $(DESTDIR)/lib && \
+docs: man-pages
+
+man-pages:
+	$(MAKE) -C docs VERSION=$(VERSION)
+
+install: $(TARGETS) man-pages
+	mkdir -p $(BINDIR) $(LIBDIR) $(MANDIR)/man3
+	cp bin/eav $(BINDIR)
+	cp libeav.a $(SO_TARGET) $(LIBDIR)
+	cd $(LIBDIR) && \
 	ln -sf $(SO_TARGET) libeav.so.$(MAJOR_VERSION) && \
 	ln -sf $(SO_TARGET) libeav.so
+	cp docs/libeav.3.gz $(MANDIR)/man3
 
-.PHONY: all debug check clean install libs
+.PHONY: all debug check clean docs install libs
