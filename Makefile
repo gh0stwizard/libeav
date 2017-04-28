@@ -86,7 +86,7 @@ docs: man-pages
 man-pages:
 	$(MAKE) -C docs VERSION=$(VERSION)
 
-install: $(TARGETS) man-pages
+install: $(TARGETS)
 	mkdir -p $(BINDIR) $(LIBDIR) $(MANDIR)/man3
 	cp bin/eav $(BINDIR)
 	cp libeav.a $(SO_TARGET) $(LIBDIR)
