@@ -51,6 +51,16 @@ See details below:
 The library SHOULD be thread-safe. Not tested yet.
 
 
+## Documentation
+
+The documentation may be found either in [docs][16] directory
+or after installing this library via `man` command:
+
+```
+shell> man libeav
+```
+
+
 ## Build
 
 First of all, you have to specify the directory where [idnkit][8]
@@ -131,3 +141,4 @@ This software is released under BSD 2-clause "Simplified" License.
 [13]: http://www.postfix.org/
 [14]: https://tools.ietf.org/html/rfc5322#section-3.4
 [15]: https://tools.ietf.org/html/rfc5322#section-3.4.1
+[16]: /docs/
