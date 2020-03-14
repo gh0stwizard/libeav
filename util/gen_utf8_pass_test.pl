@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use open qw(:std :utf8);
 use Text::CSV;
+use POSIX();
 
 
 my %tld_types = (
@@ -38,17 +39,12 @@ sub gen_test(@) {
     $csv->getline($io);
 
     # generate tld names list
-    print $out "# this file was auto-generated\n\n";
+    printf $out "# this file was auto-generated at %s\n",
+           POSIX::strftime("%F %T", localtime);
 
     while ( my $row = $csv->getline($io) ) {
         exists $tld_types{ $row->[1] }
             or die "$csv_file: unknown TLD type: " . $row->[1];
-        # XXX
-        if ($row->[3] eq 'Not assigned') {
-            continue;
-        } elsif ('test' eq $tld_types{ $row->[1] }) {
-            continue;
-        }
 
         printf $out "%s.%s\n", $row->[0], $row->[0];
     }

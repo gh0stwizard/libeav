@@ -2,6 +2,8 @@ CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic -fPIC
 PKG_CONFIG ?= pkg-config
 DESTDIR ?= /usr/local
 INSTALL ?= install
+PERL ?= perl
+
 
 BINDIR ?= $(DESTDIR)/bin
 LIBDIR ?= $(DESTDIR)/lib
@@ -123,6 +125,12 @@ check: $(TARGETS)
 
 man:
 	$(MAKE) -C docs VERSION=$(VERSION)
+
+auto:
+	$(PERL) util/gentld.pl include/eav/auto_tld.h src/auto_tld.c data/punycode.csv
+
+all-tld:
+	$(PERL) util/gen_utf8_pass_test.pl data/tld-domains.txt data/raw.csv
 
 #----------------------------------------------------------#
 
