@@ -1,4 +1,3 @@
-# 11 test, 14 not assigned
 aaa.aaa
 aarp.aarp
 abarth.abarth
@@ -68,6 +67,7 @@ apple.apple
 aq.aq
 aquarelle.aquarelle
 ar.ar
+arab.arab
 aramco.aramco
 archi.archi
 army.army
@@ -242,6 +242,7 @@ cg.cg
 ch.ch
 chanel.chanel
 channel.channel
+charity.charity
 chase.chase
 chat.chat
 cheap.cheap
@@ -301,6 +302,7 @@ country.country
 coupon.coupon
 coupons.coupons
 courses.courses
+cpa.cpa
 cr.cr
 credit.credit
 creditcard.creditcard
@@ -407,6 +409,7 @@ esq.esq
 estate.estate
 esurance.esurance
 et.et
+etisalat.etisalat
 eu.eu
 eurovision.eurovision
 eus.eus
@@ -492,6 +495,7 @@ game.game
 games.games
 gap.gap
 garden.garden
+gay.gay
 gb.gb
 gbiz.gbiz
 gd.gd
@@ -542,6 +546,7 @@ graphics.graphics
 gratis.gratis
 green.green
 gripe.gripe
+grocery.grocery
 group.group
 gs.gs
 gt.gt
@@ -620,6 +625,7 @@ imdb.imdb
 immo.immo
 immobilien.immobilien
 in.in
+inc.inc
 industries.industries
 infiniti.infiniti
 info.info
@@ -750,6 +756,8 @@ live.live
 living.living
 lixil.lixil
 lk.lk
+llc.llc
+llp.llp
 loan.loan
 loans.loans
 locker.locker
@@ -783,6 +791,7 @@ makeup.makeup
 man.man
 management.management
 mango.mango
+map.map
 market.market
 marketing.marketing
 markets.markets
@@ -806,6 +815,7 @@ memorial.memorial
 men.men
 menu.menu
 meo.meo
+merckmsd.merckmsd
 metlife.metlife
 mf.mf
 mg.mg
@@ -962,6 +972,7 @@ pfizer.pfizer
 pg.pg
 ph.ph
 pharmacy.pharmacy
+phd.phd
 philips.philips
 phone.phone
 photo.photo
@@ -1107,6 +1118,7 @@ scor.scor
 scot.scot
 sd.sd
 se.se
+search.search
 seat.seat
 secure.secure
 security.security
@@ -1166,6 +1178,7 @@ sony.sony
 soy.soy
 space.space
 spiegel.spiegel
+sport.sport
 spot.spot
 spreadbetting.spreadbetting
 sr.sr
@@ -1477,8 +1490,10 @@ xin.xin
 ارامكو.ارامكو
 ایران.ایران
 العليان.العليان
+اتصالات.اتصالات
 امارات.امارات
 بازار.بازار
+موريتانيا.موريتانيا
 پاکستان.پاکستان
 الاردن.الاردن
 موبايلي.موبايلي
@@ -1486,6 +1501,7 @@ xin.xin
 بھارت.بھارت
 المغرب.المغرب
 ابوظبي.ابوظبي
+البحرين.البحرين
 السعودية.السعودية
 ڀارت.ڀارت
 كاثوليك.كاثوليك
@@ -1498,19 +1514,23 @@ xin.xin
 政府.政府
 شبكة.شبكة
 بيتك.بيتك
+عرب.عرب
 გე.გე
 机构.机构
 组织机构.组织机构
 健康.健康
 ไทย.ไทย
 سورية.سورية
+招聘.招聘
 рус.рус
 рф.рф
 珠宝.珠宝
 تونس.تونس
 大拿.大拿
+ລາວ.ລາວ
 みんな.みんな
 グーグル.グーグル
+ευ.ευ
 ελ.ελ
 世界.世界
 書籍.書籍

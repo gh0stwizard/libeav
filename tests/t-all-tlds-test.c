@@ -4,14 +4,14 @@
 #include <string.h>
 #include <errno.h>
 #include <eav.h>
-#include "../src/auto_tld.h"
+#include <eav/auto_tld.h>
 #include "common.h"
 
 
 /* how many expect TLDs with test type */
 #define TEST_CHECK          (11)
 /* how many expect not assigned TLDs */
-#define NOT_ASSIGNED_CHECK  (14)
+#define NOT_ASSIGNED_CHECK  (49)
 
 
 static void
@@ -77,9 +77,14 @@ main (int argc, char *argv[])
             t != TLD_TYPE_NOT_ASSIGNED &&
             t != TLD_TYPE_TEST &&
             t != TLD_TYPE_SPECIAL)
+        {
             printf ("PASS: %s\n", line);
+        }
         else
+        {
             printf ("FAIL: %s\n", line);
+            printf ("      %s (%d)\n", idn_result_tostring (t), t);
+        }
 
         if (t >= 0)
             tld_count[t]++;
@@ -90,7 +95,7 @@ main (int argc, char *argv[])
                 argv[0],
                 TEST_CHECK,
                 tld_count[TLD_TYPE_TEST],
-		TLD_TYPE_TEST);
+                TLD_TYPE_TEST);
         return 5;
     }
 
@@ -99,7 +104,7 @@ main (int argc, char *argv[])
                 argv[0],
                 NOT_ASSIGNED_CHECK,
                 tld_count[TLD_TYPE_NOT_ASSIGNED],
-		TLD_TYPE_NOT_ASSIGNED);
+                TLD_TYPE_NOT_ASSIGNED);
         return 6;
     }
 

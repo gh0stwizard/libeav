@@ -1,6 +1,6 @@
 #include <eav.h>
 #include <ctype.h>
-#include "private.h"
+#include <eav/private.h>
 
 /*
  * Local-part = Dot-string / Quoted-string

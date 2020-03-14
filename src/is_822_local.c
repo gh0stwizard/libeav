@@ -1,6 +1,6 @@
 #include <eav.h>
 #include <ctype.h>
-#include "private.h"
+#include <eav/private.h>
 
 /*
  * local-part = word *("." word)

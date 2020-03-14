@@ -6,32 +6,31 @@
 
 
 extern int
-is_5321_email (const char *email, size_t length, bool tld_check)
+is_6531_email ( idn_resconf_t ctx,
+                idn_action_t actions,
+                idn_result_t *r,
+                const char *email,
+                size_t length,
+                bool tld_check)
 {
     char *ch = NULL;
     char *brs = NULL;
     char *bre = NULL;
-    int rc;
+    int rc = 0;
     const char *end = email + length;
 
     /* see "private_email.h" */
     basic_email_check (email);
 
-    rc = is_5321_local (email, ch);
+    rc = is_6531_local (email, ch);
 
     if (rc != EEAV_NO_ERROR)
         return rc;
 
     brs = ch + 1;
 
-    if (*brs != '[') {
-        rc = is_ascii_domain (ch + 1, end);
-
-        if (rc != EEAV_NO_ERROR)
-            return rc;
-
-        check_tld();
-    }
+    if (*brs != '[')
+       return (is_utf8_domain (ctx, actions, r, ch + 1, end, tld_check));
 
     /* seems to be an ip address */
     check_ip(); /* see private_email.h */

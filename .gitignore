@@ -7,3 +7,4 @@ tests/*.bin
 *.o
 bin/eav
 bin/eav-static
+Makefile.depend

@@ -1,8 +1,8 @@
 #include <string.h>
 #include <strings.h>
 #include <eav.h>
-#include "auto_tld.h"
-#include "private.h"
+#include <eav/auto_tld.h>
+#include <eav/private.h>
 
 
 extern int

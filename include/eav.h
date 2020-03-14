@@ -26,15 +26,23 @@ typedef enum {
     EAV_TLD_SPECIAL             = 1 << 9
 } EAV_TLD;
 
+
 /* eav.c utf-8 callback */
+#ifdef HAVE_IDNKIT
 typedef int (*eav_utf8_f) ( idn_resconf_t,
                             idn_action_t,
                             idn_result_t *,
                             const char *,
                             size_t,
                             bool tld_check);
+#else
+typedef int (*eav_utf8_f) (int *, const char *, size_t, bool);
+#endif
+
+
 /* eav.c ascii callback */
 typedef int (*eav_ascii_f) (const char *, size_t, bool);
+
 
 typedef struct eav_s {
     EAV_RFC         rfc;            /* mode */
@@ -184,6 +192,7 @@ is_ascii_domain (const char *start, const char *end);
 /*
  * is_utf8_domain: validates UTF-8 domain.
  */
+#ifdef HAVE_IDNKIT
 extern int
 is_utf8_domain (idn_resconf_t ctx,
                 idn_action_t actions,
@@ -191,6 +200,13 @@ is_utf8_domain (idn_resconf_t ctx,
                 const char *start,
                 const char *end,
                 bool tld_check);
+#else
+extern int
+is_utf8_domain (int *r,
+                const char *start,
+                const char *end,
+                bool tld_check);
+#endif
 
 /*
  * is_tld: validates if the domain has correct TLD.
@@ -225,6 +241,7 @@ is_5322_email (const char *email, size_t length, bool tld_check);
 /*
  * is_6531_email: check email address as defined in RFC 6531.
  */
+#ifdef HAVE_IDNKIT
 extern int
 is_6531_email ( idn_resconf_t ctx,
                 idn_action_t actions,
@@ -232,5 +249,13 @@ is_6531_email ( idn_resconf_t ctx,
                 const char *email,
                 size_t length,
                 bool tld_check);
+#else
+extern int
+is_6531_email ( int *r,
+                const char *email,
+                size_t length,
+                bool tld_check);
+#endif /* HAVE_IDNKIT */
+
 
 #endif /* EAV_H */

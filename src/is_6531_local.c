@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <eav.h>
-#include "private.h"
+#include <eav/private.h>
 #include "utf8_decode.h"
 
 

@@ -1,7 +1,7 @@
 #include <eav.h>
 #include <ctype.h>
 #include <stdio.h>
-#include "private.h"
+#include <eav/private.h>
 
 /*
  * local-part = dot-atom / quoted-string / obs-local-part

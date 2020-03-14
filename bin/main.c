@@ -84,7 +84,7 @@ main (int argc, char *argv[])
     eav_init (&eav);
 
     /* set own options */
-    eav.tld_check = false;
+    //eav.tld_check = false;
 
     /* apply new settigns */
     if (eav_setup (&eav) != EEAV_NO_ERROR) {

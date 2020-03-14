@@ -42,7 +42,7 @@ sanitize_utf8 (const char *text, size_t length)
 {
 #define TEXT_SIZE 2048
 
-    int c1, c2;         /* characters */
+    int c1 = 0, c2 = 0; /* characters */
     int p1 = 0, p2 = 0; /* byte position of characters */
     int pos = 0;        /* position in sanitized array */
     static char sanitized[TEXT_SIZE];

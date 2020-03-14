@@ -4,7 +4,7 @@
 #include <string.h>
 #include <errno.h>
 #include <eav.h>
-#include "../src/auto_tld.h"
+#include <eav/auto_tld.h>
 #include "common.h"
 
 /* how many times idnkit should fail */

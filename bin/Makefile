@@ -1,61 +1,67 @@
-IDNKIT_DIR ?= /usr/local
-IDNKIT_CFLAGS ?= -I$(IDNKIT_DIR)/include
-IDNKIT_LIBS ?= -L$(IDNKIT_DIR)/lib -lidnkit
+CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic
+DESTDIR ?= ${_destdir}
+INSTALL ?= ${_install}
 
-EAV_CFLAGS ?= -I../include
-EAV_LIBS ?= -L.. -leav
+DEFS = -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
+DEFS += -I../include
+DEFS += ${_defs}
 
-MY_CFLAGS = -Wall -Wextra -std=c99 -pedantic
-MY_CFLAGS += $(EAV_CFLAGS) $(IDNKIT_CFLAGS)
-MY_CFLAGS += -D_DEFAULT_SOURCE
-MY_CFLAGS += -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
-MY_CFLAGS += $(CFLAGS)
-LDFLAGS ?= 
-LIBS ?= 
-LIBS += $(EAV_LIBS) $(IDNKIT_LIBS)
-
-CFLAGS ?= 
-CFLAGS += -Wall -std=gnu99
-CFLAGS += $(MYHTML_CFLAGS) $(CURL_CFLAGS) $(UV_CFLAGS)
-CFLAGS += -D_POSIX_C_SOURCE=200809L
-CFLAGS += -D_XOPEN_SOURCE=500
-CFLAGS += -D_GNU_SOURCE
-LDFLAGS ?= 
-LIBS ?= 
-LIBS += $(MYHTML_LIBS) $(CURL_LIBS) $(UV_LIBS) $(SQLITE_LIBS)
-
-TARGETS = eav eav-static
+TARGETS = eav eav.static
 SOURCES = $(wildcard *.c)
 OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
 
-all: $(TARGETS)
+LIBS = ${_libs}
+LIBS += -L.. -leav
 
-$(TARGETS): $(OBJECTS)
+#----------------------------------------------------------#
 
-debug: MY_CFLAGS += -g -D_DEBUG
+CPPFLAGS += $(DEFS) $(INCLUDES)
+
+all: depend shared
+
+debug: DEFS += -g -D_DEBUG
 debug: all
 
-static: eav-static
+static: eav.static
 shared: eav
 
-eav:
-	# shared linkage
-	$(CC) $(LDFLAGS) -o $@ $(OBJECTS) $(MYHTML_LIBS) $(LIBS)
+eav: $(OBJECTS)
+	# bin -> shared linkage
+	$(CC) $(LDFLAGS) -o $@ $(OBJECTS) $(LIBS)
 
-eav-static: LDFLAGS = -static
-eav-static: $(OBJECTS)
-	# static linkage
+eav.static: LDFLAGS = -static
+eav.static: $(OBJECTS)
+	# bin -> static linkage
 	$(CC) $(LDFLAGS) -o $@ $(OBJECTS) $(LIBS)
 
 %.o: %.c
-	$(CC) -c $(MY_CFLAGS) -o $@ $<
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ -c $<
 
-clean:
-	# cleanup
-	$(RM) $(TARGETS) $(OBJECTS)
 
-strip: $(TARGETS)
-	# strip
+strip: shared
+	# bin -> strip
 	strip --strip-unneeded -R .comment -R .note -R .note.ABI-tag $(TARGETS)
 
+#----------------------------------------------------------#
+
+clean:
+	# bin -> cleanup
+	$(RM) $(TARGETS) $(OBJECTS) Makefile.depend
+
+#----------------------------------------------------------#
+
+install: shared
+	$(INSTALL) -d $(DESTDIR)/bin
+	$(INSTALL) -m 0755 eav $(DESTDIR)/bin
+
+#----------------------------------------------------------#
+
 .PHONY: all clean debug
+
+depend: Makefile.depend
+Makefile.depend:
+	$(CC) $(CPPFLAGS) $(CFLAGS) -MM -MG $(SOURCES) > $@
+
+-include Makefile.depend
+
+.DELETE_ON_ERROR:

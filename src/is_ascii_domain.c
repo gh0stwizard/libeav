@@ -10,7 +10,7 @@
  * Yorktown Heights, NY 10598, USA
  */
 #include <eav.h>
-#include "private.h"
+#include <eav/private.h>
 
 
 extern int

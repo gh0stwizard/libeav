@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <eav.h>
-#include "private.h"
-#include "private_email.h"
+#include <eav/private.h>
+#include <eav/private_email.h>
 
 
 extern int

@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <eav.h>
 #include <string.h>
-#include "private.h"
+#include <eav/private.h>
 
 
 extern int

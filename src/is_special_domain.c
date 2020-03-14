@@ -2,7 +2,7 @@
 #include <string.h>
 #include <strings.h>
 #include <eav.h>
-#include "private.h"
+#include <eav/private.h>
 
 
 typedef struct reserved_s {

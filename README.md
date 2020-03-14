@@ -41,9 +41,18 @@ See details below:
 
 ## Dependencies
 
-* [idnkit][8]
-* [GNU make][10] to build
+* [libidn][17] or [libidn2][18] or [idnkit][8]
+
+### Build dependecies
+
+General requirements:
+
+* [GNU make][10]
 * C99 compiler to compile
+
+To rebuild the documentation and auto-generate TLD database:
+
+* [Perl][19]
 
 
 ## Thread-safety
@@ -63,6 +72,37 @@ shell> man libeav
 
 ## Build
 
+### Automatic
+
+At the moment the build system looking for IDN libraries using
+next order:
+
+1. [libidn2][18]
+2. [libidn][17]
+3. [idnkit][8] - see how to configure below
+
+### Build manually with specific IDN library
+
+In the case when you have installed `libidn2` and `libidn`
+or `idnkit` (i.e. any 2 or more libriries) on the system, but
+you want to build `libeav` with specific library you have to
+tell about that like it shown below:
+
+```
+% make FORCE_IDN=idn
+% make check FORCE_IDN=idn
+% make install DESTDIR=/path/to/install/dir
+```
+
+The `FORCE_IDN` option can have the next values
+(self-described, I hope):
+
+* `idn`
+* `idn2`
+* `idnkit`
+
+### Build with idnkit
+
 First of all, you have to specify the directory where [idnkit][8]
 was installed. To do this you have two options:
 
@@ -78,11 +118,19 @@ directory you may change the destination directory by setting
 The default value of `DESTDIR` is `/usr/local`.
 
 ```
-shell> export INDKIT_DIR=/home/user/local
-shell> make
-shell> make check
-shell> make install DESTDIR=/path/to/install
+% export INDKIT_DIR=/home/user/local
+% make
+% make check
+% make install DESTDIR=/path/to/install
 ```
+
+If you have `libidn2` or `libidn` installed, then you must
+use the `FORCE_IDN` option as show above.
+
+
+## Tests
+
+At the moment tests only work with `idnkit`.
 
 
 ## Tools
@@ -142,3 +190,7 @@ This software is released under BSD 2-clause "Simplified" License.
 [14]: https://tools.ietf.org/html/rfc5322#section-3.4
 [15]: https://tools.ietf.org/html/rfc5322#section-3.4.1
 [16]: /docs/
+[17]: https://www.gnu.org/software/libidn/
+[18]: https://github.com/libidn/libidn2
+[19]: https://www.perl.org/
+
