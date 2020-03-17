@@ -1,8 +1,10 @@
 #ifndef EAV_H
 #define EAV_H
-
-#include <idn/api.h>
 #include <stdbool.h>
+#include <stddef.h>
+#ifdef HAVE_IDNKIT
+    #include <idn/api.h>
+#endif
 
 
 /* high-level API modes */
@@ -53,8 +55,9 @@ typedef struct eav_s {
     int             errcode;
     const char      *idnmsg;        /* idn error message */
     bool            initialized;    /* true when idn is initialized */
+#ifdef HAVE_IDNKIT
     idn_resconf_t   idn;
-    idn_action_t    actions;
+#endif
     eav_utf8_f      utf8_cb;
     eav_ascii_f     ascii_cb;
 } eav_t;

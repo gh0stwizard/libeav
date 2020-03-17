@@ -52,7 +52,6 @@ static const char * const errors[EEAV_MAX] = {
 extern void
 eav_init (eav_t *eav)
 {
-    eav->actions = IDN_ENCODE_REGIST;
     eav->utf8 = false;
     eav->rfc = EAV_RFC_6531;
     eav->tld_check = true;
