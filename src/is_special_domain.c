@@ -10,7 +10,7 @@ typedef struct reserved_s {
     size_t length;
 } reserved_t;
 
-static const reserved_t const reserved[] = {
+static const reserved_t reserved[] = {
     { "test",           5 },
     { "example",        8 },
     { "invalid",        8 },
@@ -18,7 +18,7 @@ static const reserved_t const reserved[] = {
     { "onion",          6 }
 };
 
-static const reserved_t const example[] = {
+static const reserved_t example[] = {
     { "com", 4 },
     { "net", 4 },
     { "org", 4 },

@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2020-03-14 05:17:55 */
+/* this file was auto-generated at 2020-03-17 15:35:17 */
 
 
 #ifndef TLD_H
@@ -24,7 +24,7 @@ enum {
     TLD_TYPE_MAX /* tests only */
 };
 
-extern const tld_t const tld_list[];
+extern const tld_t tld_list[];
 
 #endif /* TLD_H */
 

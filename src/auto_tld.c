@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2020-03-14 05:17:55 */
+/* this file was auto-generated at 2020-03-17 15:35:17 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -1589,5 +1589,5 @@ const tld_t tld_list[] = {
     { "zuerich", 8, TLD_TYPE_GENERIC },
     { "zw", 3, TLD_TYPE_COUNTRY_CODE },
     { NULL }
-}; /* const tld_t const tld_list[] */
+}; /* const tld_t tld_list[] */
 

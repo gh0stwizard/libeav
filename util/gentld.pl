@@ -52,7 +52,7 @@ EOL
     print $fh "    TLD_TYPE_MAX /* tests only */\n";
     print $fh "};\n\n";
 
-    print $fh "extern const tld_t const tld_list[];\n\n";
+    print $fh "extern const tld_t tld_list[];\n\n";
     print $fh "#endif /* TLD_H */\n\n";
 
     close ($fh)
@@ -104,7 +104,7 @@ sub gen_tld_c(@) {
                     $type;
     }
     printf $cfh "    { NULL }\n";
-    print $cfh "}; /* const tld_t const tld_list[] */\n\n";
+    print $cfh "}; /* const tld_t tld_list[] */\n\n";
 
     close ($io)
         or die "close: $csv_file: $!";
