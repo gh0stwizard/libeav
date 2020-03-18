@@ -4,7 +4,6 @@ DESTDIR ?= /usr/local
 INSTALL ?= install
 PERL ?= perl
 
-
 BINDIR ?= $(DESTDIR)/bin
 LIBDIR ?= $(DESTDIR)/lib
 INCLUDEDIR ?= $(DESTDIR)/include
@@ -33,6 +32,7 @@ OBJECTS = $(patsubst src/%.c, src/%.o, $(SOURCES))
 ifdef FORCE_IDN
 ifeq ($(FORCE_IDN),idnkit)
 $(info > Force using idnkit)
+WITH_IDN = idnkit
 IDNKIT_DIR ?= /usr/local
 DEFS = -DHAVE_IDNKIT -I$(IDNKIT_DIR)/include
 LIBS = -L$(IDNKIT_DIR)/lib -lidnkit
@@ -40,12 +40,14 @@ PARTIAL = $(wildcard partial/idnkit/*.c)
 OBJECTS += $(patsubst  partial/idnkit/%.c,  partial/idnkit/%.o, $(PARTIAL))
 else ifeq ($(FORCE_IDN),idn2)
 $(info > Force using libidn2)
+WITH_IDN = idn2
 DEFS = -DHAVE_LIBIDN2 $(shell $(PKG_CONFIG) --cflags libidn2)
 LIBS = $(shell $(PKG_CONFIG) --libs libidn2)
 PARTIAL = $(wildcard partial/idn2/*.c)
 OBJECTS += $(patsubst  partial/idn2/%.c,  partial/idn2/%.o, $(PARTIAL))
 else ifeq ($(FORCE_IDN),idn)
 $(info > Force using libidn)
+WITH_IDN = idn
 DEFS = -DHAVE_LIBIDN $(shell $(PKG_CONFIG) --cflags libidn)
 LIBS = $(shell $(PKG_CONFIG) --libs libidn)
 PARTIAL = $(wildcard partial/idn/*.c)
@@ -57,18 +59,21 @@ else
 $(info > Looking for idn library ...)
 ifeq ($(shell $(PKG_CONFIG) --exists 'libidn2 >= 2.0.3' || echo NO),)
 $(info > Found libidn2)
+WITH_IDN = idn2
 DEFS = -DHAVE_LIBIDN2 $(shell $(PKG_CONFIG) --cflags libidn2)
 LIBS = $(shell $(PKG_CONFIG) --libs libidn2)
 PARTIAL = $(wildcard partial/idn2/*.c)
 OBJECTS += $(patsubst  partial/idn2/%.c,  partial/idn2/%.o, $(PARTIAL))
 else ifeq ($(shell $(PKG_CONFIG) --exists 'libidn' || echo NO),)
 $(info > Found libidn)
+WITH_IDN = idn
 DEFS = -DHAVE_LIBIDN $(shell $(PKG_CONFIG) --cflags libidn)
 LIBS = $(shell $(PKG_CONFIG) --libs libidn)
 PARTIAL = $(wildcard partial/idn/*.c)
 OBJECTS += $(patsubst  partial/idn/%.c,  partial/idn/%.o, $(PARTIAL))
 else
 $(info > Using idnkit by default)
+WITH_IDN = idnkit
 IDNKIT_DIR ?= /usr/local
 DEFS = -DHAVE_IDNKIT -I$(IDNKIT_DIR)/include
 LIBS = -L$(IDNKIT_DIR)/lib -lidnkit
@@ -92,6 +97,7 @@ export _idnkit_dir = $(IDNKIT_DIR)
 export _destdir = $(DESTDIR)
 export _objects = $(OBJECTS)
 export _libpath = $(LIB_PATH)
+export _withidn = $(WITH_IDN)
 
 #----------------------------------------------------------#
 
@@ -111,7 +117,8 @@ $(BIN_TARGET): $(DLL_TARGET)
 
 $(DLL_TARGET): $(OBJECTS)
 	# library -> shared linkage
-	$(CC) -shared $(LDFLAGS) -Iinclude -Wl,-soname,$(DLL_TARGET) -o $(DLL_TARGET) $(OBJECTS) $(LIBS)
+	$(CC) -shared $(LDFLAGS) -Iinclude -Wl,-soname,$(DLL_TARGET) \
+		-o $(DLL_TARGET) $(OBJECTS) $(LIBS)
 
 $(LIB_TARGET): $(OBJECTS)
 	# library -> static linkage
@@ -127,7 +134,8 @@ man:
 	$(MAKE) -C docs VERSION=$(VERSION)
 
 auto:
-	$(PERL) util/gentld.pl include/eav/auto_tld.h src/auto_tld.c data/punycode.csv
+	$(PERL) util/gentld.pl include/eav/auto_tld.h src/auto_tld.c \
+		data/punycode.csv
 
 all-tld:
 	$(PERL) util/gen_utf8_pass_test.pl data/tld-domains.txt data/raw.csv

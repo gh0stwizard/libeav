@@ -37,15 +37,15 @@ not-tld@aaa.onionE
 not-tld@Flocalhost
 invalid localpart@nic.ru
 # pass: 64 chars
-abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789@example.ru
+PASSefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789@example.ru
 # fail: > 64 chars
-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZover-64-chars@gh0stwizard.tk
+FAILefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZover-64-chars@gh0stwizard.tk
 # fail: label > 63 chars
-x@abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZover64-chars.label.com
-# pass: domain = 255 chars
-p@abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63-char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63-char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63-char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZover255.com
-# fail: domain > 255 chars
-f@abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63-char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63-char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63-char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-over256.com
+f@FAILefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZover64-chars.label.com
+# pass: domain = 254 chars (253 without ending dot)
+p@PASSefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63-char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZover253.com
+# fail: domain >= 255 chars
+f@FAILefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63-char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZwith63char.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZover-254.com
 prettyandsimple@ok.com
 very.common@ok.com
 disposable.style.email.with+symbol@ok.com
@@ -87,5 +87,6 @@ abc. space before@nah.com
  space before@nonono.com
 \@no.com
 \\@no.com
-"next char is cr:"@ugly.com
+"next char is cr:
+"@ugly.com
 "next char is del:"@badboy.com

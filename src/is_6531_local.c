@@ -110,7 +110,7 @@ is_6531_local (const char *start, const char *end)
                         goto next;
                 }
 
-                if ((ch = utf8_decode_next ()) >= 0) {
+                if ((ch = utf8_decode_next (&u)) >= 0) {
                     if (ch > 0x007f)
                         break;
 
