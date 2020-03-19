@@ -154,6 +154,12 @@ within *local-part* as it done if the **RFC 6531** mode is on
 See the code of [is_6531_local.c][7] file for details.
 
 
+## Usage
+
+When compile your application with [idnkit][8], please, pass the
+`-DHAVE_IDNKIT` flag to the compiler.
+
+
 ## Tools
 
 There is an utility called `eav`. It will be installed by default to

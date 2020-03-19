@@ -25,7 +25,9 @@ I<length>B<);>
 
 =back
 
-Link with I<-leav> I<-lidnkit>.
+Link with I<-leav> { I<-lidn2> | I<-lidn> | I<-lidnkit> }.
+
+When linking with B<idnkit> compile with I<-DHAVE_IDNKIT>.
 
 =head1 DESCRIPTION
 
