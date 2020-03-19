@@ -13,7 +13,9 @@
     of the ASCII graphics or control characters.
        ^^^^^^^^^^^^^^^^^^
 
- * After talk with IETF guys, errata #4996 for RFC6231 (not public yet)
+ * See the mail archive of the Errata #4996 of RFC6531:
+    https://www.rfc-editor.org/errata_search.php?rfc=6531&eid=4996
+    https://www.ietf.org/mail-archive/web/ima/current/msg05506.html
  * According to RFC20, section "4.2", exclude next characters:
  * atext = ALPHA / DIGIT /
             "!" / "$" /

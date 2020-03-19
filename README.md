@@ -129,17 +129,17 @@ use the `FORCE_IDN` option as show above.
 
 ### RFC 6531 switches
 
-It is possible to build the library to follow rules of RFC [RFC 5322][4] and
+It is possible to build the library to follow rules of [RFC 5322][4] and
 [RFC 20][6]. To so, export or define inline the next options:
 
-* `RFC6531_FOLLOW_RFC5322` = ON | OFF (default ON)
+* `RFC6531_FOLLOW_RFC5322` = ON | OFF (default OFF)
 * `RFC6531_FOLLOW_RFC20` = ON | OFF (default OFF)
 
 For instance, define the options above inline:
 
 ```
 % make clean
-% make check RFC6531_FOLLOW_RFC5322=OFF RFC6531_FOLLOW_RFC20=ON
+% make check RFC6531_FOLLOW_RFC5322=ON RFC6531_FOLLOW_RFC20=ON
 ```
 
 Briefly about the switches and these RFCs:
