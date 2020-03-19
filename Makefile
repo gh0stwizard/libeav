@@ -1,9 +1,17 @@
 CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic -fPIC
-EAVFLAGS ?= -DRFC6531_FOLLOW_RFC5322
 PKG_CONFIG ?= pkg-config
 DESTDIR ?= /usr/local
 INSTALL ?= install
 PERL ?= perl
+
+ifndef RFC6531_FOLLOW_RFC5322
+export RFC6531_FOLLOW_RFC5322 = ON
+endif
+
+ifndef RFC6531_FOLLOW_RFC20
+export RFC6531_FOLLOW_RFC20 = OFF
+endif
+
 
 BINDIR ?= $(DESTDIR)/bin
 LIBDIR ?= $(DESTDIR)/lib
@@ -83,10 +91,19 @@ OBJECTS += $(patsubst  partial/idnkit/%.c,  partial/idnkit/%.o, $(PARTIAL))
 endif
 endif
 
+ifeq ($(RFC6531_FOLLOW_RFC5322),ON)
+DEFS += -DRFC6531_FOLLOW_RFC5322
+export RFC6531_FOLLOW_RFC5322
+endif
+
+ifeq ($(RFC6531_FOLLOW_RFC20),ON)
+DEFS += -DRFC6531_FOLLOW_RFC20
+export RFC6531_FOLLOW_RFC20
+endif
+
 #----------------------------------------------------------#
 
 CPPFLAGS = -Iinclude -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
-DEFS += $(EAVFLAGS)
 CPPFLAGS += $(DEFS) $(INCLUDES)
 
 LIB_PATH = $(shell realpath .)

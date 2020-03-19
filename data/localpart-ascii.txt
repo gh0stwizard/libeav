@@ -4,14 +4,14 @@ disposable.style.email.with+symbol
 other.email-with-dash
 "much.more unusual"
 "very.unusual.@.unusual.com"
-"very.(),:;<>[]\".VERY.\"very@\\ \"very\".unusual"
+"very.(),:;<>[]\".VERY.\"very@\\\ \"very\".unusual"
 example-indeed
 !#$%&'*+-/=?^_`{}|~
-"()<>[]:,;@\\\"!#$%&'-/=?^_`{}| ~.a"
+"()<>[]:,;@\\\"!#$%&'-/=?^_`{}|~.a"
 "multi"."quote"."is-allowed"
 this_is.also."valid"
 " "
-"next char is tab:	"
+"next-char-is-tab:	"
 " abc"
 "abc "
 "  abc  "
@@ -30,14 +30,14 @@ john..doe
 .abc
 abc.
 abc.@
-abc. space before
-	tab before
+abc. space-before
+	tab-before
 "\"
 "\ 
 # next is empty line
 
- space before
+ space-before
 \
 \\
-"next char is cr:"
-"next char is del:"
+"CR:"
+"DEL:"

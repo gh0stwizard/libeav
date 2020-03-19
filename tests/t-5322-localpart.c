@@ -6,10 +6,6 @@
 #include <eav.h>
 #include "common.h"
 
-/* how many times idnkit should fail */
-#define PASSED_CHECK    (18)
-#define FAILED_CHECK    (24)
-
 
 extern int
 main (int argc, char *argv[])
@@ -21,19 +17,26 @@ main (int argc, char *argv[])
     FILE *fh;
     int passed = 0;
     int failed = 0;
+    char *file = NULL;
+    int expect_pass = -1;
+    int expect_fail = -1;
 
 
-    if (argc >= 3 || argc < 2) {
-        msg_warn ("usage: %s FILE\n", argv[0]);
+    if (argc >= 5 || argc < 4) {
+        msg_warn ("usage: %s PASS_CHECKS FAIL_CHECKS FILE\n", argv[0]);
         return 2;
     }
 
     setlocale(LC_ALL, "");
 
-    fh = fopen (argv[--argc], "r");
+    file = argv[3];
+    expect_pass = atoi (argv[1]);
+    expect_fail = atoi (argv[2]);
+
+    fh = fopen (file, "r");
 
     if (fh == NULL) {
-        msg_warn ("open: %s: %s", argv[argc], strerror(errno));
+        msg_warn ("error: open %s: %s", file, strerror(errno));
         return 3;
     }
 
@@ -56,25 +59,26 @@ main (int argc, char *argv[])
         }
     }
 
-    if (passed != PASSED_CHECK) {
+    if (passed != expect_pass) {
         msg_warn ("%s: expected %d passed checks, but got %d\n",
                 argv[0],
-                PASSED_CHECK,
+                expect_pass,
                 passed);
         return 4;
     }
 
-    if (failed != FAILED_CHECK) {
+    if (failed != expect_fail) {
         msg_warn ("%s: expected %d failed checks, but got %d\n",
                 argv[0],
-                FAILED_CHECK,
+                expect_fail,
                 failed);
-        return 4;
+        return 5;
     }
 
     if (line != NULL)
         free (line);
     fclose (fh);
     msg_ok ("%s: PASS\n", argv[0]);
+
     return 0;
 }
