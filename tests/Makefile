@@ -59,7 +59,7 @@ check-domain:
 	# domain tests
 	# =====================================================
 	./t-all-tlds-test.bin ../data/tld-domains.txt
-	./t-domain-length.bin ../data/domain-length.txt
+	./t-domain-length.bin 4 3 ../data/domain-length.txt
 	./t-dash-domains.bin ../data/xn-dash-domains.txt
 
 check-lpart:

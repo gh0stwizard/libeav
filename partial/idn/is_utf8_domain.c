@@ -34,13 +34,6 @@ is_utf8_domain (int *r,
     }
 
     len = strlen (domain);
-
-    if (len > VALID_HOSTNAME_LEN) {
-        iserr = true; rc = EEAV_DOMAIN_TOO_LONG;
-        goto done;
-    }
-
-    /* idn_res_encodename() does NOT check numeric domains */
     rc = is_ascii_domain (domain, domain + len);
 
     if (rc != EEAV_NO_ERROR)

@@ -20,7 +20,6 @@
 
 #define VALID_HOSTNAME_LEN  255 /* RFC 1035 */
 #define VALID_LABEL_LEN     63  /* RFC 1035 */
-
 #define VALID_LPART_LEN     64  /* RFC 5321 */
 
 #endif /* IS_LOCAL_H */

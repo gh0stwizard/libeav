@@ -6,10 +6,11 @@
 #include <eav.h>
 #include <eav/auto_tld.h>
 #include "common.h"
+#include <idn2.h>
 
 
-/* how many times idnkit should fail */
-#define IDNKIT_CHECK    (3)
+/* how many times idn library should fail */
+#define IDN_ERRORS    (3)
 
 
 extern int
@@ -20,21 +21,30 @@ main (int argc, char *argv[])
     ssize_t read;
     static int error_count[EEAV_MAX]; /* zero everything */
     int t;
-    int r;
+    int r = 0;
     FILE *fh;
+    char *file = NULL;
+    int expect_pass = -1;
+    int expect_fail = -1;
+    int passed = 0;
+    int failed = 0;
 
 
-    if (argc >= 3 || argc < 2) {
-        msg_warn ("usage: %s FILE\n", argv[0]);
+    if (argc >= 5 || argc < 4) {
+        msg_warn ("usage: %s PASS_COUNT FAIL_COUNT FILE\n", argv[0]);
         return 2;
     }
 
     setlocale(LC_ALL, "");
 
-    fh = fopen (argv[--argc], "r");
+    file = argv[3];
+    expect_pass = atoi (argv[1]);
+    expect_fail = atoi (argv[2]);
+
+    fh = fopen (file, "r");
 
     if (fh == NULL) {
-        msg_warn ("open: %s: %s", argv[argc], strerror(errno));
+        msg_warn ("error: open %s: %s", file, strerror(errno));
         return 3;
     }
 
@@ -44,26 +54,52 @@ main (int argc, char *argv[])
         if (line[0] == '#') /* skip comments */
             continue;
 
-        t = is_utf8_domain (&r, line, line + strlen (line), true);
+        r = 0; /* reset */
+        t = is_utf8_domain (&r, line, line + strlen (line), false);
 
         if (t >= 0) {
-            if (t != TLD_TYPE_NOT_ASSIGNED && t != TLD_TYPE_TEST)
+            if (t != TLD_TYPE_NOT_ASSIGNED && t != TLD_TYPE_TEST) {
                 printf ("PASS: %s\n", line);
-            else
-                printf ("FAIL: %s\n\tcode = %d\n", line, t);
+                passed++;
+            }
+            else {
+                printf ("FAIL: %s\n", line);
+                failed++;
+                printf ("\t t = %d; r = %d; idnerr = %s\n",
+                        t, r, idn2_strerror (r));
+            }
         }
         else {
-            printf ("FAIL: %s\n\tcode = %d\n", line, t);
+            printf ("FAIL: %s\n", line);
             error_count[-1 * t]++;
+            failed++;
+            printf ("\t t = %d; r = %d; idnerr = %s\n",
+                    t, r, idn2_strerror (r));
         }
     }
 
-    if (error_count[EEAV_IDN_ERROR] != IDNKIT_CHECK) {
-        msg_warn ("%s: expected %d IDN test to been failed, but got %d\n",
+    if (passed != expect_pass) {
+        msg_warn ("%s: expected %d passed checks, but got %d\n",
                 argv[0],
-                IDNKIT_CHECK,
-                error_count[EEAV_IDN_ERROR]);
+                expect_pass,
+                passed);
         return 4;
+    }
+
+    if (failed != expect_fail) {
+        msg_warn ("%s: expected %d failed checks, but got %d\n",
+                argv[0],
+                expect_fail,
+                failed);
+        return 5;
+    }
+
+    if (error_count[EEAV_IDN_ERROR] != IDN_ERRORS) {
+        msg_warn ("%s: expected %d idn error(s), but got %d\n",
+                argv[0],
+                IDN_ERRORS,
+                error_count[EEAV_IDN_ERROR]);
+        return 6;
     }
 
 #ifdef _DEBUG
@@ -74,9 +110,11 @@ main (int argc, char *argv[])
 
     if (line != NULL)
         free (line);
+
     fclose (fh);
 
     msg_ok ("%s: PASS\n", argv[0]);
 
     return 0;
 }
+
