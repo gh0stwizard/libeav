@@ -14,8 +14,8 @@ support all existing RFCs:
 
 A quick note about [RFC 6531][5]: it is possible that the correct implementation
 SHOULD take into account [RFC 20][6] to exclude some characters:
-"#", "\`", "{", "}", "|", "~" and "^". See the `RFC 6531 switches` section
-below.
+"#", "\`", "{", "}", "|", "~" and "^". See the
+[RFC 6531 switches](#rfc-6531-switches) section below.
 
 
 ## What it does not
@@ -78,13 +78,13 @@ At the moment the build system looking for IDN libraries using
 next order:
 
 1. [libidn2][18]
-2. [libidn][17]
+2. [libidn][17] (not well supported, some tests may fail)
 3. [idnkit][8] - see how to configure below
 
 ### Build manually with specific IDN library
 
 In the case when you have installed `libidn2` and `libidn`
-or `idnkit` (i.e. any 2 or more libriries) on the system, but
+or `idnkit` (i.e. any 2 or more libraries) on the system, but
 you want to build `libeav` with specific library you have to
 tell about that like it shown below:
 
