@@ -19,20 +19,23 @@ on:
     - 'partial/**'
     - 'tests/**'
     - 'Makefile'
+
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-    
+    runs-on: ubuntu-latest    
     steps:
     - uses: actions/checkout@v2
+
     # apt-get update
     - name: Update
       run: sudo apt-get update
+
     # install deps
-    - name: Install libidn2-dev
-      run: sudo apt-get install -y libidn2-0 libidn2-0-dev      
+    - name: install libidn2-dev
+      run: sudo apt-get install -y libidn2-0 libidn2-0-dev
+
     - name: make
       run: make
+
     - name: make check
       run: make check
