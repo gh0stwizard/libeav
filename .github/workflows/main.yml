@@ -1,4 +1,4 @@
-name: build libidn2
+name: build
 
 on:
   push:
