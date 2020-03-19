@@ -83,7 +83,7 @@ is_6531_local (const char *start, const char *end)
             case '(': case ')': case '<': case '>': case '@':
             case ',': case ';': case ':': case '\\':
             case '[': case ']': case ' ':
-#ifndef RFC6531_PERMIT_EXTRA_CHARS
+#ifdef RFC6531_FOLLOW_RFC20
             /* RFC20 */
             case '#': case '^': case '`': case '~':
             case '{': case '}': case '|':

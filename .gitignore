@@ -8,3 +8,4 @@ tests/*.bin
 bin/eav
 bin/eav-static
 Makefile.depend
+*~

@@ -6,7 +6,7 @@
 #include <eav/private.h>
 #include <eav/auto_tld.h>
 
-/* is_utf8_inet_domain: validates that domain is fqdn & have valid tld */
+/* is_utf8_domain: validates that domain is fqdn & have valid tld */
 extern int
 is_utf8_domain (int *r,
                 const char *start,

@@ -31,7 +31,7 @@ LIBS = ${_libs} -L.. -leav
 
 #----------------------------------------------------------#
 
-CPPFLAGS += $(DEFS) $(INCLUDES)
+CPPFLAGS = $(DEFS) $(INCLUDES)
 export LD_LIBRARY_PATH=$(LIB_PATH)
 
 all: depend $(TARGETS) $(PARTIAL_TRT)
@@ -52,9 +52,9 @@ clean:
 	# === tests -> cleanup
 	$(RM) $(TARGETS) $(OBJECTS) $(PARTIAL_OBJ) $(PARTIAL_TRT) Makefile.depend
 
-check: $(TARGETS) $(PARTIAL_TRT) check-domain check-lpart check-email check-lib
+check: check-domain check-lpart check-email check-lib
 
-check-domain:
+check-domain: $(TARGETS) $(PARTIAL_TRT)
 	# =====================================================
 	# domain tests
 	# =====================================================
@@ -62,20 +62,34 @@ check-domain:
 	./t-domain-length.bin 4 3 ../data/domain-length.txt
 	./t-dash-domains.bin ../data/xn-dash-domains.txt
 
-check-lpart:
+check-lpart: $(TARGETS) $(PARTIAL_TRT)
 	# localpart tests
 	./t-822-localpart.bin ../data/localpart-ascii.txt
 	./t-5321-localpart.bin ../data/localpart-ascii.txt
 	./t-5322-localpart.bin ../data/localpart-ascii.txt
-	./t-6531-localpart.bin 20 22 ../data/localpart-ascii.txt
-	./t-6531-localpart.bin 13 11 ../data/localpart-utf8.txt
+#	./t-6531-localpart.bin 20 22 ../data/localpart-ascii.txt
+#	./t-6531-localpart.bin 13 11 ../data/localpart-utf8.txt
 
-check-email:
-	# email address tests
-#	./t-822-email.bin 43 42 ../data/email-ascii.txt
-#	./t-5321-email.bin 40 45 ../data/email-ascii.txt
-#	./t-5322-email.bin 37 48 ../data/email-ascii.txt
-#	./t-6531-email.bin 39 46 ../data/email-ascii.txt
+check-email: check-email-822 check-email-5321 check-email-5322 check-email-6531
+
+check-email-822: $(TARGETS) $(PARTIAL_TRT)
+	# === RFC 822 email address tests
+	./t-822-email.bin 47 0 ../data/pass-email-ascii.txt
+	./t-822-email.bin 0 39 ../data/fail-email-ascii.txt
+
+check-email-5321: $(TARGETS) $(PARTIAL_TRT)
+	# === RFC 5321 email address tests
+	./t-5321-email.bin 41 6 ../data/pass-email-ascii.txt
+	./t-5321-email.bin 0 39 ../data/fail-email-ascii.txt
+
+check-email-5322: $(TARGETS) $(PARTIAL_TRT)
+	# === RFC 5322 email address tests
+	./t-5322-email.bin 45 2 ../data/pass-email-ascii.txt
+	./t-5322-email.bin 0 39 ../data/fail-email-ascii.txt
+
+check-email-6531:
+	./t-6531-email.bin 45 2 ../data/pass-email-ascii.txt
+	./t-6531-email.bin 0 39 ../data/fail-email-ascii.txt
 	./t-6531-email.bin 7 17 ../data/email-utf8.txt
 	./t-6531-email.bin 7 1 ../data/email-reg.ru.txt
 #	./t-6531-email-fqdn.bin 39 46 ../data/email-ascii.txt

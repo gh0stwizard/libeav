@@ -56,6 +56,7 @@ main (int argc, char *argv[])
         }
         else {
             printf ("FAIL: %s\n", sanitize(line, len));
+            printf ("\tr = %d\n", r);
             failed++;
         }
     }

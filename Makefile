@@ -1,4 +1,5 @@
 CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic -fPIC
+EAVFLAGS ?= -DRFC6531_FOLLOW_RFC5322
 PKG_CONFIG ?= pkg-config
 DESTDIR ?= /usr/local
 INSTALL ?= install
@@ -84,7 +85,8 @@ endif
 
 #----------------------------------------------------------#
 
-CPPFLAGS += -Iinclude -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
+CPPFLAGS = -Iinclude -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
+DEFS += $(EAVFLAGS)
 CPPFLAGS += $(DEFS) $(INCLUDES)
 
 LIB_PATH = $(shell realpath .)
