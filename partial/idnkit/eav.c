@@ -142,3 +142,32 @@ eav_is_email (eav_t *eav, const char *email, size_t length)
 
     return (NO);
 }
+
+
+extern void
+eav_init (eav_t *eav)
+{
+    eav->actions = IDN_ENCODE_REGIST;
+    eav->utf8 = false;
+    eav->rfc = EAV_RFC_6531;
+    eav->tld_check = true;
+    eav->allow_tld =    EAV_TLD_COUNTRY_CODE |
+                        EAV_TLD_GENERIC |
+                        EAV_TLD_GENERIC_RESTRICTED |
+                        EAV_TLD_INFRASTRUCTURE |
+                        EAV_TLD_SPONSORED |
+                        EAV_TLD_SPECIAL;
+    eav->utf8_cb = NULL;
+    eav->ascii_cb = NULL;
+    eav->initialized = false;
+    eav->errcode = EEAV_NO_ERROR;
+}
+
+
+extern void
+eav_free (eav_t *eav)
+{
+    if (eav != NULL && eav->initialized)
+        idn_resconf_destroy (eav->idn);
+}
+

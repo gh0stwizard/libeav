@@ -18,6 +18,7 @@ src_pattern = idnkit/%.c
 PARTIAL_SRC = $(wildcard idnkit/*.c)
 PARTIAL_OBJ = $(patsubst idnkit/%.c, %.o, $(PARTIAL_SRC))
 PARTIAL_TRT = $(patsubst idnkit/%.c, %.bin, $(PARTIAL_SRC))
+LIB_PATH = $(shell realpath ..):${_idnkit_dir}/lib
 else
 src_pattern = idnX/%.c
 PARTIAL_SRC = $(wildcard idnX/*.c)
@@ -26,12 +27,7 @@ PARTIAL_TRT = $(patsubst idnX/%.c, %.bin, $(PARTIAL_SRC))
 endif
 
 DEP_OBJ = $(patsubst %.o, ../%.o, ${_objects})
-
 LIBS = ${_libs} -L.. -leav
-
-$(info !!! sources $(SOURCES))
-$(info !!! objects $(OBJECTS))
-$(info !!! targets $(TARGETS))
 
 #----------------------------------------------------------#
 
