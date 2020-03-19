@@ -1,5 +1,6 @@
 # libeav - Email Address Validation Library
 
+![build](https://github.com/gh0stwizard/libeav/workflows/build/badge.svg)
 
 ## Description
 
