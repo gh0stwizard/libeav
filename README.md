@@ -146,18 +146,19 @@ Briefly about the switches and these RFCs:
 
 * **RFC 5322** allows some CONTROL characters in quotes and quoted pairs. When
 `RFC6531_FOLLOW_RFC5322 = OFF`, **libeav** disallows any CONTROL characters
-within *local-part* as it done if the **RFC 6531** mode is on
-(copy the **RFC 5321** behavior).
+within *local-part* (copy the **RFC 5321** behavior).
 * **RFC 20** simply disallows the next GRAPHIC characters within *local-part*:
 "#", "\`", "{", "}", "|", "~" and "^".
 
 See the code of [is_6531_local.c][7] file for details.
 
 
-## Usage
+## API
 
 When compile your application with [idnkit][8], please, pass the
 `-DHAVE_IDNKIT` flag to the compiler.
+
+Please, read the [developer documentation][20] for details.
 
 
 ## Tools
@@ -220,4 +221,5 @@ This software is released under BSD 2-clause "Simplified" License.
 [17]: https://www.gnu.org/software/libidn/
 [18]: https://github.com/libidn/libidn2
 [19]: https://www.perl.org/
+[20]: /docs/libeav.3.pod
 
