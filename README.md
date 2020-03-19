@@ -14,8 +14,8 @@ support all existing RFCs:
 
 A quick note about [RFC 6531][5]: it is possible that the correct implementation
 SHOULD take into account [RFC 20][6] to exclude some characters:
-"#", "`", "{", "}", "|", "~" and "^". I did it, but you may change this
-in the way you would like (see the [is_6531_local.c][7] file).
+"#", "\`", "{", "}", "|", "~" and "^". See the `RFC 6531 switches` section
+below.
 
 
 ## What it does not
@@ -127,10 +127,31 @@ The default value of `DESTDIR` is `/usr/local`.
 If you have `libidn2` or `libidn` installed, then you must
 use the `FORCE_IDN` option as show above.
 
+### RFC 6531 switches
 
-## Tests
+It is possible to build the library to follow rules of RFC [RFC 5322][4] and
+[RFC 20][6]. To so, export or define inline the next options:
 
-At the moment tests only work with `idnkit`.
+* `RFC6531_FOLLOW_RFC5322` = ON | OFF (default ON)
+* `RFC6531_FOLLOW_RFC20` = ON | OFF (default OFF)
+
+For instance, define the options above inline:
+
+```
+% make clean
+% make check RFC6531_FOLLOW_RFC5322=OFF RFC6531_FOLLOW_RFC20=ON
+```
+
+Briefly about the switches and these RFCs:
+
+* **RFC 5322** allows some CONTROL characters in quotes and quoted pairs. When
+`RFC6531_FOLLOW_RFC5322 = OFF`, **libeav** disallows any CONTROL characters
+within *local-part* as it done if the **RFC 6531** mode is on
+(copy the **RFC 5321** behavior).
+* **RFC 20** simply disallows the next GRAPHIC characters within *local-part*:
+"#", "\`", "{", "}", "|", "~" and "^".
+
+See the code of [is_6531_local.c][7] file for details.
 
 
 ## Tools
