@@ -203,12 +203,12 @@ strip: $(TARGETS)
 
 #----------------------------------------------------------#
 
-install: install-bin install-libs install-man libeav.pc
+install: install-bin install-libs install-man
 
 install-bin: $(BIN_TARGET)
 	$(MAKE) -C bin install DESTDIR=$(DESTDIR)
 
-install-libs: install-shared install-static
+install-libs: install-shared install-static libeav.pc
 	$(INSTALL) -d $(DATAROOTDIR)/pkgconfig
 	$(INSTALL) -m 0644 libeav.pc $(DATAROOTDIR)/pkgconfig
 
