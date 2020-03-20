@@ -191,6 +191,10 @@ PASS: xxx.ipv6@[2001:db8:1:1:1:1:1:1]
 PASS: simple@test.com
 ```
 
+## See also
+
+* [github: dertuxmalwieder/libvldmail][21]
+
 
 ## Credits
 
@@ -223,4 +227,4 @@ This software is released under BSD 2-clause "Simplified" License.
 [18]: https://github.com/libidn/libidn2
 [19]: https://www.perl.org/
 [20]: /docs/libeav.3.pod
-
+[21]: https://github.com/dertuxmalwieder/libvldmail
