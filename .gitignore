@@ -9,3 +9,4 @@ bin/eav
 bin/eav-static
 Makefile.depend
 *~
+libeav.pc

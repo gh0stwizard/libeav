@@ -3,6 +3,8 @@ PKG_CONFIG ?= pkg-config
 DESTDIR ?= /usr/local
 INSTALL ?= install
 PERL ?= perl
+SED ?= sed
+
 
 ifndef RFC6531_FOLLOW_RFC5322
 export RFC6531_FOLLOW_RFC5322 = OFF
@@ -161,9 +163,34 @@ all-tld:
 
 #----------------------------------------------------------#
 
+ifeq ($(WITH_IDN),idnkit)
+pc_cflags = -I$${includedir} -DIDN_KIT
+pc_requires_private = 
+pc_libs_private = -L$(IDNKIT_DIR)/lib -lidnkit
+else
+pc_cflags = -I$${includedir}
+pc_requires_private = lib$(WITH_IDN)
+pc_libs_private = 
+endif
+
+libeav.pc: libeav.pc.in
+	$(SED) \
+	-e 's,@version\@,$(VERSION),' \
+	-e 's,@prefix\@,$(DESTDIR),g' \
+	-e 's,@exec_prefix\@,$(DESTDIR),g' \
+	-e 's,@includedir\@,$(INCLUDEDIR),g' \
+	-e 's,@libdir\@,$(LIBDIR),g' \
+	-e 's,@cflags\@,$(pc_cflags),g' \
+	-e 's,@requires_private\@,$(pc_requires_private),g' \
+	-e 's,@libs_private\@,$(pc_libs_private),g' \
+	$< > $@
+
+#----------------------------------------------------------#
+
 clean: clean-tests clean-bin
 	# cleanup
-	$(RM) $(DLL_TARGET) $(LIB_TARGET) $(OBJECTS) Makefile.depend
+	$(RM) $(DLL_TARGET) $(LIB_TARGET) $(OBJECTS) \
+	Makefile.depend libeav.pc
 
 clean-tests:
 	$(MAKE) -C tests clean
@@ -176,12 +203,14 @@ strip: $(TARGETS)
 
 #----------------------------------------------------------#
 
-install: install-bin install-libs install-man
+install: install-bin install-libs install-man libeav.pc
 
 install-bin: $(BIN_TARGET)
 	$(MAKE) -C bin install DESTDIR=$(DESTDIR)
 
 install-libs: install-shared install-static
+	$(INSTALL) -d $(DATAROOTDIR)/pkgconfig
+	$(INSTALL) -m 0644 libeav.pc $(DATAROOTDIR)/pkgconfig
 
 install-shared: $(DLL_TARGET)
 	# installing shared library
@@ -206,7 +235,7 @@ install-man:
 
 #----------------------------------------------------------#
 
-.PHONY: all debug check clean docs install libs
+.PHONY: all debug check clean docs install libs libeav.pc
 
 depend: Makefile.depend
 Makefile.depend:
