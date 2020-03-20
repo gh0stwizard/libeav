@@ -10,3 +10,4 @@ bin/eav-static
 Makefile.depend
 *~
 libeav.pc
+.deps

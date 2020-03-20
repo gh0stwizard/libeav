@@ -122,7 +122,7 @@ export _withidn = $(WITH_IDN)
 
 #----------------------------------------------------------#
 
-all: depend libs app
+all: libs app
 
 debug: CFLAGS += -g -D_DEBUG
 debug: all
@@ -136,19 +136,19 @@ app: $(BIN_TARGET)
 $(BIN_TARGET): $(DLL_TARGET)
 	$(MAKE) -C bin
 
-$(DLL_TARGET): $(OBJECTS)
+$(DLL_TARGET): depend $(OBJECTS)
 	# library -> shared linkage
 	$(CC) -shared $(LDFLAGS) -Iinclude -Wl,-soname,$(DLL_TARGET) \
 		-o $(DLL_TARGET) $(OBJECTS) $(LIBS)
 
-$(LIB_TARGET): $(OBJECTS)
+$(LIB_TARGET): depend $(OBJECTS)
 	# library -> static linkage
 	$(AR) rcs $@ $(OBJECTS)
 
 %.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -I. -o $@ -c $<
 
-check: $(TARGETS)
+check: $(OBJECTS)
 	$(MAKE) -C tests check IDNKIT_DIR=$(IDNKIT_DIR)
 
 man:
@@ -184,6 +184,10 @@ libeav.pc: libeav.pc.in
 	-e 's,@requires_private\@,$(pc_requires_private),g' \
 	-e 's,@libs_private\@,$(pc_libs_private),g' \
 	$< > $@
+
+pc-dump: libeav.pc
+	private=`PKG_CONFIG_PATH=. $(PKG_CONFIG) --print-requires-private libeav`; \
+	$(PKG_CONFIG) --libs $$private > .deps
 
 #----------------------------------------------------------#
 
