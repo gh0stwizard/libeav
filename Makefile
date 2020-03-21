@@ -185,10 +185,6 @@ libeav.pc: libeav.pc.in
 	-e 's,@libs_private\@,$(pc_libs_private),g' \
 	$< > $@
 
-pc-dump: libeav.pc
-	private=`PKG_CONFIG_PATH=. $(PKG_CONFIG) --print-requires-private libeav`; \
-	$(PKG_CONFIG) --libs $$private > .deps
-
 #----------------------------------------------------------#
 
 clean: clean-tests clean-bin
