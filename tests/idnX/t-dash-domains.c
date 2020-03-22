@@ -7,8 +7,12 @@
 #include <eav/auto_tld.h>
 #include "common.h"
 
-/* how many times idnkit should fail */
+/* how many times idn library should fail */
+#ifdef HAVE_LIBIDN2
 #define IDNKIT_CHECK    (6)
+#else
+#define IDNKIT_CHECK    (0)
+#endif
 
 
 extern int

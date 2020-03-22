@@ -6,7 +6,11 @@
 #include <eav.h>
 #include <eav/auto_tld.h>
 #include "common.h"
+#ifdef HAVE_LIBIDN2
 #include <idn2.h>
+#else
+#include <idna.h>
+#endif
 
 
 extern int
@@ -50,7 +54,11 @@ main (int argc, char *argv[])
             continue;
 
         len = strlen (line);
+#ifdef HAVE_LIBIDN2
         r = IDN2_OK;
+#else
+        r = IDNA_SUCCESS;
+#endif
         t = is_6531_email (&r, line, len, true);
 
         if (t >= 0) {
@@ -58,7 +66,14 @@ main (int argc, char *argv[])
             passed++;
         }
         else {
-            printf ("FAIL: %s\n\t%s (%d)\n", sanitize_utf8(line, len), idn2_strerror(r), t);
+            printf ("FAIL: %s\n\t%s (%d)\n",
+                    sanitize_utf8(line, len),
+#ifdef HAVE_LIBIDN2
+                    idn2_strerror(r),
+#else
+                    idna_strerror(r),
+#endif
+                    t);
             failed++;
         }
     }

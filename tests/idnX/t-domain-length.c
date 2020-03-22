@@ -6,12 +6,19 @@
 #include <eav.h>
 #include <eav/auto_tld.h>
 #include "common.h"
+#ifdef HAVE_LIBIDN2
 #include <idn2.h>
+#else
+#include <idna.h>
+#endif
 
 
 /* how many times idn library should fail */
+#ifdef HAVE_LIBIDN2
 #define IDN_ERRORS    (3)
-
+#else
+#define IDN_ERRORS    (2)
+#endif
 
 extern int
 main (int argc, char *argv[])
@@ -66,7 +73,12 @@ main (int argc, char *argv[])
                 printf ("FAIL: %s\n", line);
                 failed++;
                 printf ("\t t = %d; r = %d; idnerr = %s\n",
-                        t, r, idn2_strerror (r));
+                        t, r,
+#ifdef HAVE_LIBIDN2
+                        idn2_strerror (r));
+#else
+                        idna_strerror (r));
+#endif
             }
         }
         else {
@@ -74,7 +86,12 @@ main (int argc, char *argv[])
             error_count[-1 * t]++;
             failed++;
             printf ("\t t = %d; r = %d; idnerr = %s\n",
-                    t, r, idn2_strerror (r));
+                    t, r,
+#ifdef HAVE_LIBIDN2
+                    idn2_strerror (r));
+#else
+                    idna_strerror (r));
+#endif
         }
     }
 
