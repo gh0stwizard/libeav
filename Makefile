@@ -148,8 +148,8 @@ $(LIB_TARGET): depend $(OBJECTS)
 %.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -I. -o $@ -c $<
 
-check: $(OBJECTS)
-	$(MAKE) -C tests check IDNKIT_DIR=$(IDNKIT_DIR)
+check: $(DLL_TARGET)
+	$(MAKE) -C tests check
 
 man:
 	$(MAKE) -C docs VERSION=$(VERSION)
