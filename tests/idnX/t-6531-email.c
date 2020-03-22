@@ -19,8 +19,7 @@ main (int argc, char *argv[])
     char *line = NULL;
     size_t len = 0;
     ssize_t read = 0;
-    int t;
-    int r;
+    eav_result_t r;
     FILE *fh;
     char *file = NULL;
     int expect_pass = -1;
@@ -54,14 +53,9 @@ main (int argc, char *argv[])
             continue;
 
         len = strlen (line);
-#ifdef HAVE_LIBIDN2
-        r = IDN2_OK;
-#else
-        r = IDNA_SUCCESS;
-#endif
-        t = is_6531_email (&r, line, len, true);
+        r = is_6531_email (line, len, true);
 
-        if (t >= 0) {
+        if (r.rc >= 0) {
             printf ("PASS: %s\n", sanitize_utf8(line, len));
             passed++;
         }
@@ -69,11 +63,11 @@ main (int argc, char *argv[])
             printf ("FAIL: %s\n\t%s (%d)\n",
                     sanitize_utf8(line, len),
 #ifdef HAVE_LIBIDN2
-                    idn2_strerror(r),
+                    idn2_strerror(r.idn_rc),
 #else
-                    idna_strerror(r),
+                    idna_strerror(r.idn_rc),
 #endif
-                    t);
+                    r.rc);
             failed++;
         }
     }

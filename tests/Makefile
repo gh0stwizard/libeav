@@ -302,6 +302,8 @@ endif
 	./t-eav-all-modes.bin 0 195 ../data/fail-email-ascii.txt
 endif
 endif
+    ./t-result.bin 7 18 ../data/email-result-check.txt
+
 
 .PHONY: all debug clean check
 

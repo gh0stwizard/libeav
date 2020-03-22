@@ -5,33 +5,48 @@
 #include <eav/private_email.h>
 
 
-extern int
-is_6531_email ( idn_resconf_t ctx,
+extern eav_result_t
+is_6531_email  (idn_resconf_t ctx,
                 idn_action_t actions,
-                idn_result_t *r,
                 const char *email,
                 size_t length,
                 bool tld_check)
 {
+    eav_result_t result = INIT_EAV_RESULT_T();
     char *ch = NULL;
     char *brs = NULL;
     char *bre = NULL;
-    int rc = 0;
     const char *end = email + length;
 
     /* see "private_email.h" */
     basic_email_check (email);
 
-    rc = is_6531_local (email, ch);
+    result.at = ch;
+    result.rc = is_6531_local (email, ch);
 
-    if (rc != EEAV_NO_ERROR)
-        return rc;
+    if (result.rc != EEAV_NO_ERROR)
+        return result;
 
     brs = ch + 1;
 
-    if (*brs != '[')
-       return (is_utf8_domain (ctx, actions, r, ch + 1, end, tld_check));
+    if (*brs != '[') {
+       result.rc = is_utf8_domain (
+            ctx,
+            actions,
+            &result.idn_rc,
+            ch + 1,
+            end,
+            tld_check );
+
+        if (result.rc >= 0) {
+            result.is_domain = true;
+        }
+
+        return result;
+    }
 
     /* seems to be an ip address */
     check_ip(); /* see private_email.h */
+
+    return result;
 }

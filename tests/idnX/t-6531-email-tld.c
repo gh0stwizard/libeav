@@ -14,8 +14,7 @@ main (int argc, char *argv[])
     char *line = NULL;
     size_t len = 0;
     ssize_t read = 0;
-    int t;
-    int r;
+    eav_result_t r;
     FILE *fh;
     char *file = NULL;
     int expect_pass = -1;
@@ -49,12 +48,12 @@ main (int argc, char *argv[])
             continue;
 
         len = strlen (line);
-        t = is_6531_email (&r, line, len, true);
+        r = is_6531_email (line, len, true);
 
-        if (t >= 0 &&
-            t != TLD_TYPE_NOT_ASSIGNED &&
-            t != TLD_TYPE_TEST &&
-            t != TLD_TYPE_SPECIAL)
+        if (r.rc >= 0 &&
+            r.rc != TLD_TYPE_NOT_ASSIGNED &&
+            r.rc != TLD_TYPE_TEST &&
+            r.rc != TLD_TYPE_SPECIAL)
         {
             printf ("PASS: %s\n", sanitize_utf8(line, len));
             passed++;

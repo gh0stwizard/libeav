@@ -5,34 +5,38 @@
 #include <eav/private_email.h>
 
 
-extern int
+extern eav_result_t
 is_822_email (const char *email, size_t length, bool tld_check)
 {
+    eav_result_t result = INIT_EAV_RESULT_T();
     char *ch = NULL;
     char *brs = NULL;
     char *bre = NULL;
-    int rc;
     const char *end = email + length;
 
     /* see "private_email.h" */
     basic_email_check (email);
 
-    rc = is_822_local (email, ch);
+    result.rc = is_822_local (email, ch);
 
-    if (rc != EEAV_NO_ERROR)
-        return rc;
+    if (result.rc != EEAV_NO_ERROR)
+        return result;
 
     brs = ch + 1;
 
     if (*brs != '[') {
-        rc = is_ascii_domain (ch + 1, end);
+        result.rc = is_ascii_domain (ch + 1, end);
 
-        if (rc != EEAV_NO_ERROR)
-            return rc;
+        if (result.rc == EEAV_NO_ERROR) {
+            result.is_domain = true;
+            check_tld();
+        }
 
-        check_tld();
+        return result;
     }
 
     /* seems to be an ip address */
     check_ip(); /* see private_email.h */
+
+    return result;
 }

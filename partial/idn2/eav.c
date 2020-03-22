@@ -47,37 +47,34 @@ eav_setup (eav_t *eav)
 extern int
 eav_is_email (eav_t *eav, const char *email, size_t length)
 {
-    int rc;
     bool tld_test = false;
-    int r;
-
 
     /* mark that there is not idn error*/
     if (eav->idnmsg)
         eav->idnmsg = NULL;
 
     if (eav->utf8)
-        rc = eav->utf8_cb (&r, email, length, eav->tld_check);
+        eav->result = eav->utf8_cb (email, length, eav->tld_check);
     else
-        rc = eav->ascii_cb (email, length, eav->tld_check);
+        eav->result = eav->ascii_cb (email, length, eav->tld_check);
 
-    if (rc == 0) {
+    if (eav->result.rc == 0) {
         eav->errcode = EEAV_NO_ERROR;
         return (YES);
     }
 
-    if (rc < 0) {
-        eav->errcode = inverse(rc);
+    if (eav->result.rc < 0) {
+        eav->errcode = inverse(eav->result.rc);
 
         if (eav->errcode == EEAV_IDN_ERROR) {
-            eav->idnmsg = idn2_strerror (r);
+            eav->idnmsg = idn2_strerror (eav->result.idn_rc);
         }
 
         return (NO);
     }
 
     /* user tld preferences */
-    switch (rc) {
+    switch (eav->result.rc) {
     case TLD_TYPE_NOT_ASSIGNED:
         eav->errcode = EEAV_TLD_NOT_ASSIGNED;
         tld_test = (eav->allow_tld & EAV_TLD_NOT_ASSIGNED);

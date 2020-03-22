@@ -42,8 +42,7 @@ main (int argc, char *argv[])
     ssize_t read = 0;
     idn_resconf_t ctx;
     idn_action_t actions = IDN_ENCODE_REGIST;
-    idn_result_t r;
-    int t;
+    eav_result_t r;
     FILE *fh;
     char *file = NULL;
     int expect_pass = -1;
@@ -78,9 +77,9 @@ main (int argc, char *argv[])
             continue;
 
         len = strlen (line);
-        t = is_6531_email (ctx, actions, &r, line, len, true);
+        r = is_6531_email (ctx, actions, line, len, true);
 
-        if (t >= 0) {
+        if (r.rc >= 0) {
             printf ("PASS: %s\n", sanitize_utf8(line, len));
             passed++;
         }

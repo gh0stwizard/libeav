@@ -14,7 +14,7 @@ main (int argc, char *argv[])
     char *line = NULL;
     size_t len = 0;
     ssize_t read = 0;
-    int r;
+    eav_result_t r;
     FILE *fh;
     char *file = NULL;
     int expect_pass = -1;
@@ -50,13 +50,13 @@ main (int argc, char *argv[])
         len = strlen (line);
         r = is_5322_email (line, len, true);
 
-        if (r >= 0) {
+        if (r.rc >= 0) {
             printf ("PASS: %s\n", sanitize(line, len));
             passed++;
         }
         else {
             printf ("FAIL: %s\n", sanitize(line, len));
-            printf ("\tr = %d\n", r);
+            printf ("\tr = %d\n", r.rc);
             failed++;
         }
     }

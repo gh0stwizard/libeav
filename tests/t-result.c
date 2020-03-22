@@ -1,50 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 #include <string.h>
+#include <locale.h>
 #include <errno.h>
 #include <eav.h>
-#include <eav/auto_tld.h>
 #include "common.h"
 
 
-static void
-init_idn (idn_resconf_t *ctx)
-{
-    idn_result_t r;
-
-
-    r = idn_resconf_initialize ();
-
-    if (r != idn_success) {
-        msg_warn ("idn_resconf_initialize: %s\n", idn_result_tostring (r));
-        exit (EXIT_FAILURE);
-    }
-
-    r = idn_resconf_create (ctx);
-
-    if (r != idn_success) {
-        msg_warn ("idn_resconf_create: %s\n", idn_result_tostring (r));
-        exit (EXIT_FAILURE);
-    }
-}
+#define VALID_IPv4   (2)
+#define VALID_IPv6   (2)
+/* including special TLDs, which the test is consider as fail */
+#define VALID_DOMAIN (11)
 
 
 extern int
 main (int argc, char *argv[])
 {
+    eav_t eav;
     char *line = NULL;
     size_t len = 0;
     ssize_t read = 0;
-    idn_resconf_t ctx;
-    idn_action_t actions = IDN_ENCODE_REGIST;
-    eav_result_t r;
     FILE *fh;
     char *file = NULL;
     int expect_pass = -1;
     int expect_fail = -1;
     int passed = 0;
     int failed = 0;
+    int ipv4 = 0;
+    int ipv6 = 0;
+    int domain = 0;
 
 
     if (argc >= 5 || argc < 4) {
@@ -53,11 +37,13 @@ main (int argc, char *argv[])
     }
 
     setlocale(LC_ALL, "");
-    init_idn (&ctx);
+    eav_init (&eav);
+    eav.allow_tld &= ~EAV_TLD_SPECIAL;
+    eav_setup (&eav);
 
-    file = argv[3];
     expect_pass = atoi (argv[1]);
     expect_fail = atoi (argv[2]);
+    file = argv[3];
 
     fh = fopen (file, "r");
 
@@ -73,16 +59,26 @@ main (int argc, char *argv[])
             continue;
 
         len = strlen (line);
-        r = is_6531_email (ctx, actions, line, len, true);
 
-        if (r.rc >= 0) {
+        if (eav_is_email (&eav, line, len)) {
             printf ("PASS: %s\n", sanitize_utf8(line, len));
             passed++;
         }
         else {
             printf ("FAIL: %s\n", sanitize_utf8(line, len));
+            printf ("      %s\n", eav_errstr(&eav));
             failed++;
         }
+
+        /* No matter if the test fail because of allow_tld filter,
+         * the domain/ip validation are always successful.
+         */
+        if (eav.result.is_domain)
+            domain++;
+        else if (eav.result.is_ipv4)
+            ipv4++;
+        else if (eav.result.is_ipv6)
+            ipv6++;
     }
 
     if (passed != expect_pass) {
@@ -101,11 +97,33 @@ main (int argc, char *argv[])
         return 5;
     }
 
+    if (domain != VALID_DOMAIN) {
+        msg_warn ("%s: expected %d valid domains, but got %d\n",
+                argv[0],
+                VALID_DOMAIN,
+                domain);
+        return 6;
+    }
+
+    if (ipv4 != VALID_IPv4) {
+        msg_warn ("%s: expected %d valid IPv4, but got %d\n",
+                argv[0],
+                VALID_IPv4,
+                ipv4);
+        return 7;
+    }
+
+    if (ipv6 != VALID_IPv6) {
+        msg_warn ("%s: expected %d valid IPv6, but got %d\n",
+                argv[0],
+                VALID_IPv6,
+                ipv6);
+        return 8;
+    }
+
     if (line != NULL)
         free (line);
-    fclose (fh);
-    idn_resconf_destroy (ctx);
-
+    eav_free (&eav);
     msg_ok ("%s: PASS\n", argv[0]);
 
     return 0;

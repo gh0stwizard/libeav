@@ -19,19 +19,26 @@ static void
 test_mode(eav_t *eav, int mode, FILE *fh)
 {
     ssize_t read;
-    char *msg = NULL;
 
     switch(mode) {
-    case EAV_RFC_822:   msg = ">>> Switch to RFC 822 mode\n"; break;
-    case EAV_RFC_5321:  msg = ">>> Switch to RFC 5321 mode\n"; break;
-    case EAV_RFC_5322:  msg = ">>> Switch to RFC 5322 mode\n"; break;
-    case EAV_RFC_6531:  msg = ">>> Switch to RFC 6531 mode\n"; break;
-    default: msg = ">>> Switch to UNKNOWN mode\n"; break;
+    case EAV_RFC_822:
+        printf (">>> Switch to RFC 822 mode\n");
+        break;
+    case EAV_RFC_5321:
+        printf (">>> Switch to RFC 5321 mode\n");
+        break;
+    case EAV_RFC_5322:
+        printf (">>> Switch to RFC 5322 mode\n");
+        break;
+    case EAV_RFC_6531:
+        printf (">>> Switch to RFC 6531 mode\n");
+        break;
+    default:
+        printf (">>> Switch to UNKNOWN mode\n");
+        break;
     }
 
     eav->rfc = mode;
-
-    printf (msg);
 
     if (eav_setup(eav) != 0) {
         msg_warn("error: %s\n", eav_errstr(eav));

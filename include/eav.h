@@ -29,21 +29,39 @@ typedef enum {
 } EAV_TLD;
 
 
+/* result information from callbacks */
+typedef struct eav_result_s {
+    bool is_ipv4;
+    bool is_ipv6;
+    bool is_domain;
+    int rc;
+    const char *at;
+#ifdef HAVE_IDNKIT
+    idn_result_t idn_rc;
+#else
+    int idn_rc;
+#endif
+} eav_result_t;
+
+
 /* eav.c utf-8 callback */
 #ifdef HAVE_IDNKIT
-typedef int (*eav_utf8_f) ( idn_resconf_t,
-                            idn_action_t,
-                            idn_result_t *,
-                            const char *,
-                            size_t,
-                            bool tld_check);
+typedef eav_result_t
+(*eav_utf8_f)  (idn_resconf_t,
+                idn_action_t,
+                const char *,
+                size_t,
+                bool tld_check);
 #else
-typedef int (*eav_utf8_f) (int *, const char *, size_t, bool);
+typedef eav_result_t
+(*eav_utf8_f) (const char *, size_t, bool);
 #endif
 
 
 /* eav.c ascii callback */
-typedef int (*eav_ascii_f) (const char *, size_t, bool);
+typedef eav_result_t (*eav_ascii_f) (const char *,
+                                     size_t,
+                                     bool);
 
 
 typedef struct eav_s {
@@ -61,7 +79,9 @@ typedef struct eav_s {
 #endif
     eav_utf8_f      utf8_cb;
     eav_ascii_f     ascii_cb;
+    eav_result_t    result;
 } eav_t;
+
 
 /* low-level API: error codes */
 enum {
@@ -227,36 +247,34 @@ is_special_domain (const char *start, const char *end);
 /*
  * is_822_email: check email address as defined in RFC 822.
  */
-extern int
+extern eav_result_t
 is_822_email (const char *email, size_t length, bool tld_check);
 
 /*
  * is_5321_email: check email address as defined in RFC 5321.
  */
-extern int
+extern eav_result_t
 is_5321_email (const char *email, size_t length, bool tld_check);
 
 /*
  * is_5322_email: check email address as defined in RFC 5322.
  */
-extern int
+extern eav_result_t
 is_5322_email (const char *email, size_t length, bool tld_check);
 
 /*
  * is_6531_email: check email address as defined in RFC 6531.
  */
 #ifdef HAVE_IDNKIT
-extern int
-is_6531_email ( idn_resconf_t ctx,
+extern eav_result_t
+is_6531_email  (idn_resconf_t ctx,
                 idn_action_t actions,
-                idn_result_t *r,
                 const char *email,
                 size_t length,
                 bool tld_check);
 #else
-extern int
-is_6531_email ( int *r,
-                const char *email,
+extern eav_result_t
+is_6531_email  (const char *email,
                 size_t length,
                 bool tld_check);
 #endif /* HAVE_IDNKIT */
