@@ -1,56 +1,66 @@
-CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic
+CFLAGS = -O2 -Wall -Wextra -std=c99 -pedantic
+RM ?= rm -rf
 
-DEFS = -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
+#DEFS = -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
 DEFS += -I../include -I. ${_defs}
 
 # used for test the library only
-LIB_PATH = $(shell realpath ..)
+LIB_PATH != realpath ..
 
 #----------------------------------------------------------#
 
-SOURCES = $(wildcard *.c)
-OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
-TARGETS = $(patsubst %.c, %.bin, $(SOURCES))
+SOURCES != ls *.c
+OBJECTS = ${SOURCES:.c=.o}
+TARGETS = ${SOURCES:.c=.bin}
 
-$(info >>> Building tests with idn = ${_withidn})
-ifeq (${_withidn},idnkit)
-src_pattern = idnkit/%.c
-PARTIAL_SRC = $(wildcard idnkit/*.c)
-PARTIAL_OBJ = $(patsubst idnkit/%.c, %.o, $(PARTIAL_SRC))
-PARTIAL_TRT = $(patsubst idnkit/%.c, %.bin, $(PARTIAL_SRC))
-LIB_PATH = $(shell realpath ..):${_idnkit_dir}/lib
-else
-src_pattern = idnX/%.c
-PARTIAL_SRC = $(wildcard idnX/*.c)
-PARTIAL_OBJ = $(patsubst idnX/%.c, %.o, $(PARTIAL_SRC))
-PARTIAL_TRT = $(patsubst idnX/%.c, %.bin, $(PARTIAL_SRC))
-endif
+.info >>> Building tests with idn = ${_withidn}
+.if ${_withidn} == idnkit
+PARTIAL_PATH = idnkit
+PARTIAL_SRC != ls idnkit/*.c
+PARTIAL_OBJ = ${PARTIAL_SRC:S,^idnkit/,,:.c=.o}
+PARTIAL_TRT = ${PARTIAL_SRC:S,^idnkit/,,:.c=.bin}
+LIB_PATH = ${:!realpath ..!}:${_idnkit_dir}/lib
+.else
+PARTIAL_PATH = idnX
+PARTIAL_SRC != ls idnX/*.c
+PARTIAL_OBJ = ${PARTIAL_SRC:S,^idnX/,,:.c=.o}
+PARTIAL_TRT = ${PARTIAL_SRC:S,^idnX/,,:.c=.bin}
+.endif
 
-DEP_OBJ = $(patsubst %.o, ../%.o, ${_objects})
+DEP_OBJ = ${_objects:S,^,../,}
 LIBS = ${_libs} -L.. -leav
 
 #----------------------------------------------------------#
 
 CPPFLAGS = $(DEFS) $(INCLUDES)
-export LD_LIBRARY_PATH=$(LIB_PATH)
 
-all: depend $(TARGETS) $(PARTIAL_TRT)
+LD_LIBRARY_PATH = $(LIB_PATH)
+.export LD_LIBRARY_PATH
 
-%.bin: %.o
+.info TARGETS: ${TARGETS}
+.info PARTIAL_TRT: ${PARTIAL_TRT}
+
+all: ${TARGETS} ${PARTIAL_TRT}
+
+.SUFFIXES: .bin
+.o.bin: depend
 	# === tests -> linkage
-	$(CC) $(LDFLAGS) -o $@ $< $(DEP_OBJ) $(LIBS)
+	${CC} ${LDFLAGS} -o $@ $< ${DEP_OBJ} ${LIBS}
 
-%.o: %.c
+.SUFFIXES: .o
+.c.o:
 	# === tests -> compile $<
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $<
-	
-%.o: $(src_pattern)
+	${CC} -c ${CPPFLAGS} ${CFLAGS} -o $@ $<
+
+.PATH: ${PARTIAL_PATH}
+.SUFFIXES: .o
+.c.o:
 	# === tests -> compile $<
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $<
+	${CC} -c ${CPPFLAGS} ${CFLAGS} -o $@ $<
 
 clean:
 	# === tests -> cleanup
-	$(RM) $(TARGETS) $(OBJECTS) $(PARTIAL_OBJ) $(PARTIAL_TRT) Makefile.depend
+	${RM} ${TARGETS} ${OBJECTS} ${PARTIAL_OBJ} ${PARTIAL_TRT} Makefile.depend
 
 check: check-domain check-lpart check-email check-lib
 
@@ -67,32 +77,32 @@ check-lpart: $(TARGETS) $(PARTIAL_TRT)
 	./t-822-localpart.bin 24 18 ../data/localpart-ascii.txt
 	./t-5321-localpart.bin 21 21 ../data/localpart-ascii.txt
 	./t-5322-localpart.bin 23 19 ../data/localpart-ascii.txt
-ifeq ($(RFC6531_FOLLOW_RFC5322),ON)
-ifeq ($(RFC6531_FOLLOW_RFC20),ON)
+.if $(RFC6531_FOLLOW_RFC5322) == ON
+.if $(RFC6531_FOLLOW_RFC20) == ON
 	# --- RFC6531_FOLLOW_RFC5322 = ON ; RFC6531_FOLLOW_RFC20 = ON
 	./t-6531-localpart.bin 22 20 ../data/localpart-ascii.txt
 	./t-6531-localpart.bin 15 2 ../data/localpart-utf8.txt
-else
+.else
 	# --- RFC6531_FOLLOW_RFC5322 = ON ; RFC6531_FOLLOW_RFC20 = OFF
 	./t-6531-localpart.bin 23 19 ../data/localpart-ascii.txt
 	./t-6531-localpart.bin 15 2 ../data/localpart-utf8.txt
-endif
-else
-ifeq ($(RFC6531_FOLLOW_RFC20),ON)
+.endif
+.else
+.if $(RFC6531_FOLLOW_RFC20) == ON
 	# --- RFC6531_FOLLOW_RFC5322 = OFF ; RFC6531_FOLLOW_RFC20 = ON
 	./t-6531-localpart.bin 20 22 ../data/localpart-ascii.txt
 	./t-6531-localpart.bin 13 4 ../data/localpart-utf8.txt
-else
+.else
 	# --- RFC6531_FOLLOW_RFC5322 = OFF ; RFC6531_FOLLOW_RFC20 = OFF
 	./t-6531-localpart.bin 21 21 ../data/localpart-ascii.txt
 	./t-6531-localpart.bin 13 4 ../data/localpart-utf8.txt
-endif
-endif
-ifeq ($(RFC6531_FOLLOW_RFC20),ON)
+.endif
+.endif
+.if $(RFC6531_FOLLOW_RFC20) == ON
 	./t-6531-localpart.bin 0 7 ../data/localpart-utf8-rfc20.txt
-else
+.else
 	./t-6531-localpart.bin 7 0 ../data/localpart-utf8-rfc20.txt
-endif
+.endif
 
 check-email: check-email-822 check-email-5321 check-email-5322 check-email-6531
 
@@ -101,7 +111,7 @@ check-email-822: $(TARGETS) $(PARTIAL_TRT)
 	./t-822-email.bin 47 0 ../data/pass-email-ascii.txt
 	./t-822-email.bin 0 39 ../data/fail-email-ascii.txt
 
-check-email-5321: $(TARGETS) $(PARTIAL_TRT)
+check-email-5321: ${TARGETS} ${PARTIAL_TRT}
 	# === RFC 5321 email address tests
 	./t-5321-email.bin 41 6 ../data/pass-email-ascii.txt
 	./t-5321-email.bin 0 39 ../data/fail-email-ascii.txt
@@ -112,8 +122,8 @@ check-email-5322: $(TARGETS) $(PARTIAL_TRT)
 	./t-5322-email.bin 0 39 ../data/fail-email-ascii.txt
 
 check-email-6531:
-ifeq ($(RFC6531_FOLLOW_RFC5322),ON)
-ifeq ($(RFC6531_FOLLOW_RFC20),ON)
+.if $(RFC6531_FOLLOW_RFC5322) == ON
+.if $(RFC6531_FOLLOW_RFC20) == ON
 	# --- RFC6531_FOLLOW_RFC5322 = ON ; RFC6531_FOLLOW_RFC20 = ON
 	./t-6531-email.bin 44 3 ../data/pass-email-ascii.txt
 	./t-6531-email.bin 0 39 ../data/fail-email-ascii.txt
@@ -129,7 +139,7 @@ ifeq ($(RFC6531_FOLLOW_RFC20),ON)
 	./t-6531-email-tld.bin 6 2 ../data/email-reg.ru.txt
 	./t-6531-email-tld-special.bin 34 13 ../data/pass-email-ascii.txt
 	./t-6531-email-tld-special.bin 0 39 ../data/fail-email-ascii.txt
-else
+.else
 	# --- RFC6531_FOLLOW_RFC5322 = ON ; RFC6531_FOLLOW_RFC20 = OFF
 	./t-6531-email.bin 45 2 ../data/pass-email-ascii.txt
 	./t-6531-email.bin 0 39 ../data/fail-email-ascii.txt
@@ -145,9 +155,9 @@ else
 	./t-6531-email-tld.bin 6 2 ../data/email-reg.ru.txt
 	./t-6531-email-tld-special.bin 35 12 ../data/pass-email-ascii.txt
 	./t-6531-email-tld-special.bin 0 39 ../data/fail-email-ascii.txt
-endif
-else
-ifeq ($(RFC6531_FOLLOW_RFC20),ON)
+.endif
+.else
+.if $(RFC6531_FOLLOW_RFC20) == ON
 	# --- RFC6531_FOLLOW_RFC5322 = OFF ; RFC6531_FOLLOW_RFC20 = ON
 	./t-6531-email.bin 40 7 ../data/pass-email-ascii.txt
 	./t-6531-email.bin 0 39 ../data/fail-email-ascii.txt
@@ -163,7 +173,7 @@ ifeq ($(RFC6531_FOLLOW_RFC20),ON)
 	./t-6531-email-tld.bin 6 2 ../data/email-reg.ru.txt
 	./t-6531-email-tld-special.bin 30 17 ../data/pass-email-ascii.txt
 	./t-6531-email-tld-special.bin 0 39 ../data/fail-email-ascii.txt
-else
+.else
 	# --- RFC6531_FOLLOW_RFC5322 = OFF ; RFC6531_FOLLOW_RFC20 = OFF
 	./t-6531-email.bin 41 6 ../data/pass-email-ascii.txt
 	./t-6531-email.bin 0 39 ../data/fail-email-ascii.txt
@@ -179,39 +189,39 @@ else
 	./t-6531-email-tld.bin 6 2 ../data/email-reg.ru.txt
 	./t-6531-email-tld-special.bin 31 16 ../data/pass-email-ascii.txt
 	./t-6531-email-tld-special.bin 0 39 ../data/fail-email-ascii.txt
-endif
-endif
+.endif
+.endif
 
 check-lib:
 	# library tests
-ifeq ($(RFC6531_FOLLOW_RFC20),ON)
+.if $(RFC6531_FOLLOW_RFC20) == ON
 	./t-eav.bin 4 20 ../data/email-utf8.txt
 	./t-eav.bin 7 1 ../data/email-reg.ru.txt
-else
+.else
 	./t-eav.bin 8 16 ../data/email-utf8.txt
 	./t-eav.bin 7 1 ../data/email-reg.ru.txt
-endif
-ifeq ($(RFC6531_FOLLOW_RFC5322),ON)
-ifeq ($(RFC6531_FOLLOW_RFC20),ON)
+.endif
+.if $(RFC6531_FOLLOW_RFC5322) == ON
+.if $(RFC6531_FOLLOW_RFC20) == ON
 	# --- RFC6531_FOLLOW_RFC5322 = ON ; RFC6531_FOLLOW_RFC20 = ON
 	./t-eav-all-modes.bin 221 14 ../data/pass-email-ascii.txt
 	./t-eav-all-modes.bin 0 195 ../data/fail-email-ascii.txt
-else
+.else
 	# --- RFC6531_FOLLOW_RFC5322 = ON ; RFC6531_FOLLOW_RFC20 = OFF
 	./t-eav-all-modes.bin 223 12 ../data/pass-email-ascii.txt
 	./t-eav-all-modes.bin 0 195 ../data/fail-email-ascii.txt
-endif
-else
-ifeq ($(RFC6531_FOLLOW_RFC20),ON)
+.endif
+.else
+.if $(RFC6531_FOLLOW_RFC20) == ON
 	# --- RFC6531_FOLLOW_RFC5322 = OFF ; RFC6531_FOLLOW_RFC20 = ON
 	./t-eav-all-modes.bin 213 22 ../data/pass-email-ascii.txt
 	./t-eav-all-modes.bin 0 195 ../data/fail-email-ascii.txt
-else
+.else
 	# --- RFC6531_FOLLOW_RFC5322 = OFF ; RFC6531_FOLLOW_RFC20 = OFF
 	./t-eav-all-modes.bin 215 20 ../data/pass-email-ascii.txt
 	./t-eav-all-modes.bin 0 195 ../data/fail-email-ascii.txt
-endif
-endif
+.endif
+.endif
 
 .PHONY: all debug clean check
 
