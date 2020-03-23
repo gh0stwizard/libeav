@@ -63,6 +63,6 @@ depend: Makefile.depend
 Makefile.depend:
 	$(CC) $(CPPFLAGS) $(CFLAGS) -MM -MG $(SOURCES) > $@
 
--include Makefile.depend
+.sinclude "Makefile.depend"
 
 .DELETE_ON_ERROR:

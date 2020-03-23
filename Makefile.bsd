@@ -10,12 +10,10 @@ RM ?= rm -rf
 
 .ifndef RFC6531_FOLLOW_RFC5322
 RFC6531_FOLLOW_RFC5322 = OFF
-.export RFC6531_FOLLOW_RFC5322
 .endif
 
 .ifndef RFC6531_FOLLOW_RFC20
 RFC6531_FOLLOW_RFC20 = OFF
-.export RFC6531_FOLLOW_RFC20
 .endif
 
 
@@ -46,7 +44,7 @@ OBJECTS = ${SOURCES:.c=.o}
 
 .ifdef FORCE_IDN
 .if ${FORCE_IDN} == "idnkit"
-.info > Force using idnkit
+.warning > Force using idnkit
 WITH_IDN = idnkit
 IDNKIT_DIR ?= /usr/local
 DEFS = -DHAVE_IDNKIT -I${IDNKIT_DIR}/include
@@ -54,7 +52,7 @@ LIBS = -L${IDNKIT_DIR}/lib -lidnkit
 PARTIAL != ls partial/idnkit/*.c
 OBJECTS += ${PARTIAL:.c=.o}
 .elif ${FORCE_IDN} == "idn2"
-.info > Force using libidn2
+.warning > Force using libidn2
 WITH_IDN = idn2
 idn_cflags != ${PKG_CONFIG} --cflags libidn2
 DEFS = -DHAVE_LIBIDN2 ${idn_cflags}
@@ -62,7 +60,7 @@ LIBS != ${PKG_CONFIG} --libs libidn2
 PARTIAL != ls partial/idn2/*.c
 OBJECTS += ${PARTIAL:.c=.o}
 .elif ${FORCE_IDN} == "idn"
-.info > Force using libidn
+.warning > Force using libidn
 WITH_IDN = idn
 idn_cflags != ${PKG_CONFIG} --cflags libidn
 DEFS = -DHAVE_LIBIDN ${idn_cflags}
@@ -73,23 +71,25 @@ OBJECTS += ${PARTIAL:.c=.o}
 .error ! Unknown IDN library type
 .endif
 .else
-.info > Looking for idn library ...
-.if empty(${:!${PKG_CONFIG} --exists 'libidn2 >= 2.0.3' || echo NO!})
-.info > Found libidn2
+.warning > Looking for idn library ...
+pc_idn2 != ${PKG_CONFIG} --exists 'libidn2 >= 2.0.3' && echo YES
+pc_idn1 != ${PKG_CONFIG} --exists 'libidn' && echo YES
+.if ${pc_idn2} == YES
+.warning > Found libidn2
 WITH_IDN = idn2
 idn_cflags != ${PKG_CONFIG} --cflags libidn2
 DEFS = -DHAVE_LIBIDN2 ${idn_cflags}
 LIBS != ${PKG_CONFIG} --libs libidn2
 PARTIAL != ls partial/idn2/*.c
-.elif empty(${:!${PKG_CONFIG} --exists 'libidn' || echo NO!})
-.info > Found libidn
+.elif ${pc_idn1} == YES
+.warning > Found libidn
 WITH_IDN = idn
 idn_cflags != ${PKG_CONFIG} --cflags libidn
 DEFS = -DHAVE_LIBIDN ${idn_cflags}
 LIBS != ${PKG_CONFIG} --libs libidn
 PARTIAL != ls partial/idn/*.c
 .else
-.info > Using idnkit by default
+.warning > Using idnkit by default
 WITH_IDN = idnkit
 IDNKIT_DIR ?= /usr/local
 DEFS = -DHAVE_IDNKIT -I${IDNKIT_DIR}/include
@@ -112,33 +112,6 @@ DEFS += -DRFC6531_FOLLOW_RFC20
 CPPFLAGS = -Iinclude -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
 LIB_PATH != realpath .
 
-_defs=${DEFS}
-.export _defs
-
-_libs=${LIBS}
-.export _libs
-
-_pkg_config=${PKG_CONFIG}
-.export _pkg_config
-
-_install=${INSTALL}
-.export _install
-
-_idnkit_dir=${IDNKIT_DIR}
-.export _idnkit_dir
-
-_destdir=${DESTDIR}
-.export _destdir
-
-_objects=${OBJECTS}
-.export _objects
-
-_libpath=${LIB_PATH}
-.export _libpath
-
-_withidn=${WITH_IDN}
-.export _withidn
-
 #----------------------------------------------------------#
 
 all: libs app
@@ -153,6 +126,17 @@ static: ${LIB_TARGET}
 app: ${BIN_TARGET}
 
 ${BIN_TARGET}: ${DLL_TARGET}
+	env _defs="${DEFS}" \
+	_libs="${LIBS}" \
+	_pkg_config="${PKG_CONFIG}" \
+	_install="${INSTALL}" \
+	_idnkit_dir="${IDNKIT_DIR}" \
+	_destdir="${DESTDIR}" \
+	_objects="${OBJECTS}" \
+	_libpath="${LIB_PATH}" \
+	_withidn="${WITH_IDN}" \
+	RFC6531_FOLLOW_RFC5322="${RFC6531_FOLLOW_RFC5322}" \
+	RFC6531_FOLLOW_RFC20="${RFC6531_FOLLOW_RFC20}" \
 	${MAKE} -f Makefile.bsd -C bin
 
 ${DLL_TARGET}: depend ${OBJECTS}
@@ -168,9 +152,31 @@ ${LIB_TARGET}: depend ${OBJECTS}
 	${CC} ${CPPFLAGS} ${DEFS} ${INCLUDES} ${CFLAGS} -I. -o $@ -c $<
 
 check: ${DLL_TARGET}
+	env _defs="${DEFS}" \
+	_libs="${LIBS}" \
+	_pkg_config="${PKG_CONFIG}" \
+	_install="${INSTALL}" \
+	_idnkit_dir="${IDNKIT_DIR}" \
+	_destdir="${DESTDIR}" \
+	_objects="${OBJECTS}" \
+	_libpath="${LIB_PATH}" \
+	_withidn="${WITH_IDN}" \
+	RFC6531_FOLLOW_RFC5322="${RFC6531_FOLLOW_RFC5322}" \
+	RFC6531_FOLLOW_RFC20="${RFC6531_FOLLOW_RFC20}" \
 	${MAKE} -f Makefile.bsd -C tests check
 
 man:
+	env _defs="${DEFS}" \
+	_libs="${LIBS}" \
+	_pkg_config="${PKG_CONFIG}" \
+	_install="${INSTALL}" \
+	_idnkit_dir="${IDNKIT_DIR}" \
+	_destdir="${DESTDIR}" \
+	_objects="${OBJECTS}" \
+	_libpath="${LIB_PATH}" \
+	_withidn="${WITH_IDN}" \
+	RFC6531_FOLLOW_RFC5322="${RFC6531_FOLLOW_RFC5322}" \
+	RFC6531_FOLLOW_RFC20="${RFC6531_FOLLOW_RFC20}" \
 	${MAKE} -f Makefile.bsd -C docs VERSION=${VERSION}
 
 auto:
@@ -212,12 +218,45 @@ clean: clean-tests clean-bin
 	Makefile.depend libeav.pc
 
 clean-tests:
+	env _defs="${DEFS}" \
+	_libs="${LIBS}" \
+	_pkg_config="${PKG_CONFIG}" \
+	_install="${INSTALL}" \
+	_idnkit_dir="${IDNKIT_DIR}" \
+	_destdir="${DESTDIR}" \
+	_objects="${OBJECTS}" \
+	_libpath="${LIB_PATH}" \
+	_withidn="${WITH_IDN}" \
+	RFC6531_FOLLOW_RFC5322="${RFC6531_FOLLOW_RFC5322}" \
+	RFC6531_FOLLOW_RFC20="${RFC6531_FOLLOW_RFC20}" \
 	${MAKE} -f Makefile.bsd -C tests clean
 	
 clean-bin:
+	env _defs="${DEFS}" \
+	_libs="${LIBS}" \
+	_pkg_config="${PKG_CONFIG}" \
+	_install="${INSTALL}" \
+	_idnkit_dir="${IDNKIT_DIR}" \
+	_destdir="${DESTDIR}" \
+	_objects="${OBJECTS}" \
+	_libpath="${LIB_PATH}" \
+	_withidn="${WITH_IDN}" \
+	RFC6531_FOLLOW_RFC5322="${RFC6531_FOLLOW_RFC5322}" \
+	RFC6531_FOLLOW_RFC20="${RFC6531_FOLLOW_RFC20}" \
 	${MAKE} -f Makefile.bsd -C bin clean
 
 strip: ${TARGETS}
+	env _defs="${DEFS}" \
+	_libs="${LIBS}" \
+	_pkg_config="${PKG_CONFIG}" \
+	_install="${INSTALL}" \
+	_idnkit_dir="${IDNKIT_DIR}" \
+	_destdir="${DESTDIR}" \
+	_objects="${OBJECTS}" \
+	_libpath="${LIB_PATH}" \
+	_withidn="${WITH_IDN}" \
+	RFC6531_FOLLOW_RFC5322="${RFC6531_FOLLOW_RFC5322}" \
+	RFC6531_FOLLOW_RFC20="${RFC6531_FOLLOW_RFC20}" \
 	${MAKE} -f Makefile.bsd -C bin strip
 
 #----------------------------------------------------------#
@@ -260,6 +299,6 @@ depend: Makefile.depend
 Makefile.depend:
 	$(CC) $(CPPFLAGS) $(CFLAGS) -MM -MG $(SOURCES) > $@
 
--include Makefile.depend
+.sinclude "Makefile.depend"
 
 .DELETE_ON_ERROR:
