@@ -6,7 +6,7 @@ misc
 tests/*.bin
 *.o
 bin/eav
-bin/eav-static
+bin/eav.static
 Makefile.depend
 *~
 libeav.pc
