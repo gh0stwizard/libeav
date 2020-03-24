@@ -206,7 +206,7 @@ auto:
 	${PERL} util/gentld.pl include/eav/auto_tld.h src/auto_tld.c \
 		data/punycode.csv
 
-all-tld:
+tld-domains:
 	${PERL} util/gen_utf8_pass_test.pl data/tld-domains.txt data/raw.csv
 
 #----------------------------------------------------------#

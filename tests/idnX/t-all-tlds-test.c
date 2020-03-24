@@ -11,7 +11,7 @@
 /* how many expect TLDs with test type */
 #define TEST_CHECK          (11)
 /* how many expect not assigned TLDs */
-#define NOT_ASSIGNED_CHECK  (49)
+#define NOT_ASSIGNED_CHECK  (50)
 
 
 extern int
