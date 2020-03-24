@@ -36,7 +36,7 @@ main (int argc, char *argv[])
         return 2;
     }
 
-    setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "en_US.UTF-8");
     eav_init (&eav);
     eav.allow_tld &= ~EAV_TLD_SPECIAL;
     eav_setup (&eav);
