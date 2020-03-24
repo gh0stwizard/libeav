@@ -116,7 +116,7 @@ DEFS += -DRFC6531_FOLLOW_RFC20
 
 #----------------------------------------------------------#
 
-CPPFLAGS = -Iinclude -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=500 -D_SVID_SOURCE
+CPPFLAGS = -Iinclude -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=500 -D_SVID_SOURCE -D_NETBSD_SOURCE
 LIB_PATH != cd ${.CURDIR} && pwd
 
 #----------------------------------------------------------#
