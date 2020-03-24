@@ -33,8 +33,7 @@ eav: ${OBJECTS}
 
 eav.static: ${OBJECTS}
 	# bin -> static linkage
-	env LDFLAGS=-static \
-	${CC} ${LDFLAGS} -o $@ ${OBJECTS} ${LIBS_STATIC}
+	${CC} -static -o $@ ${OBJECTS} ${LIBS_STATIC}
 
 .c.o: depend
 	${CC} ${CPPFLAGS} ${CFLAGS} -o $@ -c $<
