@@ -66,7 +66,7 @@ The documentation may be found either in [docs][16] directory
 or after installing this library via `man` command:
 
 ```
-shell> man libeav
+% man libeav
 ```
 
 
@@ -199,7 +199,7 @@ There is an utility called `eav`. It will be installed by default to
 the `DESTDIR`/bin directory. It has a simple usage:
 
 ```
-shell> eav emails1.txt emails2.txt
+% eav emails1.txt emails2.txt
 ```
 
 See its sources in the [bin][12] directory.

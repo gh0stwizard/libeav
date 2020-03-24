@@ -38,6 +38,7 @@ main (int argc, char *argv[])
 
     setlocale(LC_ALL, "en_US.UTF-8");
     eav_init (&eav);
+    eav.rfc = EAV_RFC_6531;
     eav.allow_tld &= ~EAV_TLD_SPECIAL;
     eav_setup (&eav);
 
@@ -61,7 +62,14 @@ main (int argc, char *argv[])
         len = strlen (line);
 
         if (eav_is_email (&eav, line, len)) {
+#ifdef EAV_EXTRA
+            printf ("PASS: %s\n      lpart: %s\tdomain: %s\n",
+                    sanitize_utf8(line, len),
+                    eav.result.lpart,
+                    eav.result.domain);
+#else
             printf ("PASS: %s\n", sanitize_utf8(line, len));
+#endif
             passed++;
         }
         else {
