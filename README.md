@@ -15,8 +15,7 @@ support all existing RFCs:
 
 A quick note about [RFC 6531][5]: it is possible that the correct implementation
 SHOULD take into account [RFC 20][6] to exclude some characters:
-"#", "\`", "{", "}", "|", "~" and "^". See the
-[RFC 6531 switches](#rfc-6531-switches) section below.
+``# ` { } | ~ ^``. See the [RFC 6531 switches](#rfc-6531-switches) section below.
 
 
 ## What it does not
@@ -53,7 +52,7 @@ General requirements:
 
 To rebuild the documentation and auto-generate TLD database:
 
-* [Perl][19]
+* [Perl][19] + [Text::CSV][29]
 
 
 ## Thread-safety
@@ -149,7 +148,7 @@ Briefly about the switches and these RFCs:
 `RFC6531_FOLLOW_RFC5322 = OFF`, **libeav** disallows any CONTROL characters
 within *local-part* (copy the **RFC 5321** behavior).
 * **RFC 20** simply disallows the next GRAPHIC characters within *local-part*:
-"#", "\`", "{", "}", "|", "~" and "^".
+``# ` { } | ~ ^``.
 
 See the code of [is_6531_local.c][7] file for details.
 
@@ -165,8 +164,8 @@ First, there are three files, which corresponds to IANA's
 The [data/tld-domains.txt][23] depends on [data/raw.csv][25].
 The `auto_tld.c` and `auto_tld.h` depends on [data/punycode.csv][24].
 
-Second, to update these files you need [Perl][19] installed
-on your system.
+Second, to update these files you need [Perl][19] and [Text::CSV][29]
+installed on your system.
 
 Third, you have to obtain CSV files by yourself somehow. I am
 using the application written to this task, you may find it
@@ -267,3 +266,4 @@ This software is released under BSD 2-clause "Simplified" License.
 [26]: https://github.com/gh0stwizard/iana-tld-extractor
 [27]: /src/auto_tld.c
 [28]: /include/eav/auto_tld.h
+[29]: https://metacpan.org/pod/Text::CSV
