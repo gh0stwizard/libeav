@@ -159,8 +159,8 @@ First, there are three files, which corresponds to IANA's
 [Root Zone Database][22]:
 
 * [data/tld-domains.txt][23] - used by tests
-* [src/auto_tld.c][/src/auto_tld.c] - used by the library
-* [include/eav/auto_tld.h][/include/eav/auto_tld.h] - used by the library
+* [src/auto_tld.c][27] - used by the library
+* [include/eav/auto_tld.h][28] - used by the library
 
 The [data/tld-domains.txt][23] depends on [data/raw.csv][25].
 The `auto_tld.c` and `auto_tld.h` depends on [data/punycode.csv][24].
@@ -178,7 +178,8 @@ To update [data/tld-domains.txt][23] use the command below:
 % make tld-domains
 ```
 
-To update `auto_tld.c` and `auto_tld.h` use the next command:
+To update [src/auto_tld.c][27] and [include/eav/auto_tld.h][28]
+use the next command:
 
 ```
 % make auto
@@ -264,3 +265,5 @@ This software is released under BSD 2-clause "Simplified" License.
 [24]: /data/punycode.csv
 [25]: /data/raw.csv
 [26]: https://github.com/gh0stwizard/iana-tld-extractor
+[27]: /src/auto_tld.c
+[28]: /include/eav/auto_tld.h
