@@ -79,7 +79,7 @@ At the moment the build system looking for IDN libraries using
 next order:
 
 1. [libidn2][18]
-2. [libidn][17] (not well supported, some tests may fail)
+2. [libidn][17]
 3. [idnkit][8] - see how to configure below
 
 ### Build manually with specific IDN library
@@ -152,6 +152,37 @@ within *local-part* (copy the **RFC 5321** behavior).
 "#", "\`", "{", "}", "|", "~" and "^".
 
 See the code of [is_6531_local.c][7] file for details.
+
+### Updating TLD database
+
+First, there are three files, which corresponds to IANA's
+[Root Zone Database][22]:
+
+* [data/tld-domains.txt][23] - used by tests
+* [src/auto_tld.c][/src/auto_tld.c] - used by the library
+* [include/eav/auto_tld.h][/include/eav/auto_tld.h] - used by the library
+
+The [data/tld-domains.txt][23] depends on [data/raw.csv][25].
+The `auto_tld.c` and `auto_tld.h` depends on [data/punycode.csv][24].
+
+Second, to update these files you need [Perl][19] installed
+on your system.
+
+Third, you have to obtain CSV files by yourself somehow. I am
+using the application written to this task, you may find it
+here: [github: gh0stwizard/iana-tld-extractor][26].
+
+To update [data/tld-domains.txt][23] use the command below:
+
+```
+% make tld-domains
+```
+
+To update `auto_tld.c` and `auto_tld.h` use the next command:
+
+```
+% make auto
+```
 
 
 ## API
@@ -228,3 +259,8 @@ This software is released under BSD 2-clause "Simplified" License.
 [19]: https://www.perl.org/
 [20]: /docs/libeav.3.pod
 [21]: https://github.com/dertuxmalwieder/libvldmail
+[22]: https://www.iana.org/domains/root/db
+[23]: /data/tld-domains.txt
+[24]: /data/punycode.csv
+[25]: /data/raw.csv
+[26]: https://github.com/gh0stwizard/iana-tld-extractor
