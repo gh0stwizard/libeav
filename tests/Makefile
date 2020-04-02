@@ -1,10 +1,11 @@
 CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic
-
-DEFS = -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE -D__EXTENSIONS__
-DEFS += -I../include -I. ${_defs}
+CPPFLAGS = -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE -D__EXTENSIONS__
+CPPFLAGS += -I../include -I.
+DEFS = ${_defs}
 
 # used for test the library only
 LIB_PATH = $(shell realpath ..)
+export LD_LIBRARY_PATH=$(LIB_PATH)
 
 #----------------------------------------------------------#
 
@@ -27,26 +28,23 @@ PARTIAL_TRT = $(patsubst idnX/%.c, %.bin, $(PARTIAL_SRC))
 endif
 
 DEP_OBJ = $(patsubst %.o, ../%.o, ${_objects})
-LIBS = ${_libs} -L.. -leav
+LIBS = ${_libs}
 
 #----------------------------------------------------------#
-
-CPPFLAGS = $(DEFS) $(INCLUDES)
-export LD_LIBRARY_PATH=$(LIB_PATH)
 
 all: depend $(TARGETS) $(PARTIAL_TRT)
 
 %.bin: %.o
 	# === tests -> linkage
-	$(CC) $(LDFLAGS) -o $@ $< $(DEP_OBJ) $(LIBS)
+	$(CC) $(LDFLAGS) -o $@ $< $(DEP_OBJ) -L.. -leav $(LIBS)
 
 %.o: %.c
 	# === tests -> compile $<
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $<
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $(DEFS) -o $@ $<
 	
 %.o: $(src_pattern)
 	# === tests -> compile $<
-	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $<
+	$(CC) -c $(CPPFLAGS) $(CFLAGS) $(DEFS) -o $@ $<
 
 clean:
 	# === tests -> cleanup

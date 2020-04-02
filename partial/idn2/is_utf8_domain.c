@@ -26,7 +26,11 @@ is_utf8_domain (int *r,
     if (start == end)
         return inverse(EEAV_DOMAIN_EMPTY);
 
+#ifdef IDN2_NONTRANSITIONAL
     *r = idn2_lookup_ul (start, &domain, IDN2_NONTRANSITIONAL);
+#else
+    *r = idn2_lookup_ul (start, &domain, 0);
+#endif
 
     if (*r != IDN2_OK) {
 //        printf ("error: idn2_lookup_ul = %d: %s\n", *r, idn2_strerror (*r));

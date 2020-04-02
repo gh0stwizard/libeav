@@ -47,29 +47,29 @@ ifeq ($(FORCE_IDN),idnkit)
 $(info > Force using idnkit)
 WITH_IDN = idnkit
 IDNKIT_DIR ?= /usr/local
-DEFS = -DHAVE_IDNKIT -I$(IDNKIT_DIR)/include
-LIBS = -L$(IDNKIT_DIR)/lib -lidnkit
-LIBS_STATIC = -L$(IDNKIT_DIR)/lib -lidnkit
+DEFS ?= -DHAVE_IDNKIT -I$(IDNKIT_DIR)/include
+LIBS ?= -L$(IDNKIT_DIR)/lib -lidnkit
+LIBS_STATIC ?= -L$(IDNKIT_DIR)/lib -lidnkit
 PARTIAL = $(wildcard partial/idnkit/*.c)
 OBJECTS += $(patsubst  partial/idnkit/%.c,  partial/idnkit/%.o, $(PARTIAL))
 else ifeq ($(FORCE_IDN),idn2)
 $(info > Force using libidn2)
 WITH_IDN = idn2
-DEFS = -DHAVE_LIBIDN2 $(shell $(PKG_CONFIG) --cflags libidn2)
-LIBS = $(shell $(PKG_CONFIG) --libs libidn2)
-LIBS_STATIC = $(shell $(PKG_CONFIG) --static --libs libidn2)
+DEFS ?= -DHAVE_LIBIDN2 $(shell $(PKG_CONFIG) --cflags libidn2)
+LIBS ?= $(shell $(PKG_CONFIG) --libs libidn2)
+LIBS_STATIC ?= $(shell $(PKG_CONFIG) --static --libs libidn2)
 PARTIAL = $(wildcard partial/idn2/*.c)
 OBJECTS += $(patsubst  partial/idn2/%.c,  partial/idn2/%.o, $(PARTIAL))
 else ifeq ($(FORCE_IDN),idn)
 $(info > Force using libidn)
 WITH_IDN = idn
-DEFS = -DHAVE_LIBIDN $(shell $(PKG_CONFIG) --cflags libidn)
-LIBS_STATIC = $(shell $(PKG_CONFIG) --static --libs libidn)
-LIBS = $(shell $(PKG_CONFIG) --libs libidn)
+DEFS ?= -DHAVE_LIBIDN $(shell $(PKG_CONFIG) --cflags libidn)
+LIBS ?= $(shell $(PKG_CONFIG) --libs libidn)
+LIBS_STATIC ?= $(shell $(PKG_CONFIG) --static --libs libidn)
 PARTIAL = $(wildcard partial/idn/*.c)
 OBJECTS += $(patsubst  partial/idn/%.c,  partial/idn/%.o, $(PARTIAL))
 else
-$(error ! Unknown IDN library type)
+$(error !!! Unknown IDN library type)
 endif
 else
 $(info > Looking for idn library ...)
@@ -102,12 +102,12 @@ endif
 endif
 
 ifeq ($(RFC6531_FOLLOW_RFC5322),ON)
-DEFS += -DRFC6531_FOLLOW_RFC5322
+CPPFLAGS += -DRFC6531_FOLLOW_RFC5322
 export RFC6531_FOLLOW_RFC5322
 endif
 
 ifeq ($(RFC6531_FOLLOW_RFC20),ON)
-DEFS += -DRFC6531_FOLLOW_RFC20
+CPPFLAGS += -DRFC6531_FOLLOW_RFC20
 export RFC6531_FOLLOW_RFC20
 endif
 
