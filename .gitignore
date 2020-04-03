@@ -4,9 +4,12 @@ lib*.a
 lib*.dll
 misc
 tests/*.bin
+tests/*.exe
 *.o
 bin/eav
 bin/eav.static
+bin/eav.exe
+bin/eav-static.exe
 Makefile.depend
 *~
 libeav.pc

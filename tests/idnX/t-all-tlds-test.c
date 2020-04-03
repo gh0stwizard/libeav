@@ -6,6 +6,11 @@
 #include <eav.h>
 #include <eav/auto_tld.h>
 #include "common.h"
+#ifdef HAVE_LIBIDN2
+    #include <idn2.h>
+#else
+    #include <idna.h>
+#endif
 
 
 extern int
@@ -58,7 +63,13 @@ main (int argc, char *argv[])
         }
         else
         {
-            printf ("FAIL: %s (rv: %d)\n", line, t);
+            printf ("FAIL: %s (%d) %s\n", line, t,
+#ifdef HAVE_LIBIDN2
+                    idn2_strerror(r)
+#else
+                    idna_strerror(r)
+#endif
+            );
         }
 
         if (t >= 0)
