@@ -16,7 +16,9 @@ LIBS_STATIC = ${_libs_static}
 
 #----------------------------------------------------------#
 
-all: depend shared
+.PHONY: all clean debug static shared install
+
+all: shared
 
 debug: DEFS += -g -D_DEBUG
 debug: all
@@ -49,7 +51,7 @@ strip-static: static
 
 clean:
 	$(info === bin -> cleanup)
-	$(RM) $(TARGETS) $(OBJECTS) Makefile.depend
+	$(RM) $(TARGETS) $(OBJECTS)
 
 #----------------------------------------------------------#
 
@@ -57,14 +59,3 @@ install: shared
 	$(INSTALL) -d $(DESTDIR)/bin
 	$(INSTALL) -m 0755 eav $(DESTDIR)/bin
 
-#----------------------------------------------------------#
-
-.PHONY: all clean debug
-
-depend: Makefile.depend
-Makefile.depend:
-	$(CC) $(CPPFLAGS) $(CFLAGS) -MM -MG $(SOURCES) > $@
-
--include Makefile.depend
-
-.DELETE_ON_ERROR:

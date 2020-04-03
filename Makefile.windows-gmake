@@ -134,6 +134,8 @@ export _withidn = $(WITH_IDN)
 
 #----------------------------------------------------------#
 
+.PHONY: all debug check clean docs install libs libeav.pc auto man tld-domains
+
 all: libs app
 
 debug: CFLAGS += -g -D_DEBUG
@@ -152,12 +154,12 @@ $(BIN_TARGET): $(DLL_TARGET)
 $(BIN_TARGET_STATIC): $(LIB_TARGET)
 	$(MAKE) -f Makefile.windows-gmake -C bin static
 
-$(DLL_TARGET): depend $(OBJECTS)
+$(DLL_TARGET): $(OBJECTS)
 	$(info library -> shared linkage)
 	$(CC) -shared $(LDFLAGS) -Iinclude -Wl,-soname,$(DLL_TARGET) \
 		-o $(DLL_TARGET) $(OBJECTS) $(LIBS)
 
-$(LIB_TARGET): depend $(OBJECTS)
+$(LIB_TARGET): $(OBJECTS)
 	$(info library -> static linkage)
 	$(AR) rcs $@ $(OBJECTS)
 
@@ -205,8 +207,7 @@ libeav.pc: libeav.pc.in
 
 clean: clean-tests clean-bin
 	$(info cleanup)
-	$(RM) $(DLL_TARGET) $(LIB_TARGET) $(call FixPath,$(OBJECTS)) \
-	Makefile.depend libeav.pc
+	$(RM) $(DLL_TARGET) $(LIB_TARGET) $(call FixPath,$(OBJECTS)) libeav.pc
 
 clean-tests:
 	$(MAKE) -f Makefile.windows-gmake -C tests clean
@@ -251,15 +252,3 @@ install-static: $(LIB_TARGET)
 install-man:
 	$(INSTALL) -d $(MANDIR)/man3
 	$(INSTALL) -m 0644 docs/libeav.3.gz $(MANDIR)/man3
-
-#----------------------------------------------------------#
-
-.PHONY: all debug check clean docs install libs libeav.pc depend
-
-depend: Makefile.depend
-Makefile.depend:
-	$(CC) $(CFLAGS) -MM -MG $(SOURCES) > $@
-
--include Makefile.depend
-
-.DELETE_ON_ERROR:

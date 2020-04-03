@@ -33,7 +33,9 @@ LIBS = ${_libs}
 
 #----------------------------------------------------------#
 
-all: depend $(TARGETS) $(PARTIAL_TRT)
+.PHONY: all debug clean check check-domain check-lpart check-email check-lib check-email-822 check-email-5321 check-email-5322 check-email-6531
+
+all: $(TARGETS) $(PARTIAL_TRT)
 
 %.exe: %.o
 	$(info === tests -> linkage)
@@ -42,14 +44,14 @@ all: depend $(TARGETS) $(PARTIAL_TRT)
 %.o: %.c
 	$(info === tests -> compile $<)
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $(DEFS) -o $@ $<
-	
+
 %.o: $(src_pattern)
 	$(info === tests -> compile $<)
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) $(DEFS) -o $@ $<
 
 clean:
 	$(info === tests -> cleanup)
-	$(RM) $(TARGETS) $(OBJECTS) $(PARTIAL_OBJ) $(PARTIAL_TRT) Makefile.depend
+	$(RM) $(TARGETS) $(OBJECTS) $(PARTIAL_OBJ) $(PARTIAL_TRT)
 
 check: check-domain check-lpart check-email check-lib
 
@@ -318,16 +320,3 @@ endif
 endif
 endif
 	./t-result.exe 7 18 ../data/email-result-check.txt
-
-
-.PHONY: all debug clean check
-
-#----------------------------------------------------------#
-
-depend: Makefile.depend
-Makefile.depend:
-	$(CC) $(CPPFLAGS) $(CFLAGS) -MM -MG $(SOURCES) $(PARTIAL_SRC) > $@
-
--include Makefile.depend
-
-.DELETE_ON_ERROR:
