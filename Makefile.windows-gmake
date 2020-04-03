@@ -254,7 +254,7 @@ install-man:
 
 #----------------------------------------------------------#
 
-.PHONY: all debug check clean docs install libs libeav.pc
+.PHONY: all debug check clean docs install libs libeav.pc depend
 
 depend: Makefile.depend
 Makefile.depend:
