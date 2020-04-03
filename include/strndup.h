@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-static char *
+char *
 strndup(const char *s, size_t n)
 {
     char *p = memchr(s, 0, n);
