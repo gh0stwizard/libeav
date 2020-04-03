@@ -26,9 +26,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef GETLINE_H
-#define GETLINE_H
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -82,5 +79,3 @@ getline(char **buf, size_t *bufsiz, FILE *fp)
 {
 	return getdelim(buf, bufsiz, '\n', fp);
 }
-
-#endif /* GETLINE_H */

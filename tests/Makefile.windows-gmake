@@ -1,6 +1,6 @@
 CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic
 CPPFLAGS = -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE -D__EXTENSIONS__
-CPPFLAGS += -I../include -I.
+CPPFLAGS += -I../include -I../src -I.
 DEFS = ${_defs}
 RM = del /Q
 

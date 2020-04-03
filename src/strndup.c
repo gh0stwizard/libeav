@@ -1,6 +1,3 @@
-#ifndef STRNDUP_H
-#define STRNDUP_H
-
 #include <string.h>
 #include <stdlib.h>
 
@@ -16,5 +13,3 @@ strndup(const char *s, size_t n)
     p[n] = '\0';
     return p;
 }
-
-#endif /* STRNDUP_H */
