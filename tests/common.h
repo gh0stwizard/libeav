@@ -6,7 +6,7 @@
 #include <assert.h>
 #include "../src/utf8_decode.h"
 #ifdef __WIN32
-    #include <getline.h>
+    #include "../src/win32/getline.h"
 #endif
 
 
