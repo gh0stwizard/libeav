@@ -3,6 +3,9 @@
 #include <eav.h>
 #include <eav/private.h>
 #include <eav/private_email.h>
+#ifdef __WIN32
+    #include <strndup.h>
+#endif
 
 
 extern eav_result_t
