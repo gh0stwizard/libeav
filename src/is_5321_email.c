@@ -3,7 +3,7 @@
 #include <eav.h>
 #include <eav/private.h>
 #include <eav/private_email.h>
-#ifdef __WIN32
+#if defined(__WIN32) && defined(EAV_EXTRA)
     #include <strndup.h>
 #endif
 
