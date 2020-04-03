@@ -1,5 +1,5 @@
 CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic -fPIC
-CPPFLAGS = -Iinclude -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE
+CPPFLAGS = -Iinclude -Isrc -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE
 PKG_CONFIG ?= pkg-config
 DESTDIR ?= /usr/local
 INSTALL ?= install
