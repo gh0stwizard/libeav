@@ -4,7 +4,7 @@ INSTALL ?= ${_install}
 RM = del /Q
 
 CPPFLAGS = -D_GNU_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE -D__EXTENSIONS__
-CPPFLAGS += -I../include -I../src
+CPPFLAGS += -I../include -I../src/win32
 CPPFLAGS += ${_defs} $(INCLUDES)
 
 TARGETS = eav.exe eav-static.exe

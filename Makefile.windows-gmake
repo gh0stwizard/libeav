@@ -1,5 +1,5 @@
 CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic -fPIC
-CPPFLAGS = -Iinclude -Isrc -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE
+CPPFLAGS = -Iinclude -Isrc/win32 -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE
 PKG_CONFIG ?= pkg-config
 DESTDIR ?= /usr/local
 INSTALL ?= install
@@ -42,6 +42,9 @@ bin_SOURCES = $(wildcard bin/*.c)
 bin_OBJECTS = $(patsubst bin/%.c, bin/%.o, $(bin_SOURCES))
 SOURCES = $(wildcard src/*.c)
 OBJECTS = $(patsubst src/%.c, src/%.o, $(SOURCES))
+win32_SOURCES = $(wildcard src/win32/*.c)
+win32_OBJECTS = $(patsubst src/win32/%.c, src/win32/%.o, $(win32_SOURCES))
+OBJECTS += $(win32_OBJECTS)
 
 #----------------------------------------------------------#
 
