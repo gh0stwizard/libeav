@@ -32,7 +32,7 @@ LIBS = ${_libs}
 
 #----------------------------------------------------------#
 
-all: depend $(TARGETS) $(PARTIAL_TRT)
+all: $(TARGETS) $(PARTIAL_TRT)
 
 %.bin: %.o
 	# === tests -> linkage
@@ -48,7 +48,7 @@ all: depend $(TARGETS) $(PARTIAL_TRT)
 
 clean:
 	# === tests -> cleanup
-	$(RM) $(TARGETS) $(OBJECTS) $(PARTIAL_OBJ) $(PARTIAL_TRT) Makefile.depend
+	$(RM) $(TARGETS) $(OBJECTS) $(PARTIAL_OBJ) $(PARTIAL_TRT)
 
 check: check-domain check-lpart check-email check-lib
 
@@ -306,11 +306,3 @@ endif
 .PHONY: all debug clean check
 
 #----------------------------------------------------------#
-
-depend: Makefile.depend
-Makefile.depend:
-	$(CC) $(CPPFLAGS) $(CFLAGS) -MM -MG $(SOURCES) $(PARTIAL_SRC) > $@
-
--include Makefile.depend
-
-.DELETE_ON_ERROR:

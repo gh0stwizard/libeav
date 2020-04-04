@@ -149,12 +149,12 @@ $(BIN_TARGET): $(DLL_TARGET)
 $(BIN_TARGET_STATIC): $(LIB_TARGET)
 	$(MAKE) -C bin static
 
-$(DLL_TARGET): depend $(OBJECTS)
+$(DLL_TARGET): $(OBJECTS)
 	# library -> shared linkage
 	$(CC) -shared $(LDFLAGS) -Iinclude -Wl,-soname,$(DLL_TARGET) \
 		-o $(DLL_TARGET) $(OBJECTS) $(LIBS)
 
-$(LIB_TARGET): depend $(OBJECTS)
+$(LIB_TARGET): $(OBJECTS)
 	# library -> static linkage
 	$(AR) rcs $@ $(OBJECTS)
 
@@ -202,8 +202,7 @@ libeav.pc: libeav.pc.in
 
 clean: clean-tests clean-bin
 	# cleanup
-	$(RM) $(DLL_TARGET) $(LIB_TARGET) $(OBJECTS) \
-	Makefile.depend libeav.pc
+	$(RM) $(DLL_TARGET) $(LIB_TARGET) $(OBJECTS) libeav.pc
 
 clean-tests:
 	$(MAKE) -C tests clean
@@ -252,11 +251,3 @@ install-man:
 #----------------------------------------------------------#
 
 .PHONY: all debug check clean docs install libs libeav.pc
-
-depend: Makefile.depend
-Makefile.depend:
-	$(CC) $(CFLAGS) -MM -MG $(SOURCES) > $@
-
--include Makefile.depend
-
-.DELETE_ON_ERROR:
