@@ -81,11 +81,11 @@ main (int argc, char *argv[])
         /* No matter if the test fail because of allow_tld filter,
          * the domain/ip validation are always successful.
          */
-        if (eav.result.is_domain)
+        if (eav.result->is_domain)
             domain++;
-        else if (eav.result.is_ipv4)
+        else if (eav.result->is_ipv4)
             ipv4++;
-        else if (eav.result.is_ipv6)
+        else if (eav.result->is_ipv6)
             ipv6++;
     }
 
