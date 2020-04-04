@@ -65,8 +65,8 @@ main (int argc, char *argv[])
 #ifdef EAV_EXTRA
             printf ("PASS: %s\n      lpart: %s\tdomain: %s\n",
                     sanitize_utf8(line, len),
-                    eav.result.lpart,
-                    eav.result.domain);
+                    eav.result->lpart,
+                    eav.result->domain);
 #else
             printf ("PASS: %s\n", sanitize_utf8(line, len));
 #endif
