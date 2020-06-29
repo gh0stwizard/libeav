@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2020-06-27 10:28:11 */
+/* this file was auto-generated at 2020-06-29 05:33:51 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -39,7 +39,7 @@ const tld_t tld_list[] = {
     { "agency", 7, TLD_TYPE_GENERIC },
     { "ai", 3, TLD_TYPE_COUNTRY_CODE },
     { "aig", 4, TLD_TYPE_GENERIC },
-    { "aigo", 5, TLD_TYPE_GENERIC },
+    { "aigo", 5, TLD_TYPE_NOT_ASSIGNED },
     { "airbus", 7, TLD_TYPE_GENERIC },
     { "airforce", 9, TLD_TYPE_GENERIC },
     { "airtel", 7, TLD_TYPE_GENERIC },
