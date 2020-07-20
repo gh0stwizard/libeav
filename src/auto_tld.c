@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2020-06-29 05:33:51 */
+/* this file was auto-generated at 2020-07-20 22:22:17 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -1224,7 +1224,7 @@ const tld_t tld_list[] = {
     { "sx", 3, TLD_TYPE_COUNTRY_CODE },
     { "sy", 3, TLD_TYPE_COUNTRY_CODE },
     { "sydney", 7, TLD_TYPE_GENERIC },
-    { "symantec", 9, TLD_TYPE_GENERIC },
+    { "symantec", 9, TLD_TYPE_NOT_ASSIGNED },
     { "systems", 8, TLD_TYPE_GENERIC },
     { "sz", 3, TLD_TYPE_COUNTRY_CODE },
     { "tab", 4, TLD_TYPE_GENERIC },
