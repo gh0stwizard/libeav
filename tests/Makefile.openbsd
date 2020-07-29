@@ -72,6 +72,8 @@ check-domain: $(TARGETS) $(PARTIAL_TRT)
 	./t-domain-length.bin 4 3 ../data/domain-length.txt
 	env LD_LIBRARY_PATH="${LIB_PATH}" \
 	./t-dash-domains.bin ../data/xn-dash-domains.txt
+	env LD_LIBRARY_PATH="${LIB_PATH}" \
+	./t-retired.bin 2 0 ../data/retired.txt
 
 check-lpart: $(TARGETS) $(PARTIAL_TRT)
 	# === localpart tests

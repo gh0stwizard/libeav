@@ -1,0 +1,3 @@
+# old retired domains
+retired@example.iinet
+retired@example.mtpc
