@@ -25,7 +25,8 @@ typedef enum {
     EAV_TLD_INFRASTRUCTURE      = 1 << 6,
     EAV_TLD_SPONSORED           = 1 << 7,
     EAV_TLD_TEST                = 1 << 8,
-    EAV_TLD_SPECIAL             = 1 << 9
+    EAV_TLD_SPECIAL             = 1 << 9,
+    EAV_TLD_RETIRED             = 1 << 10
 } EAV_TLD;
 
 
