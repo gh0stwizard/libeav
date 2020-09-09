@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2020-07-30 01:36:52 */
+/* this file was auto-generated at 2020-09-09 21:00:47 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -823,7 +823,7 @@ const tld_t tld_list[] = {
     { "menu", 5, TLD_TYPE_GENERIC },
     { "meo", 4, TLD_TYPE_NOT_ASSIGNED },
     { "merckmsd", 9, TLD_TYPE_GENERIC },
-    { "metlife", 8, TLD_TYPE_GENERIC },
+    { "metlife", 8, TLD_TYPE_NOT_ASSIGNED },
     { "mf", 3, TLD_TYPE_NOT_ASSIGNED },
     { "mg", 3, TLD_TYPE_COUNTRY_CODE },
     { "mh", 3, TLD_TYPE_COUNTRY_CODE },
