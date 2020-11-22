@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2020-10-17 08:12:01 */
+/* this file was auto-generated at 2020-11-22 05:29:08 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -664,7 +664,7 @@ const tld_t tld_list[] = {
     { "jaguar", 7, TLD_TYPE_GENERIC },
     { "java", 5, TLD_TYPE_GENERIC },
     { "jcb", 4, TLD_TYPE_GENERIC },
-    { "jcp", 4, TLD_TYPE_GENERIC },
+    { "jcp", 4, TLD_TYPE_NOT_ASSIGNED },
     { "je", 3, TLD_TYPE_COUNTRY_CODE },
     { "jeep", 5, TLD_TYPE_GENERIC },
     { "jetzt", 6, TLD_TYPE_GENERIC },
