@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2020-11-22 05:29:08 */
+/* this file was auto-generated at 2020-11-26 09:13:13 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -1153,7 +1153,7 @@ const tld_t tld_list[] = {
     { "shouji", 7, TLD_TYPE_GENERIC },
     { "show", 5, TLD_TYPE_GENERIC },
     { "showtime", 9, TLD_TYPE_GENERIC },
-    { "shriram", 8, TLD_TYPE_GENERIC },
+    { "shriram", 8, TLD_TYPE_NOT_ASSIGNED },
     { "si", 3, TLD_TYPE_COUNTRY_CODE },
     { "silk", 5, TLD_TYPE_GENERIC },
     { "sina", 5, TLD_TYPE_GENERIC },
