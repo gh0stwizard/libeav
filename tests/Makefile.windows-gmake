@@ -143,7 +143,7 @@ ifeq ($(RFC6531_FOLLOW_RFC20),ON)
 	$(info # --- RFC6531_FOLLOW_RFC5322 = ON ; RFC6531_FOLLOW_RFC20 = ON)
 	$(info # =====================================================)
 	./t-6531-email.exe 43 3 ../data/pass-email-ascii.txt
-	./t-6531-email.exe 0 44../data/fail-email-ascii.txt
+	./t-6531-email.exe 0 44 ../data/fail-email-ascii.txt
 ifeq (${_withidn},idn)
 	./t-6531-email.exe 8 16 ../data/email-utf8.txt
 else
