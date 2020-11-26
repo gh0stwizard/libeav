@@ -71,7 +71,6 @@ main (int argc, char *argv[])
 
     fclose (fh);
 
-    printf (SEP);
     printf ("TLD statistic:\n");
     const char* fmt = "  %-18s %d\n";
     printf (fmt, "country-code", tld_count[TLD_TYPE_COUNTRY_CODE]);
@@ -88,17 +87,17 @@ main (int argc, char *argv[])
     {
         printf ("ERROR: found %d unused TLD.\n",
                 tld_count[TLD_TYPE_UNUSED]);
-        printf ("%s: FAIL\n" SEP, argv[0]);
+        msg_warn ("%s: FAIL\n", argv[0]);
         return 4;
     }
 
     if (errors >= 1)
     {
         printf ("ERROR: there are some errors above.\n");
-        printf ("%s: FAIL\n" SEP, argv[0]);
+        msg_warn ("%s: FAIL\n", argv[0]);
         return 5;
     }
 
-    printf ("%s: PASS\n" SEP, argv[0]);
+    msg_ok ("%s: PASS\n", argv[0]);
     return 0;
 }
