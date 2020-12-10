@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2020-11-26 09:13:13 */
+/* this file was auto-generated at 2020-12-10 14:18:53 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -238,7 +238,7 @@ const tld_t tld_list[] = {
     { "cbs", 4, TLD_TYPE_GENERIC },
     { "cc", 3, TLD_TYPE_COUNTRY_CODE },
     { "cd", 3, TLD_TYPE_COUNTRY_CODE },
-    { "ceb", 4, TLD_TYPE_GENERIC },
+    { "ceb", 4, TLD_TYPE_NOT_ASSIGNED },
     { "center", 7, TLD_TYPE_GENERIC },
     { "ceo", 4, TLD_TYPE_GENERIC },
     { "cern", 5, TLD_TYPE_GENERIC },
