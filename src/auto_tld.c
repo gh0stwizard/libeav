@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2020-12-10 14:18:53 */
+/* this file was auto-generated at 2020-12-11 17:04:14 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -784,7 +784,7 @@ const tld_t tld_list[] = {
     { "ltda", 5, TLD_TYPE_GENERIC },
     { "lu", 3, TLD_TYPE_COUNTRY_CODE },
     { "lundbeck", 9, TLD_TYPE_GENERIC },
-    { "lupin", 6, TLD_TYPE_GENERIC },
+    { "lupin", 6, TLD_TYPE_NOT_ASSIGNED },
     { "luxe", 5, TLD_TYPE_GENERIC },
     { "luxury", 7, TLD_TYPE_GENERIC },
     { "lv", 3, TLD_TYPE_COUNTRY_CODE },
