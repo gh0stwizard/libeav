@@ -34,3 +34,4 @@ jobs:
           path_to_write_report: codecov_report.txt
           fail_ci_if_error: true
           verbose: true
+          gcov_path_exclude: './tests/**'
