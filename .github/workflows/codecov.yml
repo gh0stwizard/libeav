@@ -1,0 +1,36 @@
+name: codecov
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+    - 'bin/**'
+    - 'src/**'
+    - 'include/**'
+    - 'partial/**'
+    - 'tests/**'
+    - '.github/**'
+    - 'Makefile'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2        
+      - name: update apt
+        run: sudo apt-get update
+      - name: install libidn2
+        run: sudo apt-get install -y libidn2-0 libidn2-0-dev
+      - name: make coverage
+        run: make coverage
+      - name: upload to codecov
+        uses: codecov/codecov-action@v1
+        with:
+          name: ubuntu-latest-libidn2
+          path_to_write_report: codecov_report.txt
+          fail_ci_if_error: true
+          verbose: true
