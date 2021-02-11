@@ -1,5 +1,6 @@
-CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic
-CPPFLAGS = -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE -D__EXTENSIONS__
+CFLAGS ?= -O2
+CPPFLAGS += -Wall -Wextra -std=c99 -pedantic
+CPPFLAGS += -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE -D__EXTENSIONS__
 CPPFLAGS += -I../include -I.
 DEFS = ${_defs}
 
@@ -13,6 +14,10 @@ SOURCES = $(wildcard *.c)
 OBJECTS = $(patsubst %.c, %.o, $(SOURCES))
 TARGETS = $(patsubst %.c, %.bin, $(SOURCES))
 
+# coverage data per test binary
+gcov_gcda = $(patsubst %.c, %.gcda, $(SOURCES))
+gcov_gcno = $(patsubst %.c, %.gcno, $(SOURCES))
+
 $(info >>> Building tests with idn = ${_withidn})
 ifeq (${_withidn},idnkit)
 src_pattern = idnkit/%.c
@@ -20,11 +25,15 @@ PARTIAL_SRC = $(wildcard idnkit/*.c)
 PARTIAL_OBJ = $(patsubst idnkit/%.c, %.o, $(PARTIAL_SRC))
 PARTIAL_TRT = $(patsubst idnkit/%.c, %.bin, $(PARTIAL_SRC))
 LIB_PATH = $(shell realpath ..):${_idnkit_dir}/lib
+gcov_gcda += $(patsubst idnkit/%.c, %.gcda, $(PARTIAL_SRC))
+gcov_gcno += $(patsubst idnkit/%.c, %.gcno, $(PARTIAL_SRC))
 else
 src_pattern = idnX/%.c
 PARTIAL_SRC = $(wildcard idnX/*.c)
 PARTIAL_OBJ = $(patsubst idnX/%.c, %.o, $(PARTIAL_SRC))
 PARTIAL_TRT = $(patsubst idnX/%.c, %.bin, $(PARTIAL_SRC))
+gcov_gcda += $(patsubst idnX/%.c, %.gcda, $(PARTIAL_SRC))
+gcov_gcno += $(patsubst idnX/%.c, %.gcno, $(PARTIAL_SRC))
 endif
 
 DEP_OBJ = $(patsubst %.o, ../%.o, ${_objects})
@@ -36,7 +45,7 @@ all: $(TARGETS) $(PARTIAL_TRT)
 
 %.bin: %.o
 	# === tests -> linkage
-	$(CC) $(LDFLAGS) -o $@ $< $(DEP_OBJ) -L.. -leav $(LIBS)
+	$(CC) -o $@ $< $(DEP_OBJ) -L.. -leav $(LIBS) $(LDFLAGS)
 
 %.o: %.c
 	# === tests -> compile $<
@@ -49,6 +58,8 @@ all: $(TARGETS) $(PARTIAL_TRT)
 clean:
 	# === tests -> cleanup
 	$(RM) $(TARGETS) $(OBJECTS) $(PARTIAL_OBJ) $(PARTIAL_TRT)
+	$(RM) $(gcov_gcda)
+	$(RM) $(gcov_gcno)
 
 check: check-domain check-lpart check-email check-lib
 
@@ -302,7 +313,6 @@ endif
 endif
 endif
 	./t-result.bin 7 18 ../data/email-result-check.txt
-
 
 .PHONY: all debug clean check
 

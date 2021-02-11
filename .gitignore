@@ -14,3 +14,7 @@ Makefile.depend
 *~
 libeav.pc
 *.bck
+*.gcov
+*.gcda
+*.gcno
+codecov.sh
