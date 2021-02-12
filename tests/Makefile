@@ -5,7 +5,10 @@ CPPFLAGS += -I../include -I.
 DEFS = ${_defs}
 
 # used for test the library only
-LIB_PATH = $(shell realpath ..)
+LIB_PATH = $(shell realpath .. 2>/dev/null || readlink -f -- ..)
+ifeq ($(LIB_PATH),)
+$(error Neither realpath or readlink has been found on the system)
+endif
 export LD_LIBRARY_PATH=$(LIB_PATH)
 
 #----------------------------------------------------------#

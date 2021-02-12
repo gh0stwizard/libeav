@@ -6,6 +6,10 @@ INSTALL ?= install
 PERL ?= perl
 SED ?= sed
 
+LIB_PATH = $(shell realpath . 2>/dev/null || readlink -f -- .)
+ifeq ($(LIB_PATH),)
+$(error Neither realpath or readlink has been found on the system)
+endif
 
 ifndef RFC6531_FOLLOW_RFC5322
 export RFC6531_FOLLOW_RFC5322 = OFF
@@ -127,10 +131,7 @@ endif
 
 #----------------------------------------------------------#
 
-
 CPPFLAGS += $(DEFS) $(INCLUDES)
-
-LIB_PATH = $(shell realpath .)
 
 export _defs = $(DEFS)
 export _libs = $(LIBS)
