@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2021-02-12 08:48:25 */
+/* this file was auto-generated at 2021-02-20 08:46:51 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -226,7 +226,7 @@ const tld_t tld_list[] = {
     { "cartier", 8, TLD_TYPE_NOT_ASSIGNED },
     { "casa", 5, TLD_TYPE_GENERIC },
     { "case", 5, TLD_TYPE_GENERIC },
-    { "caseih", 7, TLD_TYPE_GENERIC },
+    { "caseih", 7, TLD_TYPE_NOT_ASSIGNED },
     { "cash", 5, TLD_TYPE_GENERIC },
     { "casino", 7, TLD_TYPE_GENERIC },
     { "cat", 4, TLD_TYPE_SPONSORED },
@@ -898,7 +898,7 @@ const tld_t tld_list[] = {
     { "network", 8, TLD_TYPE_GENERIC },
     { "neustar", 8, TLD_TYPE_GENERIC },
     { "new", 4, TLD_TYPE_GENERIC },
-    { "newholland", 11, TLD_TYPE_GENERIC },
+    { "newholland", 11, TLD_TYPE_NOT_ASSIGNED },
     { "news", 5, TLD_TYPE_GENERIC },
     { "next", 5, TLD_TYPE_GENERIC },
     { "nextdirect", 11, TLD_TYPE_GENERIC },
