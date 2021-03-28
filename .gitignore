@@ -2,7 +2,6 @@ core
 lib*.so*
 lib*.a
 lib*.dll
-misc
 tests/*.bin
 tests/*.exe
 *.o
