@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2021-02-20 08:46:51 */
+/* this file was auto-generated at 2021-03-28 09:35:37 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -487,7 +487,7 @@ const tld_t tld_list[] = {
     { "frontier", 9, TLD_TYPE_GENERIC },
     { "ftr", 4, TLD_TYPE_GENERIC },
     { "fujitsu", 8, TLD_TYPE_GENERIC },
-    { "fujixerox", 10, TLD_TYPE_GENERIC },
+    { "fujixerox", 10, TLD_TYPE_NOT_ASSIGNED },
     { "fun", 4, TLD_TYPE_GENERIC },
     { "fund", 5, TLD_TYPE_GENERIC },
     { "furniture", 10, TLD_TYPE_GENERIC },
