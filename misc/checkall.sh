@@ -18,12 +18,24 @@ cd "${srcdir}" || exit 1
 
 for lib in idn2 idn idnkit;
 do
+    # because "make clean check clean" works not as we want...
     make RFC6531_FOLLOW_RFC5322=OFF RFC6531_FOLLOW_RFC20=OFF \
-        FORCE_IDN=${lib} check clean || exit 1
+        FORCE_IDN=${lib} IDNKIT_DIR="${IDNKIT_DIR}" clean || exit 1
+    make RFC6531_FOLLOW_RFC5322=OFF RFC6531_FOLLOW_RFC20=OFF \
+        FORCE_IDN=${lib} IDNKIT_DIR="${IDNKIT_DIR}" check clean || exit 1
+
     make RFC6531_FOLLOW_RFC5322=ON RFC6531_FOLLOW_RFC20=OFF \
-        FORCE_IDN=${lib} check clean || exit 1
+        FORCE_IDN=${lib} IDNKIT_DIR="${IDNKIT_DIR}" clean || exit 1
+    make RFC6531_FOLLOW_RFC5322=ON RFC6531_FOLLOW_RFC20=OFF \
+        FORCE_IDN=${lib} IDNKIT_DIR="${IDNKIT_DIR}" check clean || exit 1
+
     make RFC6531_FOLLOW_RFC5322=OFF RFC6531_FOLLOW_RFC20=ON \
-        FORCE_IDN=${lib} check clean || exit 1
+        FORCE_IDN=${lib} IDNKIT_DIR="${IDNKIT_DIR}" clean || exit 1
+    make RFC6531_FOLLOW_RFC5322=OFF RFC6531_FOLLOW_RFC20=ON \
+        FORCE_IDN=${lib} IDNKIT_DIR="${IDNKIT_DIR}" check clean || exit 1
+
     make RFC6531_FOLLOW_RFC5322=ON RFC6531_FOLLOW_RFC20=ON \
-        FORCE_IDN=${lib} check clean || exit 1
+        FORCE_IDN=${lib} IDNKIT_DIR="${IDNKIT_DIR}" clean || exit 1
+    make RFC6531_FOLLOW_RFC5322=ON RFC6531_FOLLOW_RFC20=ON \
+        FORCE_IDN=${lib} IDNKIT_DIR="${IDNKIT_DIR}" check clean || exit 1
 done
