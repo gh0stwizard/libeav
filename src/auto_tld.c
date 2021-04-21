@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2021-03-28 09:35:37 */
+/* this file was auto-generated at 2021-04-21 18:25:29 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -885,7 +885,7 @@ const tld_t tld_list[] = {
     { "nadex", 6, TLD_TYPE_NOT_ASSIGNED },
     { "nagoya", 7, TLD_TYPE_GENERIC },
     { "name", 5, TLD_TYPE_GENERIC_RESTRICTED },
-    { "nationwide", 11, TLD_TYPE_GENERIC },
+    { "nationwide", 11, TLD_TYPE_NOT_ASSIGNED },
     { "natura", 7, TLD_TYPE_GENERIC },
     { "navy", 5, TLD_TYPE_GENERIC },
     { "nba", 4, TLD_TYPE_GENERIC },
@@ -946,7 +946,7 @@ const tld_t tld_list[] = {
     { "ong", 4, TLD_TYPE_GENERIC },
     { "onl", 4, TLD_TYPE_GENERIC },
     { "online", 7, TLD_TYPE_GENERIC },
-    { "onyourside", 11, TLD_TYPE_GENERIC },
+    { "onyourside", 11, TLD_TYPE_NOT_ASSIGNED },
     { "ooo", 4, TLD_TYPE_GENERIC },
     { "open", 5, TLD_TYPE_GENERIC },
     { "oracle", 7, TLD_TYPE_GENERIC },
