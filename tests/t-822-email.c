@@ -10,7 +10,7 @@
 
 
 typedef enum app_mode_e {
-    APP_MODE_READLINE,
+    APP_MODE_NORMAL,
     APP_MODE_SLURP
 } app_mode_t;
 
@@ -59,7 +59,7 @@ parse_args (int argc, char *argv[], app_options_t *result)
 
     while (1) {
         int index = 0;
-        r = getopt_long (argc, argv, "hsP:F:f:", opts, &index);
+        r = getopt_long (argc, argv, "hsP:F:f:i:", opts, &index);
 
         if (r == -1)
             break;
@@ -108,6 +108,7 @@ slurp_string (const char *s, size_t len) {
     const char *end = s + len;
     int ch;
     int email_idx = 0;
+
     for (; cp < end && (ch = *(unsigned const char *) cp) != 0; cp++) {
         if (ch == '\\' && (cp + 1) <= end) {
             int replaced = 1;
@@ -119,6 +120,7 @@ slurp_string (const char *s, size_t len) {
             case 't':  email[email_idx++] = '\t'; break;
             case 'v':  email[email_idx++] = '\v'; break;
             case ' ':  email[email_idx++] = ' ';  break;
+            case '0':  goto done;
             default:   replaced = 0; break;
             }
 
@@ -127,9 +129,13 @@ slurp_string (const char *s, size_t len) {
                 continue;
             }
         }
+
         email[email_idx++] = ch;
     }
+
+done:
     email[email_idx] = '\0';
+
     return email;
 }
 
@@ -137,9 +143,12 @@ slurp_string (const char *s, size_t len) {
 static int
 parse_string (app_options_t *app_opts, const char *s) {
     size_t len = strlen (s);
-    char *email = slurp_string (s, len);
+    int slurp = app_opts->mode == APP_MODE_SLURP;
+    char *email = slurp ? slurp_string (s, len) : (char*) s;
     eav_result_t *r = is_822_email (email, strlen (email), true);
-    free (email);
+
+    if (slurp)
+        free (email);
 
     if (r->rc >= 0) {
         printf ("PASS: %s\n", sanitize(s, len));
@@ -210,7 +219,7 @@ main (int argc, char *argv[])
 {
     setlocale(LC_ALL, "en_US.UTF-8");
 
-    app_options_t app_opts = { APP_MODE_READLINE, -1, -1, 0, 0, '#', NULL };
+    app_options_t app_opts = { APP_MODE_NORMAL, -1, -1, 0, 0, '#', NULL };
     int rc = parse_args (argc, argv, &app_opts);
     if (rc != -1) return rc;
 
