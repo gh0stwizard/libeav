@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2021-06-19 11:53:04 */
+/* this file was auto-generated at 2021-09-28 19:00:30 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -1073,7 +1073,7 @@ const tld_t tld_list[] = {
     { "ril", 4, TLD_TYPE_GENERIC },
     { "rio", 4, TLD_TYPE_GENERIC },
     { "rip", 4, TLD_TYPE_GENERIC },
-    { "rmit", 5, TLD_TYPE_GENERIC },
+    { "rmit", 5, TLD_TYPE_NOT_ASSIGNED },
     { "ro", 3, TLD_TYPE_COUNTRY_CODE },
     { "rocher", 7, TLD_TYPE_GENERIC },
     { "rocks", 6, TLD_TYPE_GENERIC },
