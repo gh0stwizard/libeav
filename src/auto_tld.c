@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2021-09-28 19:00:30 */
+/* this file was auto-generated at 2021-10-07 19:34:16 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -1220,7 +1220,7 @@ const tld_t tld_list[] = {
     { "suzuki", 7, TLD_TYPE_GENERIC },
     { "sv", 3, TLD_TYPE_COUNTRY_CODE },
     { "swatch", 7, TLD_TYPE_GENERIC },
-    { "swiftcover", 11, TLD_TYPE_GENERIC },
+    { "swiftcover", 11, TLD_TYPE_NOT_ASSIGNED },
     { "swiss", 6, TLD_TYPE_GENERIC },
     { "sx", 3, TLD_TYPE_COUNTRY_CODE },
     { "sy", 3, TLD_TYPE_COUNTRY_CODE },
