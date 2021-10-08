@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2021-10-07 19:34:16 */
+/* this file was auto-generated at 2021-10-08 18:52:00 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -1037,7 +1037,7 @@ const tld_t tld_list[] = {
     { "qpon", 5, TLD_TYPE_GENERIC },
     { "quebec", 7, TLD_TYPE_GENERIC },
     { "quest", 6, TLD_TYPE_GENERIC },
-    { "qvc", 4, TLD_TYPE_GENERIC },
+    { "qvc", 4, TLD_TYPE_NOT_ASSIGNED },
     { "racing", 7, TLD_TYPE_GENERIC },
     { "radio", 6, TLD_TYPE_GENERIC },
     { "raid", 5, TLD_TYPE_GENERIC },
