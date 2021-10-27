@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2021-10-08 18:52:00 */
+/* this file was auto-generated at 2021-10-27 15:16:06 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -873,6 +873,7 @@ const tld_t tld_list[] = {
     { "mtr", 4, TLD_TYPE_GENERIC },
     { "mu", 3, TLD_TYPE_COUNTRY_CODE },
     { "museum", 7, TLD_TYPE_SPONSORED },
+    { "music", 6, TLD_TYPE_GENERIC },
     { "mutual", 7, TLD_TYPE_GENERIC },
     { "mutuelle", 9, TLD_TYPE_RETIRED },
     { "mv", 3, TLD_TYPE_COUNTRY_CODE },
