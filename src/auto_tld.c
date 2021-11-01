@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2021-10-27 15:16:06 */
+/* this file was auto-generated at 2021-11-01 19:41:04 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -1411,7 +1411,7 @@ const tld_t tld_list[] = {
     { "xn--3ds443g", 12, TLD_TYPE_GENERIC },
     { "xn--3e0b707e", 13, TLD_TYPE_COUNTRY_CODE },
     { "xn--3hcrj9c", 12, TLD_TYPE_COUNTRY_CODE },
-    { "xn--3oq18vl8pn36a", 18, TLD_TYPE_GENERIC },
+    { "xn--3oq18vl8pn36a", 18, TLD_TYPE_NOT_ASSIGNED },
     { "xn--3pxu8k", 11, TLD_TYPE_GENERIC },
     { "xn--42c2d9a", 12, TLD_TYPE_GENERIC },
     { "xn--45br5cyl", 13, TLD_TYPE_COUNTRY_CODE },
