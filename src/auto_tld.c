@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2021-12-04 21:39:27 */
+/* this file was auto-generated at 2021-12-31 08:16:03 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -761,7 +761,7 @@ const tld_t tld_list[] = {
     { "lipsy", 6, TLD_TYPE_GENERIC },
     { "live", 5, TLD_TYPE_GENERIC },
     { "living", 7, TLD_TYPE_GENERIC },
-    { "lixil", 6, TLD_TYPE_GENERIC },
+    { "lixil", 6, TLD_TYPE_NOT_ASSIGNED },
     { "lk", 3, TLD_TYPE_COUNTRY_CODE },
     { "llc", 4, TLD_TYPE_GENERIC },
     { "llp", 4, TLD_TYPE_GENERIC },
