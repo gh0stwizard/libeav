@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2021-12-31 08:16:03 */
+/* this file was auto-generated at 2022-02-10 19:51:22 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -319,7 +319,7 @@ const tld_t tld_list[] = {
     { "crs", 4, TLD_TYPE_GENERIC },
     { "cruise", 7, TLD_TYPE_GENERIC },
     { "cruises", 8, TLD_TYPE_GENERIC },
-    { "csc", 4, TLD_TYPE_GENERIC },
+    { "csc", 4, TLD_TYPE_NOT_ASSIGNED },
     { "cu", 3, TLD_TYPE_COUNTRY_CODE },
     { "cuisinella", 11, TLD_TYPE_GENERIC },
     { "cv", 3, TLD_TYPE_COUNTRY_CODE },
