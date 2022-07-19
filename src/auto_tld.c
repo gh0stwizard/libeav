@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2022-02-10 19:51:22 */
+/* this file was auto-generated at 2022-07-20 00:10:13 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -190,7 +190,7 @@ const tld_t tld_list[] = {
     { "brussels", 9, TLD_TYPE_GENERIC },
     { "bs", 3, TLD_TYPE_COUNTRY_CODE },
     { "bt", 3, TLD_TYPE_COUNTRY_CODE },
-    { "budapest", 9, TLD_TYPE_GENERIC },
+    { "budapest", 9, TLD_TYPE_NOT_ASSIGNED },
     { "bugatti", 8, TLD_TYPE_GENERIC },
     { "build", 6, TLD_TYPE_GENERIC },
     { "builders", 9, TLD_TYPE_GENERIC },
@@ -696,6 +696,7 @@ const tld_t tld_list[] = {
     { "kh", 3, TLD_TYPE_COUNTRY_CODE },
     { "ki", 3, TLD_TYPE_COUNTRY_CODE },
     { "kia", 4, TLD_TYPE_GENERIC },
+    { "kids", 5, TLD_TYPE_GENERIC },
     { "kim", 4, TLD_TYPE_GENERIC },
     { "kinder", 7, TLD_TYPE_GENERIC },
     { "kindle", 7, TLD_TYPE_GENERIC },
