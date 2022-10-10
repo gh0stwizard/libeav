@@ -19,6 +19,10 @@ ifndef RFC6531_FOLLOW_RFC20
 export RFC6531_FOLLOW_RFC20 = OFF
 endif
 
+ifndef LABELS_ALLOW_UNDERSCORE
+export LABELS_ALLOW_UNDERSCORE = OFF
+endif
+
 
 BINDIR ?= $(DESTDIR)/bin
 LIBDIR ?= $(DESTDIR)/lib
@@ -127,6 +131,11 @@ endif
 ifeq ($(RFC6531_FOLLOW_RFC20),ON)
 CPPFLAGS += -DRFC6531_FOLLOW_RFC20
 export RFC6531_FOLLOW_RFC20
+endif
+
+ifeq ($(LABELS_ALLOW_UNDERSCORE),ON)
+CPPFLAGS += -DLABELS_ALLOW_UNDERSCORE
+export LABELS_ALLOW_UNDERSCORE
 endif
 
 #----------------------------------------------------------#
