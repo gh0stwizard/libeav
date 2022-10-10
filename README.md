@@ -258,6 +258,19 @@ PASS: xxx.ipv6@[2001:db8:1:1:1:1:1:1]
 PASS: simple@test.com
 ```
 
+## Troubleshooting
+
+### libidn issues
+
+The `idn` command depends on the value of `CHARSET` environment variable.
+Also, this environment variable affects the behaviour of the **libidn**
+library.
+
+If you are getting `Character encoding conversion error`, then try to
+check and fix the `CHARSET` variable on your system. Depending on the
+type of the operating system, the correct value may be `utf-8` or
+`UTF-8`, please, refer to the documentation of your system.
+
 ## See also
 
 * [github: dertuxmalwieder/libvldmail][21]
