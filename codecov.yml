@@ -1,0 +1,30 @@
+ignore:
+  - ".github"
+  - ".vscode"
+  - "tests"
+
+flags:
+  core:
+    paths:
+      - src/
+  libidn:
+    paths:
+      - partial/idn/
+  libidn2:
+    paths:
+      - partial/idn2/
+  idnkit:
+    paths:
+      - partial/idnkit/
+  tests:
+    paths:
+      - tests/
+
+flag_management:
+  default_rules:
+    carryforward: true
+  individual_flags:
+    - name: tests
+      paths:
+        - tests/
+      carryforward: false
