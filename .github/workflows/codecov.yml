@@ -68,7 +68,7 @@ jobs:
       - name: build idnkit
         run: |
           cd idnkit-2.3
-          ./configure --prefix=../idnkit
+          ./configure --prefix=$(pwd)/idnkit
           make
           make check
           make install
