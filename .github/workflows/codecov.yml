@@ -35,13 +35,11 @@ jobs:
       - name: make coverage
         run: make coverage
 
-      - name: generate coverage
-        run: gcovr --exclude-directories tests -o ./coverage/idn2.txt
-
       - name: upload codecov
         uses: codecov/codecov-action@v3
         with:
           name: ubuntu-latest-libidn2
           fail_ci_if_error: true
           verbose: true
-          files: ./coverage/idn2.txt
+          gcov: true
+          gcov_ignore: tests

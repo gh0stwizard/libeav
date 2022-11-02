@@ -236,6 +236,7 @@ clean: clean-tests clean-bin
 
 clean-coverage:
 	$(RM) $(wildcard coverage/*.txt) $(wildcard coverage/*.xml) \
+	$(wildcard coverage/*.js) $(wildcard coverage/*.json) \
 	$(wildcard coverage/*.htm) $(wildcard coverage/*.html) $(wildcard coverage/*.css)
 
 clean-tests:

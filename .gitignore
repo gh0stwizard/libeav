@@ -16,9 +16,12 @@ libeav.pc
 *.gcov
 *.gcda
 *.gcno
+codecov
 codecov.sh
 coverage/*.txt
 coverage/*.htm
 coverage/*.html
 coverage/*.css
 coverage/*.xml
+coverage/*.js
+coverage/*.json
