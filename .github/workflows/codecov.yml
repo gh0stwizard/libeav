@@ -43,4 +43,4 @@ jobs:
           verbose: true
           gcov: true
           gcov_ignore: tests
-          flags: libidn2
+          flags: core,libidn2
