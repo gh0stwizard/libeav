@@ -68,14 +68,14 @@ jobs:
       - name: build idnkit
         run: |
           cd idnkit-2.3
-          ./configure --prefix=$(pwd)/idnkit
+          ./configure --prefix=$HOME/local
           make
           make check
           make install
           cd ..
 
       - name: make coverage (idnkit)
-        run: make coverage FORCE_IDN=idnkit IDNKIT_DIR=$(pwd)/idnkit
+        run: make coverage FORCE_IDN=idnkit IDNKIT_DIR=$HOME/local
 
       - name: upload codecov (idnkit)
         uses: codecov/codecov-action@v3
