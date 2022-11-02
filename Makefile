@@ -5,6 +5,7 @@ DESTDIR ?= /usr/local
 INSTALL ?= install
 PERL ?= perl
 SED ?= sed
+GCOVR ?= gcovr
 
 LIB_PATH = $(shell realpath . 2>/dev/null || readlink -f -- .)
 ifeq ($(LIB_PATH),)
@@ -233,6 +234,10 @@ clean: clean-tests clean-bin
 	$(RM) $(gcov_gcda)
 	$(RM) $(gcov_gcno)
 
+clean-coverage:
+	$(RM) $(wildcard coverage/*.txt) $(wildcard coverage/*.xml) \
+	$(wildcard coverage/*.htm) $(wildcard coverage/*.html) $(wildcard coverage/*.css)
+
 clean-tests:
 	$(MAKE) -C tests clean
 	
@@ -297,14 +302,19 @@ uninstall-bin:
 
 #----------------------------------------------------------#
 
-coverage: CFLAGS += -O0 -coverage -fprofile-abs-path
+coverage: CFLAGS += --coverage -g -O0 -fprofile-abs-path
 coverage: LDFLAGS += -lgcov
 coverage: coverage-check
 
 # don't use directly, use 'make coverage'
 coverage-check: libs
-	$(MAKE) -C tests check CFLAGS="-O0 -coverage -fprofile-abs-path" LDFLAGS="-lgcov"
+	$(MAKE) -C tests check CFLAGS="--coverage -g -O0 -fprofile-abs-path" LDFLAGS="-lgcov"
+
+# XXX: ideally, the filename should contain all libeav compiler flags
+#      e.g. RFC6531_FOLLOW_RFC5322 ...
+gcovr: coverage
+	$(GCOVR) -o ./coverage/$(WITH_IDN).txt --exclude-directories tests
 
 #----------------------------------------------------------#
 
-.PHONY: all debug check clean docs man install libs libeav.pc coverage csv uninstall
+.PHONY: all debug check clean docs man install libs libeav.pc coverage csv uninstall gcovr
