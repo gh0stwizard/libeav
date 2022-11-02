@@ -40,7 +40,7 @@ jobs:
           gcov_ignore: tests
           flags: core,libidn2
 
-      - name: make clean
+      - name: make clean (libidn2)
         run: make clean FORCE_IDN=idn2
 
       - name: make coverage (libidn)
@@ -55,3 +55,34 @@ jobs:
           gcov: true
           gcov_ignore: tests
           flags: core,libidn
+
+      - name: make clean (libidn)
+        run: make clean FORCE_IDN=idn
+
+      - name: download idnkit
+        run: curl -Os -L https://jprs.co.jp/idn/idnkit-2.3.tar.bz2
+
+      - name: unpack idnkit
+        run: tar xjvf idnkit-2.3.tar.bz2
+
+      - name: build idnkit
+        run: |
+          cd idnkit-2.3
+          ./configure --prefix=../idnkit
+          make
+          make check
+          make install
+          cd ..
+
+      - name: make coverage (idnkit)
+        run: make coverage FORCE_IDN=idnkit IDNKIT_DIR=$(pwd)/idnkit
+
+      - name: upload codecov (idnkit)
+        uses: codecov/codecov-action@v3
+        with:
+          name: ubuntu-latest-idnkit
+          fail_ci_if_error: true
+          verbose: true
+          gcov: true
+          gcov_ignore: tests
+          flags: core,idnkit
