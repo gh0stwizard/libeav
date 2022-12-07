@@ -16,7 +16,7 @@ on:
   #workflow_dispatch:
 
 jobs:
-  codecov:
+  codecov-idn2:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -25,7 +25,7 @@ jobs:
         run: sudo apt-get update
 
       - name: install dependencies
-        run: sudo apt-get install -y libidn2-0-dev libidn11-dev
+        run: sudo apt-get install -y libidn2-0-dev
 
       - name: make coverage (libidn2)
         run: make coverage FORCE_IDN=idn2
@@ -40,8 +40,18 @@ jobs:
           gcov_ignore: tests
           flags: core,libidn2
 
-      - name: make clean (libidn2)
-        run: make clean FORCE_IDN=idn2
+  codecov-idn:
+    runs-on: ubuntu-latest
+    env:
+      CHARSET: UTF-8
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: update apt
+        run: sudo apt-get update
+
+      - name: install dependencies
+        run: sudo apt-get install -y libidn11-dev
 
       - name: make coverage (libidn)
         run: make coverage FORCE_IDN=idn
