@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2022-10-09 05:32:46 */
+/* this file was auto-generated at 2022-12-07 06:24:13 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -23,7 +23,7 @@ const tld_t tld_list[] = {
     { "active", 7, TLD_TYPE_NOT_ASSIGNED },
     { "actor", 6, TLD_TYPE_GENERIC },
     { "ad", 3, TLD_TYPE_COUNTRY_CODE },
-    { "adac", 5, TLD_TYPE_GENERIC },
+    { "adac", 5, TLD_TYPE_NOT_ASSIGNED },
     { "ads", 4, TLD_TYPE_GENERIC },
     { "adult", 6, TLD_TYPE_GENERIC },
     { "ae", 3, TLD_TYPE_COUNTRY_CODE },
@@ -1488,7 +1488,7 @@ const tld_t tld_list[] = {
     { "xn--j1amh", 10, TLD_TYPE_COUNTRY_CODE },
     { "xn--j6w193g", 12, TLD_TYPE_COUNTRY_CODE },
     { "xn--jlq480n2rg", 15, TLD_TYPE_GENERIC },
-    { "xn--jlq61u9w7b", 15, TLD_TYPE_GENERIC },
+    { "xn--jlq61u9w7b", 15, TLD_TYPE_NOT_ASSIGNED },
     { "xn--jvr189m", 12, TLD_TYPE_GENERIC },
     { "xn--jxalpdlp", 13, TLD_TYPE_TEST },
     { "xn--kcrx77d1x4a", 16, TLD_TYPE_GENERIC },
