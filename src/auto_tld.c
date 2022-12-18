@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2022-12-14 08:14:32 */
+/* this file was auto-generated at 2022-12-18 08:55:33 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -770,7 +770,7 @@ const tld_t tld_list[] = {
     { "loans", 6, TLD_TYPE_GENERIC },
     { "locker", 7, TLD_TYPE_GENERIC },
     { "locus", 6, TLD_TYPE_GENERIC },
-    { "loft", 5, TLD_TYPE_GENERIC },
+    { "loft", 5, TLD_TYPE_NOT_ASSIGNED },
     { "lol", 4, TLD_TYPE_GENERIC },
     { "london", 7, TLD_TYPE_GENERIC },
     { "lotte", 6, TLD_TYPE_GENERIC },
@@ -1135,7 +1135,7 @@ const tld_t tld_list[] = {
     { "select", 7, TLD_TYPE_GENERIC },
     { "sener", 6, TLD_TYPE_GENERIC },
     { "services", 9, TLD_TYPE_GENERIC },
-    { "ses", 4, TLD_TYPE_GENERIC },
+    { "ses", 4, TLD_TYPE_NOT_ASSIGNED },
     { "seven", 6, TLD_TYPE_GENERIC },
     { "sew", 4, TLD_TYPE_GENERIC },
     { "sex", 4, TLD_TYPE_GENERIC },
