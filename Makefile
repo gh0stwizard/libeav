@@ -1,5 +1,5 @@
-CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic -fPIC
-CPPFLAGS = -Iinclude -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE
+CFLAGS ?= -O2 -Wall -Wextra -std=c99 -pedantic
+CPPFLAGS = -Iinclude -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=700 -D_SVID_SOURCE -fPIC
 PKG_CONFIG ?= pkg-config
 DESTDIR ?= /usr/local
 INSTALL ?= install
@@ -176,7 +176,7 @@ $(BIN_TARGET_STATIC): $(LIB_TARGET)
 
 $(DLL_TARGET): $(OBJECTS)
 	# library -> shared linkage
-	$(CC) -shared -fPIC $(LDFLAGS) -Iinclude -Wl,-soname,$(DLL_TARGET) \
+	$(CC) -shared $(LDFLAGS) -Iinclude -Wl,-soname,$(DLL_TARGET) \
 		-o $(DLL_TARGET) $(OBJECTS) $(LIBS)
 
 $(LIB_TARGET): $(OBJECTS)
