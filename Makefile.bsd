@@ -176,7 +176,7 @@ ${BIN_TARGET_STATIC}: ${LIB_TARGET}
 
 ${DLL_TARGET}: ${OBJECTS}
 	# library -> shared linkage
-	${CC} -shared ${LDFLAGS} -Iinclude -Wl,-soname,${DLL_TARGET} \
+	${CC} -shared -fPIC ${LDFLAGS} -Iinclude -Wl,-soname,${DLL_TARGET} \
 		-o ${DLL_TARGET} ${OBJECTS} ${LIBS}
 
 ${LIB_TARGET}: ${OBJECTS}
