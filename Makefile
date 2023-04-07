@@ -6,6 +6,7 @@ INSTALL ?= install
 PERL ?= perl
 SED ?= sed
 GCOVR ?= gcovr
+RANLIB ?= ranlib
 
 LIB_PATH = $(shell realpath . 2>/dev/null || readlink -f -- .)
 ifeq ($(LIB_PATH),)
@@ -181,7 +182,8 @@ $(DLL_TARGET): $(OBJECTS)
 
 $(LIB_TARGET): $(OBJECTS)
 	# library -> static linkage
-	$(AR) rcs $@ $(OBJECTS)
+	$(AR) rc $@ $(OBJECTS)
+	$(RANLIB) $@
 
 %.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -I. -o $@ -c $<
