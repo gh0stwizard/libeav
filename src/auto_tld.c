@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2023-03-19 14:42:18 */
+/* this file was auto-generated at 2023-06-06 13:36:25 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -6,7 +6,7 @@
 const tld_t tld_list[] = {
     { "aaa", 4, TLD_TYPE_GENERIC },
     { "aarp", 5, TLD_TYPE_GENERIC },
-    { "abarth", 7, TLD_TYPE_GENERIC },
+    { "abarth", 7, TLD_TYPE_NOT_ASSIGNED },
     { "abb", 4, TLD_TYPE_GENERIC },
     { "abbott", 7, TLD_TYPE_GENERIC },
     { "abbvie", 7, TLD_TYPE_GENERIC },
@@ -45,7 +45,7 @@ const tld_t tld_list[] = {
     { "airtel", 7, TLD_TYPE_GENERIC },
     { "akdn", 5, TLD_TYPE_GENERIC },
     { "al", 3, TLD_TYPE_COUNTRY_CODE },
-    { "alfaromeo", 10, TLD_TYPE_GENERIC },
+    { "alfaromeo", 10, TLD_TYPE_NOT_ASSIGNED },
     { "alibaba", 8, TLD_TYPE_GENERIC },
     { "alipay", 7, TLD_TYPE_GENERIC },
     { "allfinanz", 10, TLD_TYPE_GENERIC },
@@ -443,7 +443,7 @@ const tld_t tld_list[] = {
     { "ferrari", 8, TLD_TYPE_GENERIC },
     { "ferrero", 8, TLD_TYPE_GENERIC },
     { "fi", 3, TLD_TYPE_COUNTRY_CODE },
-    { "fiat", 5, TLD_TYPE_GENERIC },
+    { "fiat", 5, TLD_TYPE_NOT_ASSIGNED },
     { "fidelity", 9, TLD_TYPE_GENERIC },
     { "fido", 5, TLD_TYPE_GENERIC },
     { "film", 5, TLD_TYPE_GENERIC },
@@ -724,7 +724,7 @@ const tld_t tld_list[] = {
     { "lamborghini", 12, TLD_TYPE_GENERIC },
     { "lamer", 6, TLD_TYPE_GENERIC },
     { "lancaster", 10, TLD_TYPE_GENERIC },
-    { "lancia", 7, TLD_TYPE_GENERIC },
+    { "lancia", 7, TLD_TYPE_NOT_ASSIGNED },
     { "lancome", 8, TLD_TYPE_NOT_ASSIGNED },
     { "land", 5, TLD_TYPE_GENERIC },
     { "landrover", 10, TLD_TYPE_GENERIC },
@@ -805,7 +805,7 @@ const tld_t tld_list[] = {
     { "markets", 8, TLD_TYPE_GENERIC },
     { "marriott", 9, TLD_TYPE_GENERIC },
     { "marshalls", 10, TLD_TYPE_GENERIC },
-    { "maserati", 9, TLD_TYPE_GENERIC },
+    { "maserati", 9, TLD_TYPE_NOT_ASSIGNED },
     { "mattel", 7, TLD_TYPE_GENERIC },
     { "mba", 4, TLD_TYPE_GENERIC },
     { "mc", 3, TLD_TYPE_COUNTRY_CODE },
