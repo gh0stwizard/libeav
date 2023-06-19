@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2023-06-06 13:36:25 */
+/* this file was auto-generated at 2023-06-19 15:29:04 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -301,7 +301,7 @@ const tld_t tld_list[] = {
     { "contact", 8, TLD_TYPE_GENERIC },
     { "contractors", 12, TLD_TYPE_GENERIC },
     { "cooking", 8, TLD_TYPE_GENERIC },
-    { "cookingchannel", 15, TLD_TYPE_GENERIC },
+    { "cookingchannel", 15, TLD_TYPE_NOT_ASSIGNED },
     { "cool", 5, TLD_TYPE_GENERIC },
     { "coop", 5, TLD_TYPE_SPONSORED },
     { "corsica", 8, TLD_TYPE_GENERIC },
@@ -470,7 +470,7 @@ const tld_t tld_list[] = {
     { "fo", 3, TLD_TYPE_COUNTRY_CODE },
     { "foo", 4, TLD_TYPE_GENERIC },
     { "food", 5, TLD_TYPE_GENERIC },
-    { "foodnetwork", 12, TLD_TYPE_GENERIC },
+    { "foodnetwork", 12, TLD_TYPE_NOT_ASSIGNED },
     { "football", 9, TLD_TYPE_GENERIC },
     { "ford", 5, TLD_TYPE_GENERIC },
     { "forex", 6, TLD_TYPE_GENERIC },
@@ -579,7 +579,7 @@ const tld_t tld_list[] = {
     { "helsinki", 9, TLD_TYPE_GENERIC },
     { "here", 5, TLD_TYPE_GENERIC },
     { "hermes", 7, TLD_TYPE_GENERIC },
-    { "hgtv", 5, TLD_TYPE_GENERIC },
+    { "hgtv", 5, TLD_TYPE_NOT_ASSIGNED },
     { "hiphop", 7, TLD_TYPE_GENERIC },
     { "hisamitsu", 10, TLD_TYPE_GENERIC },
     { "hitachi", 8, TLD_TYPE_GENERIC },
@@ -1293,7 +1293,7 @@ const tld_t tld_list[] = {
     { "trading", 8, TLD_TYPE_GENERIC },
     { "training", 9, TLD_TYPE_GENERIC },
     { "travel", 7, TLD_TYPE_SPONSORED },
-    { "travelchannel", 14, TLD_TYPE_GENERIC },
+    { "travelchannel", 14, TLD_TYPE_NOT_ASSIGNED },
     { "travelers", 10, TLD_TYPE_GENERIC },
     { "travelersinsurance", 19, TLD_TYPE_GENERIC },
     { "trust", 6, TLD_TYPE_GENERIC },
