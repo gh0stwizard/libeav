@@ -1,4 +1,4 @@
-/* this file was auto-generated at 2023-06-19 15:29:04 */
+/* this file was auto-generated at 2023-07-08 09:20:12 */
 
 #include <stdio.h> /* NULL */
 #include "include/eav/auto_tld.h"
@@ -602,7 +602,7 @@ const tld_t tld_list[] = {
     { "host", 5, TLD_TYPE_GENERIC },
     { "hosting", 8, TLD_TYPE_GENERIC },
     { "hot", 4, TLD_TYPE_GENERIC },
-    { "hoteles", 8, TLD_TYPE_GENERIC },
+    { "hoteles", 8, TLD_TYPE_NOT_ASSIGNED },
     { "hotels", 7, TLD_TYPE_GENERIC },
     { "hotmail", 8, TLD_TYPE_GENERIC },
     { "house", 6, TLD_TYPE_GENERIC },
@@ -971,7 +971,7 @@ const tld_t tld_list[] = {
     { "partners", 9, TLD_TYPE_GENERIC },
     { "parts", 6, TLD_TYPE_GENERIC },
     { "party", 6, TLD_TYPE_GENERIC },
-    { "passagens", 10, TLD_TYPE_GENERIC },
+    { "passagens", 10, TLD_TYPE_NOT_ASSIGNED },
     { "pay", 4, TLD_TYPE_GENERIC },
     { "pccw", 5, TLD_TYPE_GENERIC },
     { "pe", 3, TLD_TYPE_COUNTRY_CODE },
@@ -1359,7 +1359,7 @@ const tld_t tld_list[] = {
     { "voto", 5, TLD_TYPE_GENERIC },
     { "voyage", 7, TLD_TYPE_GENERIC },
     { "vu", 3, TLD_TYPE_COUNTRY_CODE },
-    { "vuelos", 7, TLD_TYPE_GENERIC },
+    { "vuelos", 7, TLD_TYPE_NOT_ASSIGNED },
     { "wales", 6, TLD_TYPE_GENERIC },
     { "walmart", 8, TLD_TYPE_GENERIC },
     { "walter", 7, TLD_TYPE_GENERIC },
